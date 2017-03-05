@@ -78,7 +78,7 @@ public class Ship{
 	*	@param radius
 	*	The radius of the ship
 	*
-	*	@pre	The radius neesd to be => 10
+	*	@pre	The radius needs to be => 10
 	* 			|new.getRadius >=10
 	*
 	*	@post
@@ -213,9 +213,43 @@ public class Ship{
 		{
 			this.angle = angle;
 		}
+		
+		
+	/**
+	* Get the complete velocity of the ship.
+	*/
+	public void getVelocity(){
+		double velocity = math.sqrt((this.getXVelocity()*this.getXVelocity())+(this.getYVelocity()*this.getYVelocity()));
+		 assert velocity <= SPEEDOFLIGHT
+		  return velocity;
+	}
+	
+		
 	
 	
+	public double getDistanceBetween(Ship ship1, Ship ship2){
+		
+		
+		
+	}
 	
+	public boolean overlap(Ship ship1, Ship ship2){
+		if(ship1 == ship2){
+			return true;
+		}
+		
+		
+	}
+	
+	public double getTimeToCollision(){
+		
+		
+	}
+	
+	public double getCollisionPosition(){
+
+		
+	}
 	
 		
 }
