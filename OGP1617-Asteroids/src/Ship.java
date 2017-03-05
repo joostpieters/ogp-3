@@ -95,6 +95,7 @@ public class Ship{
 		this.yVelocity = yVelocity;
 		this.radius = radius;
 		this.angle = angle;
+		this.direction = direction;
 	}
 	
 	
