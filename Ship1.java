@@ -214,8 +214,13 @@ public class Ship{
 			this.angle = angle;
 		}
 	
-	
-	
+	/**
+	* Get the complete velocity of the ship.
+	*/
+	public void getVelocity(){
+		double velocity = Math.sqrt((this.getXVelocity()*this.getXVelocity())+(this.getYVelocity()*this.getYVelocity()));
+		  return velocity;
+	}
 	
 		
 }
