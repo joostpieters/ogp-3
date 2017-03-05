@@ -5,51 +5,51 @@ public class Ship{
  * 
  * 
  * @author Kevin Van der Schueren en Steven Zegers
- * @version 1
+ * @version 1.1
  */
 	
 	/**
-	* TODO  add comment
+	*	Variable representing the x coordinate of the ship
 	*/
 	private double xCoordinate;
 	
 	/**
-	*	TODO  add comment
+	*	Variable representing the y coordinate of the ship
 	*/
 	private double yCoordinate;
 	
 	/**
-	*TODO  add comment
+	*	Variable representing the velocity of the ship along the x axis
 	*/
 	private double xVelocity;
 	
 	/**
-	*TODO  add comment
+	*	Variable representing the velocity of the ship along the y axis
 	*/
 	private double yVelocity;
 	
 	/**
-	*TODO  add comment
+	*	Variable representing the radius of the ship
 	*/
 	private double radius;
 	
 	/**
-	*TODO  add comment
+	*	Variable representing the angle of the ship
 	*/
 	private double angle;
 	
 	/**
-	*TODO  add comment
+	*	Variable representing the direction of the ship
 	*/
 	private double direction;
 	
 	/**
-	*TODO  add comment
+	*	Constant representing the speed of the light
 	*/
 	private final double SPEEDOFLIGHT = 30000;
 	
 	/**
-	*TODO  add comment
+	* 	Constant representing the minimum value of the radius of each created ship
 	*/
 	private final double MINIMUMRADIUS = 10;
 	
@@ -88,7 +88,7 @@ public class Ship{
 	
 	public Ship(double xCoordinate, double yCoordinate, double xVelocity, double yVelocity, double angle, double radius, double direction){
 		
-		//TODO met methodes implementeren
+		//TODO eventueel met get en set methodes implementeren
 		this.xCoordinate = xCoordinate;
 		this.yCoordinate = yCoordinate;
 		this.xVelocity = xVelocity;
@@ -99,7 +99,7 @@ public class Ship{
 	
 	
 	/** 
-	 * Return the X Coordinate of the ship.
+	 * Return the x coordinate of the ship.
 	 */
 	@Basic 
 	public double getXCoordinate() {
@@ -107,7 +107,7 @@ public class Ship{
 	}
 	
 	/** 
-	 * Return the Y Coordinate of the ship.
+	 * Return the y coordinate of the ship.
 	 */
 	@Basic 
 	public double getYCoordinate() {
@@ -123,7 +123,7 @@ public class Ship{
 	}
 	
 	/** 
-	 * Return the X velocity of the ship.
+	 * Return the velocity of the ship along the x axis.
 	 */
 	@Basic 
 	public double getXVelocity() {
@@ -131,7 +131,7 @@ public class Ship{
 	}
 	
 	/** 
-	 * Return the Y Velocity of the ship.
+	 * Return the the velocity of the ship along the y axis.
 	 */
 	@Basic 
 	public double getYVelocity() {
@@ -145,6 +145,14 @@ public class Ship{
 	@Basic 
 	public double getAngle() {
 		return angle;
+	}
+	
+	/** 
+	 * Return the direction of the ship.
+	 */
+	@Basic 
+	public double getDirection() {
+		return direction;
 	}
 	
 	/** 
@@ -186,13 +194,26 @@ public class Ship{
 	    this.yVelocity = yvelocity;
 	
 	}
+	
 	/**
-	*
+	* Set the direction of the ship.
 	*/
+	@Basic
 	public void setDirection(double direction)
 		{
 			this.direction = direction;
 		}
+		
+		
+	/**
+	* Set the angle of the ship.
+	*/
+	@Basic
+	public void setAngle(double angle)
+		{
+			this.angle = angle;
+		}
+	
 	
 	
 	
