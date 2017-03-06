@@ -210,9 +210,9 @@ public class Ship{
 	 * @Post |this.getYVelocity() == yvelocity
 	 */
 	@Basic
-	public void setYvelocity(Ship ship, double yvelocity) {
+	public void setYvelocity(double yvelocity) {
 	
-	    ship.yVelocity = yvelocity;
+	    this.yVelocity = yvelocity;
 	
 	}
 	
