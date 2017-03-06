@@ -133,7 +133,7 @@ public class Ship{
 	}
 	
 	/** 
-	 * Return the the velocity of the ship along the y axis.
+	 * Return the velocity of the ship along the y axis.
 	 */
 	@Basic 
 	public double getYVelocity(Ship ship) {
@@ -294,26 +294,87 @@ public class Ship{
 	}
 	
 	
-	public double getDistanceBetween(Ship ship1, Ship ship2){
+	public double getDistanceBetween(Ship ship1, Ship ship2) {
 		
-		
-		
-	}
-	
-	public boolean overlap(Ship ship1, Ship ship2){
-		if(ship1 == ship2){
-			return true;
+		if (ship1 == ship2) {
+
+			return 0;
 		}
 		
+		double xCoordinateShip1 = ship1.getXCoordinate();
+		double yCoordinateShip1 = ship1.getYCoordinate();
+		double xCoordinateShip2 = ship2.getXCoordinate();
+		double yCoordinateShip2 = ship2.getYCoordinate();
+		double radiusShip1 = ship1.getRadius();
+		double radiusShip2 = ship2.getRadius();
+		
+		double differenceInX = xCoordinateShip1 - xCoordinateShip2;
+		double differenceInY = yCoordinateShip1 - yCoordinateShip2;
+		
+		double squaredDifferenceInX = Math.pow(differenceInX, 2);
+		double squaredDifferenceInY = Math.pow(differenceInY, 2);
+		
+		double distanceBetweenCenters = Math.sqrt(squaredDifferenceInX + squaredDifferenceInY);
+		double distance = distanceBetweenCenters - radiusShip1 - radiusShip2;
+		
+		return distance;
 		
 	}
 	
-	public double getTimeToCollision(){
+	public boolean overlap(Ship ship1, Ship ship2) {
 		
-		
+		if (ship1 == ship2) {
+			return true;
+		} else if (getDistanceBetween(ship1, ship2) > 0) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 	
-	public double getCollisionPosition(){
+	public double getTimeToCollision(Ship ship1, Ship ship2) {
+		
+		if (ship1 == ship2) {
+			
+			return Double.POSITIVE_INFINITY;
+		}
+		
+		double xVelocityShip1 = ship1.getXVelocity();
+		double yVelocityShip1 = ship1.getYVelocity();
+		double xVelocityShip2 = ship2.getXVelocity();
+		double yVelocityShip2 = ship2.getYVelocity();
+		
+		double xCoordinateShip1 = ship1.getXCoordinate();
+		double yCoordinateShip1 = ship1.getYCoordinate();
+		double xCoordinateShip2 = ship2.getXCoordinate();
+		double yCoordinateShip2 = ship2.getYCoordinate();
+		
+		double radiusShip1 = ship1.getRadius();
+		double radiusShip2 = ship2.getRadius();
+		double sumOfRadiusses = radiusShip1 + radiusShip2;
+		
+		double deltaX = xCoordinateShip1 - xCoordinateShip2;
+		double deltaY = yCoordinateShip1 - yCoordinateShip2;
+		double deltaVx = xVelocityShip1 - xVelocityShip2;
+		double deltaVy = yVelocityShip1 - yVelocityShip2;
+		
+		double inproductRandR = Math.pow(deltaX, 2) + Math.pow(deltaY, 2);
+		double inproductVandV = Math.pow(deltaVx, 2) + Math.pow(deltaVy, 2);
+		double inproductVandR = deltaVx * deltaX + deltaVy * deltaY;
+		
+		double d = Math.pow(inproductVandR, 2) - (inproductVandV) * (inproductRandR - Math.pow(sumOfRadiusses, 2));
+		
+		if (inproductVandR >= 0) {
+			return Double.POSITIVE_INFINITY;
+		}else if (d <= 0) {
+			return Double.POSITIVE_INFINITY;
+		}else{
+			double deltaT = - (inproductVandR + Math.sqrt(d)) / inproductVandV;
+			return deltaT;
+		}
+	}
+	
+	public double getCollisionPosition() {
 
 		
 	}
