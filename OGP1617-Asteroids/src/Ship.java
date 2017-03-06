@@ -239,8 +239,8 @@ public class Ship{
 	* Get the complete speed of the ship.
 	*/
 	public void getSpeed(Ship ship){
-		double speed = math.sqrt((ship.xVelocity()*ship.xVelocity())+(ship.yVelocity()*ship.yVelocity));
-		 assert speed <= SPEEDOFLIGHT
+		double speed = Math.sqrt((ship.xVelocity()*ship.xVelocity())+(ship.yVelocity()*ship.yVelocity));
+		 assert speed <= SPEEDOFLIGHT;
 		 return speed;
 	}
 	
@@ -264,7 +264,7 @@ public class Ship{
 	 *
 	 */
 	public void turn(Ship ship, double givenangle){
-		ship.direction += givenangle
+		ship.direction += givenangle;
 	}
 	
 	
