@@ -245,8 +245,8 @@ public class Ship{
 	/**
 	* Assign the given radius to the radius of the ship.
 	 * @param angle
-	 * 		The value of the angle which will be assigned to the angle of the ship
-	 * @Post |this.getAngle() == angle
+	 * 		The value of the radius which will be assigned to the radius of the ship
+	 * @Post |this.getRadius() == radius
 	*/
 	@Basic
 	public void setRadius(Ship ship, double radius)
