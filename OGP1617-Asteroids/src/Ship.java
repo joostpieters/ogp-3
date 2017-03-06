@@ -104,64 +104,64 @@ public class Ship{
 	 * Return the x coordinate of the ship.
 	 */
 	@Basic 
-	public double getXCoordinate(Ship ship) {
-		return ship.xCoordinate;
+	public double getXCoordinate() {
+		return this.xCoordinate;
 	}
 	
 	/** 
 	 * Return the y coordinate of the ship.
 	 */
 	@Basic 
-	public double getYCoordinate(Ship ship) {
-		return ship.yCoordinate;
+	public double getYCoordinate() {
+		return this.yCoordinate;
 	}
 	
 	/** 
 	 * Return the radius of the ship.
 	 */
 	@Basic 
-	public double getShipRadius(Ship ship) {
-		return ship.radius;
+	public double getShipRadius() {
+		return this.radius;
 	}
 	
 	/** 
 	 * Return the velocity of the ship along the x axis.
 	 */
 	@Basic 
-	public double getXVelocity(Ship ship) {
-		return ship.xVelocity;
+	public double getXVelocity() {
+		return this.xVelocity;
 	}
 	
 	/** 
 	 * Return the velocity of the ship along the y axis.
 	 */
 	@Basic 
-	public double getYVelocity(Ship ship) {
-		return ship.yVelocity;
+	public double getYVelocity() {
+		return this.yVelocity;
 	}
 	
 	/** 
 	 * Return the radius of the ship.
 	 */
 	@Basic 
-	public double getRadius(Ship ship) {
-		return ship.radius;
+	public double getRadius() {
+		return this.radius;
 	}
 	
 	/** 
 	 * Return the angle of the ship.
 	 */
 	@Basic 
-	public double getAngle(Ship ship) {
-		return ship.angle;
+	public double getAngle() {
+		return this.angle;
 	}
 	
 	/** 
 	 * Return the direction of the ship.
 	 */
 	@Basic 
-	public double getDirection(Ship ship) {
-		return ship.direction;
+	public double getDirection() {
+		return this.direction;
 	}
 	
 	/** 
@@ -171,9 +171,9 @@ public class Ship{
 	 * @Post |this.getXCoordinate() == x
 	 */
 	@Basic
-	public void setX(Ship ship, double x) {
+	public void setX(double x) {
 	
-	    ship.xCoordinate = x;
+	    this.xCoordinate = x;
 	
 	}
 	
@@ -184,9 +184,9 @@ public class Ship{
 	 * @Post |this.getYCoordinate() == y
 	 */
 	@Basic
-	public void setY(Ship ship, double y) {
+	public void setY(double y) {
 	
-	    ship.yCoordinate = y;
+	    this.yCoordinate = y;
 	
 	}
 	
@@ -197,9 +197,9 @@ public class Ship{
 	 * @Post |this.getXVelocity() == xvelocity
 	 */
 	@Basic
-	public void setXvelocity(Ship ship, double xvelocity) {
+	public void setXvelocity(double xvelocity) {
 	
-	    ship.xVelocity = xvelocity;
+	    this.xVelocity = xvelocity;
 	
 	}
 	
@@ -223,9 +223,9 @@ public class Ship{
 	 * @Post |this.getDirection() == direction
 	*/
 	@Basic
-	public void setDirection(Ship ship, double direction)
+	public void setDirection(double direction)
 		{
-			ship.direction = direction;
+			this.direction = direction;
 		}
 		
 		
@@ -236,9 +236,9 @@ public class Ship{
 	 * @Post |this.getAngle() == angle
 	*/
 	@Basic
-	public void setAngle(Ship ship, double angle)
+	public void setAngle(double angle)
 		{
-			ship.angle = angle;
+			this.angle = angle;
 		}
 		
 		
@@ -249,17 +249,17 @@ public class Ship{
 	 * @Post |this.getRadius() == radius
 	*/
 	@Basic
-	public void setRadius(Ship ship, double radius)
+	public void setRadius(double radius)
 		{
-			ship.radius = radius;
+			this.radius = radius;
 		}
 			
 		
 	/**
 	* Get the complete speed of the ship.
 	*/
-	public double getSpeed(Ship ship){
-		double speed = math.sqrt((ship.xVelocity()*ship.xVelocity())+(ship.yVelocity()*ship.yVelocity));
+	public double getSpeed(){
+		double speed = math.sqrt((this.xVelocity()*this.xVelocity())+(this.yVelocity()*this.yVelocity));
 		 assert speed <= SPEEDOFLIGHT
 		 return speed;
 	}
@@ -283,8 +283,8 @@ public class Ship{
 	 * 		|this.getDirection == this.setDirection(this.getDirection() + givenangle)
 	 *
 	 */
-	public void turn(Ship ship, double givenangle){
-		ship.direction += givenangle
+	public void turn(double givenangle){
+		this.direction += givenangle
 	}
 	
 	
@@ -295,22 +295,22 @@ public class Ship{
 	 * @pre amount > = 0
 	 * @post Both velocities are changed based on the given amount, the current acceleration and the direction.
 	 */
-	public void thrust(Ship ship, double amount){
+	public void thrust(double amount){
 		if (amount < 0){
 			amount = 0;
 		}
 		
-		double newxvelocity = (ship.xVelocity() + (amount*Math.cos(ship.direction)));
-		double newyvelocity = (ship.yVelocity() + (amount*Math.sin(ship.direction)));
+		double newxvelocity = (this.xVelocity() + (amount*Math.cos(this.direction)));
+		double newyvelocity = (this.yVelocity() + (amount*Math.sin(this.direction)));
 		double newspeed = Math.sqrt((newxvelocity * newxvelocity) + (newyvelocity * newyvelocity));
 		
 		if (newspeed > SPEEDOFLIGHT){
-			newxvelocity = Math.cos(ship.direction()) * SPEEDOFLIGHT;
-			newyvelocity = Math.sin(ship.direction()) * SPEEDOFLIGHT;
+			newxvelocity = Math.cos(this.direction()) * SPEEDOFLIGHT;
+			newyvelocity = Math.sin(sthis.direction()) * SPEEDOFLIGHT;
 		}
-		this.setXvelocity(ship, newxvelocity);
-		this.setYvelocity(ship, newyvelocity);
-		n
+		this.setXvelocity(newxvelocity);
+		this.setYvelocity(newyvelocity);
+		
 	}
 	
 	
