@@ -259,13 +259,10 @@ public class Ship{
 	* Get the complete speed of the ship.
 	*/
 
-	public void getSpeed(Ship ship){
-		double speed = math.sqrt((ship.xVelocity()*ship.xVelocity())+(ship.yVelocity()*ship.yVelocity));
-		 assert speed <= SPEEDOFLIGHT;
 
 	public double getSpeed(){
-		double speed = math.sqrt((this.xVelocity()*this.xVelocity())+(this.yVelocity()*this.yVelocity));
-		 assert speed <= SPEEDOFLIGHT
+		double speed = Math.sqrt((this.getXVelocity()*this.getXVelocity())+(this.getYVelocity()*this.yVelocity));
+		 assert speed <= SPEEDOFLIGHT;
 		 return speed;
 	}
 	
@@ -289,11 +286,9 @@ public class Ship{
 	 *
 	 */
 
-	public void turn(Ship ship, double givenangle){
-		ship.direction += givenangle;
 
 	public void turn(double givenangle){
-		this.direction += givenangle
+		this.direction += givenangle;
 
 	}
 	
@@ -310,13 +305,13 @@ public class Ship{
 			amount = 0;
 		}
 		
-		double newxvelocity = (this.xVelocity() + (amount*Math.cos(this.direction)));
-		double newyvelocity = (this.yVelocity() + (amount*Math.sin(this.direction)));
+		double newxvelocity = (this.getXVelocity() + (amount*Math.cos(this.direction)));
+		double newyvelocity = (this.getYVelocity() + (amount*Math.sin(this.direction)));
 		double newspeed = Math.sqrt((newxvelocity * newxvelocity) + (newyvelocity * newyvelocity));
 		
 		if (newspeed > SPEEDOFLIGHT){
-			newxvelocity = Math.cos(this.direction()) * SPEEDOFLIGHT;
-			newyvelocity = Math.sin(sthis.direction()) * SPEEDOFLIGHT;
+			newxvelocity = Math.cos(this.getDirection()) * SPEEDOFLIGHT;
+			newyvelocity = Math.sin(this.getDirection()) * SPEEDOFLIGHT;
 		}
 		this.setXvelocity(newxvelocity);
 		this.setYvelocity(newyvelocity);
@@ -324,18 +319,18 @@ public class Ship{
 	}
 	
 	
-	public double getDistanceBetween(Ship ship1, Ship ship2) {
+	public double getDistanceBetween(Ship ship2) {
 		
-		if (ship1 == ship2) {
+		if (this == ship2) {
 
 			return 0;
 		}
 		
-		double xCoordinateShip1 = ship1.getXCoordinate();
-		double yCoordinateShip1 = ship1.getYCoordinate();
+		double xCoordinateShip1 = this.getXCoordinate();
+		double yCoordinateShip1 = this.getYCoordinate();
 		double xCoordinateShip2 = ship2.getXCoordinate();
 		double yCoordinateShip2 = ship2.getYCoordinate();
-		double radiusShip1 = ship1.getRadius();
+		double radiusShip1 = this.getRadius();
 		double radiusShip2 = ship2.getRadius();
 		
 		double differenceInX = xCoordinateShip1 - xCoordinateShip2;
@@ -351,35 +346,36 @@ public class Ship{
 		
 	}
 	
-	public boolean overlap(Ship ship1, Ship ship2) {
+	public boolean overlap(Ship ship2) {
 		
-		if (ship1 == ship2) {
+		if (this == ship2) {
 			return true;
-		} else if (getDistanceBetween(ship1, ship2) > 0) {
+		} else if (getDistanceBetween(ship2) > 0) {
 			return false;
 		} else {
 			return true;
 		}
 	}
 	
-	public double getTimeToCollision(Ship ship1, Ship ship2) {
+	
+	public double getTimeToCollision(Ship ship2) {
 		
-		if (ship1 == ship2) {
+		if (this == ship2) {
 			
 			return Double.POSITIVE_INFINITY;
 		}
 		
-		double xVelocityShip1 = ship1.getXVelocity();
-		double yVelocityShip1 = ship1.getYVelocity();
+		double xVelocityShip1 = this.getXVelocity();
+		double yVelocityShip1 = this.getYVelocity();
 		double xVelocityShip2 = ship2.getXVelocity();
 		double yVelocityShip2 = ship2.getYVelocity();
 		
-		double xCoordinateShip1 = ship1.getXCoordinate();
-		double yCoordinateShip1 = ship1.getYCoordinate();
+		double xCoordinateShip1 = this.getXCoordinate();
+		double yCoordinateShip1 = this.getYCoordinate();
 		double xCoordinateShip2 = ship2.getXCoordinate();
 		double yCoordinateShip2 = ship2.getYCoordinate();
 		
-		double radiusShip1 = ship1.getRadius();
+		double radiusShip1 = this.getRadius();
 		double radiusShip2 = ship2.getRadius();
 		double sumOfRadiusses = radiusShip1 + radiusShip2;
 		
