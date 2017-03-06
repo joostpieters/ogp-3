@@ -318,7 +318,14 @@ public class Ship{
 		
 	}
 	
-	
+	/**
+	 * This method calculates the minimum amount of distance that our ship should travel in order to be adjacent to ship2.
+	 * If the ships overlap, the distance will be negative, if the 2 ships are the same the returned value will be 0.
+	 * If the ships don't overlap and aren't the same, a positive value will be returned
+	 * 
+	 * @param ship2 A ship named ship2 of which we want to know how far away it is from our ship.
+	 * @return Returns the distance between the ship and another ship, named ship2.
+	 */
 	public double getDistanceBetween(Ship ship2) {
 		
 		if (this == ship2) {
@@ -345,7 +352,15 @@ public class Ship{
 		return distance;
 		
 	}
-	
+	/**
+	 * This method returns true of false, depending if the ships overlap or not. 
+	 * As explained for the function getDistanceBetween, 2 ships that aren't the same overlap when the
+	 * distance between them is negative, then true will be returned. If two ships are the same, 
+	 * by convention they overlap. 
+	 * 
+	 * @param ship2 A ship named ship2.
+	 * @return Returns true if the ships overlap, false if they don't.
+	 */
 	public boolean overlap(Ship ship2) {
 		
 		if (this == ship2) {
@@ -357,7 +372,13 @@ public class Ship{
 		}
 	}
 	
-	
+	/**
+	 * If 2 ships will ever collide, returns the amount of seconds until that collision. If 2 ships
+	 * will never collide with each other, Double.POSITIVE_INFINITY is returned. Additionally, a ship
+	 * can never collide with itself.
+	 * @param ship2 A ship named ship2.
+	 * @return Returns the time until collision between our ship and ship2.
+	 */
 	public double getTimeToCollision(Ship ship2) {
 		
 		if (this == ship2) {
