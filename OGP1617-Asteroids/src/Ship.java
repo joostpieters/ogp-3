@@ -140,6 +140,13 @@ public class Ship{
 		return ship.yVelocity;
 	}
 	
+	/** 
+	 * Return the radius of the ship.
+	 */
+	@Basic 
+	public double getRadius(Ship ship) {
+		return ship.radius;
+	}
 	
 	/** 
 	 * Return the angle of the ship.
@@ -153,7 +160,7 @@ public class Ship{
 	 * Return the direction of the ship.
 	 */
 	@Basic 
-	public double getDirection() {
+	public double getDirection(Ship ship) {
 		return ship.direction;
 	}
 	
@@ -164,9 +171,9 @@ public class Ship{
 	 * @Post |this.getXCoordinate() == x
 	 */
 	@Basic
-	public void setX(double x) {
+	public void setX(Ship ship, double x) {
 	
-	    this.xCoordinate = x;
+	    ship.xCoordinate = x;
 	
 	}
 	
@@ -177,9 +184,9 @@ public class Ship{
 	 * @Post |this.getYCoordinate() == y
 	 */
 	@Basic
-	public void setY(double y) {
+	public void setY(Ship ship, double y) {
 	
-	    this.yCoordinate = y;
+	    ship.yCoordinate = y;
 	
 	}
 	
@@ -190,9 +197,9 @@ public class Ship{
 	 * @Post |this.getXVelocity() == xvelocity
 	 */
 	@Basic
-	public void setXvelocity(double xvelocity) {
+	public void setXvelocity(Ship ship, double xvelocity) {
 	
-	    this.xVelocity = xvelocity;
+	    ship.xVelocity = xvelocity;
 	
 	}
 	
@@ -203,9 +210,9 @@ public class Ship{
 	 * @Post |this.getYVelocity() == yvelocity
 	 */
 	@Basic
-	public void setYvelocity(double yvelocity) {
+	public void setYvelocity(Ship ship, double yvelocity) {
 	
-	    this.yVelocity = yvelocity;
+	    ship.yVelocity = yvelocity;
 	
 	}
 	
@@ -216,9 +223,9 @@ public class Ship{
 	 * @Post |this.getDirection() == direction
 	*/
 	@Basic
-	public void setDirection(double direction)
+	public void setDirection(Ship ship, double direction)
 		{
-			this.direction = direction;
+			ship.direction = direction;
 		}
 		
 		
@@ -229,16 +236,29 @@ public class Ship{
 	 * @Post |this.getAngle() == angle
 	*/
 	@Basic
-	public void setAngle(double angle)
+	public void setAngle(Ship ship, double angle)
 		{
-			this.angle = angle;
+			ship.angle = angle;
 		}
 		
 		
 	/**
+	* Assign the given radius to the radius of the ship.
+	 * @param angle
+	 * 		The value of the angle which will be assigned to the angle of the ship
+	 * @Post |this.getAngle() == angle
+	*/
+	@Basic
+	public void setRadius(Ship ship, double radius)
+		{
+			ship.radius = radius;
+		}
+			
+		
+	/**
 	* Get the complete speed of the ship.
 	*/
-	public void getSpeed(Ship ship){
+	public double getSpeed(Ship ship){
 		double speed = math.sqrt((ship.xVelocity()*ship.xVelocity())+(ship.yVelocity()*ship.yVelocity));
 		 assert speed <= SPEEDOFLIGHT
 		 return speed;
