@@ -83,13 +83,11 @@ public class Ship{
 	*			|new.getYVelocity = yVelocity
 	*	@post  The given radius, if allowed, is assigned to the radius of the ship.
 	*			|new.getRadius = radius
-	*	@post  The given angle is assigned to the angle of the ship.
-	*			|new.getAngle = angle
 	*	@post  The given direction is assigned to the direction of the ship.
 	*			|new.getDirection = direction
 	*/
 	
-	public Ship(double xCoordinate, double yCoordinate, double xVelocity, double yVelocity, double angle, double radius, double direction){
+	public Ship(double xCoordinate, double yCoordinate, double xVelocity, double yVelocity, double radius, double direction){
 		
 		this.xCoordinate = xCoordinate;
 		this.yCoordinate = yCoordinate;
