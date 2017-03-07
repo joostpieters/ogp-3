@@ -10,12 +10,12 @@ public class Ship{
 	/**
 	*	Variable representing the position of the ship in an array of lenght 2
 	*/
-	private double[] position = new double[2]
+	private double[] position = new double[2];
 
 	/**
 	*	Variable representing the velocity of the ship in an array of lenght 2
 	*/
-	private double[] velocity = new double[2]
+	private double[] velocity = new double[2];
 	/**
 	*	Variable representing the radius of the ship
 	*/
