@@ -7,27 +7,15 @@ public class Ship{
  * @author Kevin Van der Schueren en Steven Zegers
  * @version 1.2
  */
-	
 	/**
-	*	Variable representing the x coordinate of the ship
+	*	Variable representing the position of the ship *	in an array of lenght 2
 	*/
-	private double xCoordinate;
-	
+	private double[] position = new double[2]
+
 	/**
-	*	Variable representing the y coordinate of the ship
+	*	Variable representing the velocity of the ship *	in an array of lenght 2
 	*/
-	private double yCoordinate;
-	
-	/**
-	*	Variable representing the velocity of the ship along the x axis
-	*/
-	private double xVelocity;
-	
-	/**
-	*	Variable representing the velocity of the ship along the y axis
-	*/
-	private double yVelocity;
-	
+	private double[] velocity = new double[2]
 	/**
 	*	Variable representing the radius of the ship
 	*/
@@ -73,14 +61,10 @@ public class Ship{
 	*	The radius of the ship
 	*	@pre	The radius needs to be => 10
 	* 			|new.getRadius >=10
-	*	@post  The given x-coordinate is assigned to the x-coordinate of the ship.
-	*			|new.getXCoordinate = xCoordinate
-	*	@post  The given y-coordinate is assigned to the y-coordinate of the ship.
-	*			|new.getYCoordinate = yCoordinate
-	*	@post  The given x-velocity is assigned to the x-velocity of the ship.
-	*			|new.getXVelocity = xVelocity
-	*	@post  The given y-velocity is assigned to the y-velocity of the ship.
-	*			|new.getYVelocity = yVelocity
+	*	@post  The given xCoordinate and yCoordinate is assigned to the position of the ship.
+	*			|new.getPosition = {xCoordinate,yCoordinate}
+	*	@post  The given x-velocity and y-velocity is assigned to the velocity of the ship.
+	*			|new.getVelocity = {xVelocity,yVelocity}
 	*	@post  The given radius, if allowed, is assigned to the radius of the ship.
 	*			|new.getRadius = radius
 	*	@post  The given direction is assigned to the direction of the ship.
@@ -89,10 +73,8 @@ public class Ship{
 	
 	public Ship(double xCoordinate, double yCoordinate, double xVelocity, double yVelocity, double radius, double direction){
 		
-		this.xCoordinate = xCoordinate;
-		this.yCoordinate = yCoordinate;
-		this.xVelocity = xVelocity;
-		this.yVelocity = yVelocity;
+		this.position = setPosition(xCoordinate,yCoordinate);
+		this.velocity = setVelocity(xVelocity,yVelocity);
 		assert radius >= 10;
 		this.radius = radius;
 		this.angle = angle;
@@ -100,20 +82,14 @@ public class Ship{
 	}
 	
 	
-	/** 
-	 * Return the x coordinate of the ship.
-	 */
-	@Basic 
-	public double getXCoordinate() {
-		return this.xCoordinate;
-	}
+	
 	
 	/** 
-	 * Return the y coordinate of the ship.
+	 * Return the position of the ship with an array of both coordinates.
 	 */
 	@Basic 
-	public double getYCoordinate() {
-		return this.yCoordinate;
+	public double[] getPosition() {
+		return this.position;
 	}
 	
 	/** 
@@ -125,20 +101,13 @@ public class Ship{
 	}
 	
 	/** 
-	 * Return the velocity of the ship along the x axis.
+	 * Return the velocity of the ship in an array of x and y velocity.
 	 */
 	@Basic 
-	public double getXVelocity() {
-		return this.xVelocity;
+	public double[] getVelocity() {
+		return this.velocity;
 	}
 	
-	/** 
-	 * Return the velocity of the ship along the y axis.
-	 */
-	@Basic 
-	public double getYVelocity() {
-		return this.yVelocity;
-	}
 	
 	/** 
 	 * Return the radius of the ship.
@@ -165,54 +134,34 @@ public class Ship{
 	}
 	
 	/** 
-	 * Assign the given x-coordinate to the x-coordinate of the ship.
+	 * Assign the given x-coordinate and y-coordinate to the x-coordinate and y-coordinate of a ship of the ship.
 	 * @param x
 	 * 		The value of x which will be assigned to the x-coordinate of the ship
-	 * @Post |this.getXCoordinate() == x
-	 */
-	@Basic
-	public void setX(double x) {
-	
-	    this.xCoordinate = x;
-	
-	}
-	
-	/** 
-	 * Assign the given y-coordinate to the y-coordinate of the ship.
-	 * @param y
+	 @param y
 	 * 		The value of y which will be assigned to the y-coordinate of the ship
-	 * @Post |this.getYCoordinate() == y
+	 * @Post |this.getPosition() == {x,y}
 	 */
 	@Basic
-	public void setY(double y) {
-	
-	    this.yCoordinate = y;
+	public void setPosition(x,y) {
+		double[] pos = {x,y}
+	    this.position = pos;
 	
 	}
 	
+	
+	
 	/** 
-	 * Assign the given x-velocity to the x-velocity of the ship.
+	 * Assign the given x and y-velocity to the x and y-velocity of the ship.
 	 * @param xvelocity
-	 * 		The value of xvelocity which will be assigned to the xvelocity of the ship
-	 * @Post |this.getXVelocity() == xvelocity
+	 * 		The value of xvel which will be assigned to the xvelocity of the ship
+	 @param yvelocity
+	 * 		The value of yvel which will be assigned to the yvelocity of the ship
+	 * @Post |this.getVelocity() == {xvel,yvel}
 	 */
 	@Basic
-	public void setXvelocity(double xvelocity) {
-	
-	    this.xVelocity = xvelocity;
-	
-	}
-	
-	/** 
-	 * Assign the given y-velocity to the y-velocity of the ship.
-	 * @param yvelocity
-	 * 		The value of yvelocity which will be assigned to the yvelocity of the ship
-	 * @Post |this.getYVelocity() == yvelocity
-	 */
-	@Basic
-	public void setYvelocity(double yvelocity) {
-	
-	    this.yVelocity = yvelocity;
+	public void setVelocity(xvel, yvel) {
+		double[] vel = {xvel,yvel};
+	    this.velocity = vel;
 	
 	}
 	
@@ -261,7 +210,7 @@ public class Ship{
 
 
 	public double getSpeed(){
-		double speed = Math.sqrt((this.getXVelocity()*this.getXVelocity())+(this.getYVelocity()*this.yVelocity));
+		double speed = Math.sqrt((this.getVelocity()[0]* this.getVelocity()[0])+(this.getVelocity()[1]*this.getVelocity()[1]));
 		 assert speed <= SPEEDOFLIGHT;
 		 return speed;
 	}
@@ -305,16 +254,16 @@ public class Ship{
 			amount = 0;
 		}
 		
-		double newxvelocity = (this.getXVelocity() + (amount*Math.cos(this.direction)));
-		double newyvelocity = (this.getYVelocity() + (amount*Math.sin(this.direction)));
+		double newxvelocity = (this.getVelocity()[0] + (amount*Math.cos(this.direction)));
+		double newyvelocity = (this.getVelocity()[1] + (amount*Math.sin(this.direction)));
 		double newspeed = Math.sqrt((newxvelocity * newxvelocity) + (newyvelocity * newyvelocity));
 		
 		if (newspeed > SPEEDOFLIGHT){
 			newxvelocity = Math.cos(this.getDirection()) * SPEEDOFLIGHT;
 			newyvelocity = Math.sin(this.getDirection()) * SPEEDOFLIGHT;
 		}
-		this.setXvelocity(newxvelocity);
-		this.setYvelocity(newyvelocity);
+		this.setVelocity()(newxvelocity,newyvelocity);
+		
 		
 	}
 	
