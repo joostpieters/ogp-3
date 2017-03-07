@@ -8,12 +8,12 @@ public class Ship{
  * @version 1.2
  */
 	/**
-	*	Variable representing the position of the ship in an array of lenght 2
+	*	Variable representing the position of the ship in an array of length 2
 	*/
 	private double[] position = new double[2];
 
 	/**
-	*	Variable representing the velocity of the ship in an array of lenght 2
+	*	Variable representing the velocity of the ship in an array of length 2
 	*/
 	private double[] velocity = new double[2];
 	/**
@@ -81,23 +81,12 @@ public class Ship{
 		this.direction = direction;
 	}
 	
-	
-	
-	
 	/** 
 	 * Return the position of the ship with an array of both coordinates.
 	 */
 	@Basic 
 	public double[] getPosition() {
 		return this.position;
-	}
-	
-	/** 
-	 * Return the radius of the ship.
-	 */
-	@Basic 
-	public double getShipRadius() {
-		return this.radius;
 	}
 	
 	/** 
@@ -137,7 +126,7 @@ public class Ship{
 	 * Assign the given x-coordinate and y-coordinate to the x-coordinate and y-coordinate of a ship of the ship.
 	 * @param x
 	 * 		The value of x which will be assigned to the x-coordinate of the ship
-	 @param y
+	 * @param y
 	 * 		The value of y which will be assigned to the y-coordinate of the ship
 	 * @Post |this.getPosition() == {x,y}
 	 */
@@ -154,7 +143,7 @@ public class Ship{
 	 * Assign the given x and y-velocity to the x and y-velocity of the ship.
 	 * @param xvelocity
 	 * 		The value of xvel which will be assigned to the xvelocity of the ship
-	 @param yvelocity
+	 * @param yvelocity
 	 * 		The value of yvel which will be assigned to the yvelocity of the ship
 	 * @Post |this.getVelocity() == {xvel,yvel}
 	 */
