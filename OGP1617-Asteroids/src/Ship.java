@@ -266,6 +266,26 @@ public class Ship{
 		
 		
 	}
+		
+	public double[] getDifferenceInPositions(Ship ship2) {
+		
+		double[] positionThisShip = this.getPosition();
+		double[] positionShip2 = ship2.getPosition();
+		
+		double[] differenceInPositions = {positionThisShip[0] - positionShip2[0], positionThisShip[1] - positionShip2[1]};
+		
+		return differenceInPositions;
+	}
+	
+	public double[] getDifferenceInVelocity(Ship ship2) {
+		
+		double[] velocityThisShip = this.getVelocity();
+		double[] velocityShip2 = ship2.getVelocity();
+		
+		double differenceInVelocity = {velocityThisShip[0] - velocityShip2[0], velocityThisShip[1] - velocityShip2[1]};
+		
+		return differenceInVelocity;
+	}
 	
 	/**
 	 * This method calculates the minimum amount of distance that our ship should travel in order to be adjacent to ship2.
@@ -282,18 +302,13 @@ public class Ship{
 			return 0;
 		}
 		
-		double xCoordinateShip1 = this.getXCoordinate();
-		double yCoordinateShip1 = this.getYCoordinate();
-		double xCoordinateShip2 = ship2.getXCoordinate();
-		double yCoordinateShip2 = ship2.getYCoordinate();
 		double radiusShip1 = this.getRadius();
 		double radiusShip2 = ship2.getRadius();
 		
-		double differenceInX = xCoordinateShip1 - xCoordinateShip2;
-		double differenceInY = yCoordinateShip1 - yCoordinateShip2;
+		double[] differenceInPositions = this.getDifferenceInPositions(ship2);
 		
-		double squaredDifferenceInX = Math.pow(differenceInX, 2);
-		double squaredDifferenceInY = Math.pow(differenceInY, 2);
+		double squaredDifferenceInX = Math.pow(differenceInPositions[0], 2);
+		double squaredDifferenceInY = Math.pow(differenceInPositions[1], 2);
 		
 		double distanceBetweenCenters = Math.sqrt(squaredDifferenceInX + squaredDifferenceInY);
 		double distance = distanceBetweenCenters - radiusShip1 - radiusShip2;
@@ -335,24 +350,18 @@ public class Ship{
 			return Double.POSITIVE_INFINITY;
 		}
 		
-		double xVelocityShip1 = this.getXVelocity();
-		double yVelocityShip1 = this.getYVelocity();
-		double xVelocityShip2 = ship2.getXVelocity();
-		double yVelocityShip2 = ship2.getYVelocity();
-		
-		double xCoordinateShip1 = this.getXCoordinate();
-		double yCoordinateShip1 = this.getYCoordinate();
-		double xCoordinateShip2 = ship2.getXCoordinate();
-		double yCoordinateShip2 = ship2.getYCoordinate();
-		
-		double radiusShip1 = this.getRadius();
+		double radiusThisShip = this.getRadius();
 		double radiusShip2 = ship2.getRadius();
 		double sumOfRadiusses = radiusShip1 + radiusShip2;
 		
-		double deltaX = xCoordinateShip1 - xCoordinateShip2;
-		double deltaY = yCoordinateShip1 - yCoordinateShip2;
-		double deltaVx = xVelocityShip1 - xVelocityShip2;
-		double deltaVy = yVelocityShip1 - yVelocityShip2;
+		double[] differenceInPositions = this.getDifferenceInPositions(ship2);
+		double[] differenceInVelocities = this.getDifferenceInVelocity(ship2);
+		
+		double deltaX = differenceInPositions[0];
+		double deltaY = differenceInPositions[1];
+		
+		double deltaVx = differenceInVelocities[0];
+		double deltaVy = differenceInVelocities[1];
 		
 		double inproductRandR = Math.pow(deltaX, 2) + Math.pow(deltaY, 2);
 		double inproductVandV = Math.pow(deltaVx, 2) + Math.pow(deltaVy, 2);
@@ -370,10 +379,18 @@ public class Ship{
 		}
 	}
 	
-	public double getCollisionPosition() {
-
+	public double[] getCollisionPosition(Ship ship2) {
+		
+			double timeToCollision = getTimeToCollision(this, ship2);
+			double[] positionThisShip = this.getPosition();
+			double[] velocityThisShip = this.getVelocity();
+			
+			double xPositionCollision = positionThisShip[0] + velocityThisShip[0] * velocityThisShip[0];
+			double yPositionCollision = positionThisShip[1] + velocityThisShip[1] * velocityThisShip[1];
+			
+			double[] positionCollision = {xPositionCollision, yPositionCollision};
+			
+			return positionCollision;
 		
 	}
-	
-		
 }
