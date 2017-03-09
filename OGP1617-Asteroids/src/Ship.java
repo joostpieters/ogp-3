@@ -1,3 +1,5 @@
+import be.kuleuven.cs.som.annotate.*;
+
 public class Ship{
 	
 /**
@@ -5,15 +7,15 @@ public class Ship{
  * 
  * 
  * @author Kevin Van der Schueren en Steven Zegers
- * @version 1.2
+ * @version Part 1
  */
 	/**
-	*	Variable representing the position of the ship in an array of lenght 2
+	*	Variable representing the position of the ship in an array of length 2
 	*/
 	private double[] position = new double[2];
 
 	/**
-	*	Variable representing the velocity of the ship in an array of lenght 2
+	*	Variable representing the velocity of the ship in an array of length 2
 	*/
 	private double[] velocity = new double[2];
 	/**
@@ -46,7 +48,7 @@ public class Ship{
 	*	Initialization of a new ship with given position in x and y coordinates, horizontal and vertical velocity, the direction, radius and angle.
 	*
 	*	@param xCoordinate
-	*		The xCoordinate of the ship
+	*	The xCoordinate of the ship
 	*	@param YCoordinate
 	*	The YCoordinate of the ship
 	*	@param xVelocity
@@ -55,10 +57,10 @@ public class Ship{
 	*	The vertical velocity of the ship
 	*	@param direction
 	*	The direction of the ship
-	*	@param angle
-	*	The angle of the ship
 	*	@param radius
 	*	The radius of the ship
+	*	@param angle
+	*	The angle of the ship
 	*	@pre	The radius needs to be => 10
 	* 			|new.getRadius >=10
 	*	@post  The given xCoordinate and yCoordinate is assigned to the position of the ship.
@@ -81,11 +83,23 @@ public class Ship{
 		this.direction = direction;
 	}
 	
+	/**
+	*	Initialisation of a default ship with default values, i.e. x and y coordinates are zero as well as the vertical and horizontal velocity.
+	*	The radius is a unit circle (1) and the direction is pointed to zero degrees. 
+	*/
+	public Ship(){
+		this.position = setPosition(0,0);
+		this.velocity = setVelocity(0,0);
+		this.radius = 1;
+		this.direction = 0;
+	}
 	
 	
 	
 	/** 
-	 * Return the position of the ship with an array of both coordinates.
+	 * Return the position of the ship in an array of both coordinates.
+	 * @return The array with coorindates is returned
+	 * 			|result == this.position
 	 */
 	@Basic 
 	public double[] getPosition() {
@@ -93,15 +107,9 @@ public class Ship{
 	}
 	
 	/** 
-	 * Return the radius of the ship.
-	 */
-	@Basic 
-	public double getShipRadius() {
-		return this.radius;
-	}
-	
-	/** 
 	 * Return the velocity of the ship in an array of x and y velocity.
+	 * @return The array with both velocities is returned
+	 * 			|result == this.velocity
 	 */
 	@Basic 
 	public double[] getVelocity() {
@@ -111,6 +119,8 @@ public class Ship{
 	
 	/** 
 	 * Return the radius of the ship.
+	 * @return The radius of the ship is returned
+	 * 			|result == this.radius
 	 */
 	@Basic 
 	public double getRadius() {
@@ -119,6 +129,8 @@ public class Ship{
 	
 	/** 
 	 * Return the angle of the ship.
+	 * @return The angle of the ship is returned
+	 * 			|result == this.angle
 	 */
 	@Basic 
 	public double getAngle() {
@@ -127,6 +139,8 @@ public class Ship{
 	
 	/** 
 	 * Return the direction of the ship.
+	 * @return The direction of the ship is returned
+	 * 			|result == this.direction
 	 */
 	@Basic 
 	public double getDirection() {
@@ -137,13 +151,13 @@ public class Ship{
 	 * Assign the given x-coordinate and y-coordinate to the x-coordinate and y-coordinate of a ship of the ship.
 	 * @param x
 	 * 		The value of x which will be assigned to the x-coordinate of the ship
-	 @param y
+	 * @param y
 	 * 		The value of y which will be assigned to the y-coordinate of the ship
-	 * @Post |this.getPosition() == {x,y}
+	 * @Post |new.getPosition() == {x,y}
 	 */
 	@Basic
-	public void setPosition(x,y) {
-		double[] pos = {x,y}
+	public void setPosition(double x, double y) {
+		double[] pos = {x,y};
 	    this.position = pos;
 	
 	}
@@ -154,9 +168,9 @@ public class Ship{
 	 * Assign the given x and y-velocity to the x and y-velocity of the ship.
 	 * @param xvelocity
 	 * 		The value of xvel which will be assigned to the xvelocity of the ship
-	 @param yvelocity
+	 * @param yvelocity
 	 * 		The value of yvel which will be assigned to the yvelocity of the ship
-	 * @Post |this.getVelocity() == {xvel,yvel}
+	 * @Post |new.getVelocity() == {xvel, yvel}
 	 */
 	@Basic
 	public void setVelocity(xvel, yvel) {
@@ -169,11 +183,13 @@ public class Ship{
 	* Assign the given direction to the direction of the ship.
 	 * @param direction
 	 * 		The value of the direction which will be assigned to the direction of the ship
-	 * @Post |this.getDirection() == direction
+	 * @pre The given direction is a valid value, i.e. it is between 0 and 2*PI
+	 * @Post |new.getDirection() == direction
 	*/
 	@Basic
 	public void setDirection(double direction)
 		{
+			assert(direction < 2*Math.PI && direction >= 0);
 			this.direction = direction;
 		}
 		
@@ -182,7 +198,7 @@ public class Ship{
 	* Assign the given angle to the angle of the ship.
 	 * @param angle
 	 * 		The value of the angle which will be assigned to the angle of the ship
-	 * @Post |this.getAngle() == angle
+	 * @Post |new.getAngle() == angle
 	*/
 	@Basic
 	public void setAngle(double angle)
@@ -195,17 +211,18 @@ public class Ship{
 	* Assign the given radius to the radius of the ship.
 	 * @param angle
 	 * 		The value of the radius which will be assigned to the radius of the ship
-	 * @Post |this.getRadius() == radius
+	 * @Post |new.getRadius() == radius
 	*/
 	@Basic
-	public void setRadius(double radius)
-		{
+	public void setRadius(double radius) throws IllegalArgumentException {
+			if (radius < MINIMUMRADIUS) throw new IllegalArgumentException("Radius is not valid!");
 			this.radius = radius;
 		}
 			
 		
 	/**
 	* Get the complete speed of the ship.
+	* @post |new.getSpeed == speed
 	*/
 
 
@@ -216,38 +233,51 @@ public class Ship{
 	}
 	
 	/**
-	 * 
-	 *
+	 * 	Change the position of the spaceship based on the current position, velocity and a duration
+	 *	@param duration
+	 *	The time in which the ship moves
+	 *	@post The position is set to the new position
+	 *			|new.getPosition() == 
 	 */
-	public void move(double time){
-		//nog te implementeren
+	public void move(double duration) throws IllegalArgumentException {
+			if (duration < 0) throw new IllegalArgumentException("The given duration is not valid");
+			double[] currentpos = getPosition();
+			double[] currentvel = getVelocity();
+			double newposx = currentpos[0] + (currentvel[0] * duration);
+			double newposy = currentpos[1] + (currentvel[1] * duration);
+			setPosition(newposx,newposy);
 	}
 	
 		
 		
 	/**
-	 * 
+	 * Turn the ship i.e. move the direction
+	 * @pre The angle is valid. This means the new direction is still between 0 and 2*PI
 	 * @param givenangle
 	 * 		The angle the ship has to turn
 	 * @post
 	 * 		The new direction is the old direction + the given angle
-	 * 		|this.getDirection == this.setDirection(this.getDirection() + givenangle)
+	 * 		|new.getDirection == this.setDirection(this.getDirection() + givenangle)
 	 *
 	 */
 
 
 	public void turn(double givenangle){
-		this.direction += givenangle;
+		newdirection = this.direction + givenangle;
+		assert(newdirection < 2*Math.PI && newdirection >= 0)
+		this.direction = newdirection;
 
 	}
 	
 	
 	/**
-	 * 
+	 * Change the velocity of the ship based on a the orientation, a given amount and the current velocity
 	 * @param amount
 	 * 		The total amount of acceleration
 	 * @pre amount > = 0
 	 * @post Both velocities are changed based on the given amount, the current acceleration and the direction.
+	 * 		|new.getVelocity = {newxvelocity,newyvelocity}
+	 * @post The new velocity is not larger than the lightspeed
 	 */
 	public void thrust(double amount){
 		if (amount < 0){
@@ -282,7 +312,7 @@ public class Ship{
 		double[] velocityThisShip = this.getVelocity();
 		double[] velocityShip2 = ship2.getVelocity();
 		
-		double differenceInVelocity = {velocityThisShip[0] - velocityShip2[0], velocityThisShip[1] - velocityShip2[1]};
+		double[] differenceInVelocity = {velocityThisShip[0] - velocityShip2[0], velocityThisShip[1] - velocityShip2[1]};
 		
 		return differenceInVelocity;
 	}
@@ -295,7 +325,9 @@ public class Ship{
 	 * @param ship2 A ship named ship2 of which we want to know how far away it is from our ship.
 	 * @return Returns the distance between the ship and another ship, named ship2.
 	 */
-	public double getDistanceBetween(Ship ship2) {
+	public double getDistanceBetween(Ship ship2) throws IllegalArgumentException{
+		
+		if (ship2 == null) throw new IllegalArgumentException("Ship2 does not exist!");
 		
 		if (this == ship2) {
 
@@ -325,7 +357,9 @@ public class Ship{
 	 * @param ship2 A ship named ship2.
 	 * @return Returns true if the ships overlap, false if they don't.
 	 */
-	public boolean overlap(Ship ship2) {
+	public boolean overlap(Ship ship2) throws IllegalArgumentException{
+		
+		if (ship2 == null) throw new IllegalArgumentException("Ship2 does not exist!");
 		
 		if (this == ship2) {
 			return true;
@@ -343,7 +377,8 @@ public class Ship{
 	 * @param ship2 A ship named ship2.
 	 * @return Returns the time until collision between our ship and ship2.
 	 */
-	public double getTimeToCollision(Ship ship2) {
+	public double getTimeToCollision(Ship ship2) throws IllegalArgumentException{
+		if (ship2 == null) throw new IllegalArgumentException("Ship2 does not exist!");
 		
 		if (this == ship2) {
 			
@@ -352,7 +387,7 @@ public class Ship{
 		
 		double radiusThisShip = this.getRadius();
 		double radiusShip2 = ship2.getRadius();
-		double sumOfRadiusses = radiusShip1 + radiusShip2;
+		double sumOfRadiusses = radiusThisShip + radiusShip2;
 		
 		double[] differenceInPositions = this.getDifferenceInPositions(ship2);
 		double[] differenceInVelocities = this.getDifferenceInVelocity(ship2);
@@ -379,9 +414,10 @@ public class Ship{
 		}
 	}
 	
-	public double[] getCollisionPosition(Ship ship2) {
-		
-			double timeToCollision = getTimeToCollision(this, ship2);
+	public double[] getCollisionPosition(Ship ship2) throws IllegalArgumentException{
+			if (ship2 == null) throw new IllegalArgumentException("Ship2 does not exist!");
+			
+			double timeToCollision = getTimeToCollision(ship2);
 			double[] positionThisShip = this.getPosition();
 			double[] velocityThisShip = this.getVelocity();
 			
