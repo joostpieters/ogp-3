@@ -83,6 +83,7 @@ public class Ship{
 		this.direction = direction;
 	}
 	
+<<<<<<< HEAD
 	/**
 	*	Initialisation of a default ship with default values, i.e. x and y coordinates are zero as well as the vertical and horizontal velocity.
 	*	The radius is a unit circle (1) and the direction is pointed to zero degrees. 
@@ -96,6 +97,8 @@ public class Ship{
 	
 	
 	
+=======
+>>>>>>> origin/master
 	/** 
 	 * Return the position of the ship in an array of both coordinates.
 	 * @return The array with coorindates is returned
@@ -157,7 +160,11 @@ public class Ship{
 	 */
 	@Basic
 	public void setPosition(double x, double y) {
+<<<<<<< HEAD
 		double[] pos = {x,y};
+=======
+		double[] pos = {x,y}
+>>>>>>> origin/master
 	    this.position = pos;
 	
 	}
@@ -170,7 +177,11 @@ public class Ship{
 	 * 		The value of xvel which will be assigned to the xvelocity of the ship
 	 * @param yvelocity
 	 * 		The value of yvel which will be assigned to the yvelocity of the ship
+<<<<<<< HEAD
 	 * @Post |new.getVelocity() == {xvel, yvel}
+=======
+	 * @Post |this.getVelocity() == {xvel, yvel}
+>>>>>>> origin/master
 	 */
 	@Basic
 	public void setVelocity(xvel, yvel) {
