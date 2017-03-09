@@ -296,7 +296,13 @@ public class Ship{
 		
 		
 	}
-		
+	
+	/**
+	 * Returns the difference in positions (both x and y) between the ship and ship2, we don't throw an IllegalArgumentException
+	 * since we already did that in the method that calls this method. 
+	 * @param ship2 A ship named ship2
+	 * @return Returns the difference in positions as an array
+	 */
 	public double[] getDifferenceInPositions(Ship ship2) {
 		
 		double[] positionThisShip = this.getPosition();
@@ -307,6 +313,12 @@ public class Ship{
 		return differenceInPositions;
 	}
 	
+	/**
+	 * Returns the difference in velocities (both x and y) between the ship and ship2, we don't throw an IllegalArgumentException
+	 * since we already did that in the method that calls this method. 
+	 * @param ship2 A ship named ship2
+	 * @return Returns the difference in velocities as an array
+	 */
 	public double[] getDifferenceInVelocity(Ship ship2) {
 		
 		double[] velocityThisShip = this.getVelocity();
@@ -323,7 +335,12 @@ public class Ship{
 	 * If the ships don't overlap and aren't the same, a positive value will be returned
 	 * 
 	 * @param ship2 A ship named ship2 of which we want to know how far away it is from our ship.
-	 * @return Returns the distance between the ship and another ship, named ship2.
+	 * @return Returns the distance between the ship and another ship, named ship2
+	 * 		  |distanceBetweenCenters - radiusShip1 - radiusShip2
+	 * @return If the 2 ships are the same, return 0
+	 * @throws IllegalArgumentException
+	 * 		  ship2 is not created
+	 * 		  |ship2 == null
 	 */
 	public double getDistanceBetween(Ship ship2) throws IllegalArgumentException{
 		
@@ -343,9 +360,7 @@ public class Ship{
 		double squaredDifferenceInY = Math.pow(differenceInPositions[1], 2);
 		
 		double distanceBetweenCenters = Math.sqrt(squaredDifferenceInX + squaredDifferenceInY);
-		double distance = distanceBetweenCenters - radiusShip1 - radiusShip2;
-		
-		return distance;
+		return distanceBetweenCenters - radiusShip1 - radiusShip2;
 		
 	}
 	/**
@@ -355,19 +370,21 @@ public class Ship{
 	 * by convention they overlap. 
 	 * 
 	 * @param ship2 A ship named ship2.
-	 * @return Returns true if the ships overlap, false if they don't.
+	 * @return If this ship is the same as ship2, then true is returned
+	 * 		  | if (this == ship2) return true
+	 * @return If this ship is a different ship than ship2, then true is returned if the distance between them is negative,
+	 * false if the distance between them is positive.
+	 * 		  | return this.getDistanceBetween(ship2) < 0
+	 * @throws IllegalArgumentException
+	 *		  ship2 is not created
+	 * 		  |ship2 == null
 	 */
 	public boolean overlap(Ship ship2) throws IllegalArgumentException{
 		
 		if (ship2 == null) throw new IllegalArgumentException("Ship2 does not exist!");
 		
-		if (this == ship2) {
-			return true;
-		} else if (getDistanceBetween(ship2) > 0) {
-			return false;
-		} else {
-			return true;
-		}
+		if (this == ship2) return true;
+		else return this.getDistanceBetween(ship2) < 0;
 	}
 	
 	/**
@@ -375,7 +392,11 @@ public class Ship{
 	 * will never collide with each other, Double.POSITIVE_INFINITY is returned. Additionally, a ship
 	 * can never collide with itself.
 	 * @param ship2 A ship named ship2.
-	 * @return Returns the time until collision between our ship and ship2.
+	 * @return If this ship and ship2 are the same, Double.POSITIVE_INFINITY is returned
+	 * @return If 
+	 * @throws IllegalArgumentException
+	 *		  ship2 is not created
+	 * 		  |ship2 == null
 	 */
 	public double getTimeToCollision(Ship ship2) throws IllegalArgumentException{
 		if (ship2 == null) throw new IllegalArgumentException("Ship2 does not exist!");
@@ -413,20 +434,30 @@ public class Ship{
 			return deltaT;
 		}
 	}
-	
+	/**
+	 * This function calculates the position at which 2 ships will collide, if ever they will collide.
+	 * @param ship2 A ship named ship2
+	 * @return If the 2 ships never collide, null will be returned
+	 * @return If the 2 ships will collide, an array containing the x and y coordinate of the collision is returned
+	 * 		  |return new double[] {xPositionCollision, yPositionCollision}
+	 * @throws IllegalArgumentException
+	 *		  ship2 is not created
+	 * 		  |ship2 == null
+	 */
 	public double[] getCollisionPosition(Ship ship2) throws IllegalArgumentException{
 			if (ship2 == null) throw new IllegalArgumentException("Ship2 does not exist!");
 			
 			double timeToCollision = getTimeToCollision(ship2);
+			
+			if (timeToCollision == Double.POSITIVE_INFINITY) return null;
+			
 			double[] positionThisShip = this.getPosition();
 			double[] velocityThisShip = this.getVelocity();
 			
 			double xPositionCollision = positionThisShip[0] + velocityThisShip[0] * velocityThisShip[0];
 			double yPositionCollision = positionThisShip[1] + velocityThisShip[1] * velocityThisShip[1];
 			
-			double[] positionCollision = {xPositionCollision, yPositionCollision};
-			
-			return positionCollision;
+			return new double[] {xPositionCollision, yPositionCollision};
 		
 	}
 }
