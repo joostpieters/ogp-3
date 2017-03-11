@@ -309,7 +309,7 @@ public class Ship{
 	 * @param ship2 A ship named ship2
 	 * @return Returns the difference in positions as an array
 	 */
-	public double[] getDifferenceInPositions(Ship ship2) {
+	private double[] getDifferenceInPositions(Ship ship2) {
 		
 		double[] positionThisShip = this.getPosition();
 		double[] positionShip2 = ship2.getPosition();
@@ -348,7 +348,7 @@ public class Ship{
 	 * 		  ship2 is not created
 	 * 		  |ship2 == null
 	 */
-	private double getDistanceBetween(Ship ship2) throws IllegalArgumentException{
+	public double getDistanceBetween(Ship ship2) throws IllegalArgumentException{
 		
 		if (ship2 == null) throw new IllegalArgumentException("Ship2 does not exist!");
 		
