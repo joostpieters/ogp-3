@@ -8,7 +8,6 @@ import asteroids.util.ModelException;
 import asteroids.part1.facade.IFacade;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class test{
@@ -123,7 +122,8 @@ public class test{
 	
 	@Test
 	public void testGetCollisionPosition() {
-		
+		Ship ship1 = facade.createShip();
+		Ship ship2 = facade.createShip();
 	}
 	
 	
