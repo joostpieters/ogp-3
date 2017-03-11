@@ -22,7 +22,7 @@ public class test{
 		facade = new Facade();
 	}
 	
-	
+	//aanpassing 
 	@Test
 	public void testCreateShip() throws ModelException {
 		Ship ship = facade.createShip(100, 200, 10, -10, 20, Math.PI);
