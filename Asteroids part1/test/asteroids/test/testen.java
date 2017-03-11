@@ -7,17 +7,54 @@ import asteroids.part1.facade.IFacade;
 
 public class test{
 	
-	public testship(){
+	public testShip(){
 		
 	}
 	
-	public void testposition() {
+	public void testgetPosition() {
 		
 	}
 	
-	public void testvelocity(){
+	public void testgetVelocity(){
 		
 	}
+	
+	public void testgetRadius(){
+		
+	}
+	
+	public void testgetAngle(){
+		
+	}
+	
+	public void testgetDirection(){
+		
+	}
+	
+	public void testsetPosition(){
+		
+	}
+	
+	public void testsetVelocity(){
+		
+	}
+	
+	public void testsetDirection(){
+		
+	}
+	
+	public void testsetAngle(){
+		
+	}
+	
+	public void testsetRadius(){
+		
+	}
+	
+	public void testgetSpeed(){
+		
+	}
+	
 	
 	public void testmove(){
 		
