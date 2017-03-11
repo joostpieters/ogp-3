@@ -74,7 +74,11 @@ public class Ship{
 	*			|new.getDirection = direction
 	*/
 	
-	public Ship(double xCoordinate, double yCoordinate, double xVelocity, double yVelocity, double radius, double direction){
+	public Ship(double xCoordinate, double yCoordinate, double xVelocity, double yVelocity, double radius, double direction) throws IllegalArgumentException{
+		if(Double.isNaN(xCoordinate)|| Double.isNaN(yCoordinate) ||  Double.isNaN(xVelocity) ||Double.isNaN(yVelocity) ||Double.isNaN(radius) || Double.isNaN(direction)||(radius <= MINIMUMRADIUS))
+		{
+			throw new IllegalArgumentException();
+		}
 		
 		
 		

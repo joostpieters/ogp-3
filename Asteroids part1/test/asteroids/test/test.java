@@ -22,8 +22,7 @@ public class test{
 		facade = new Facade();
 	}
 	
-	//aanpassing 
-	@Test
+@Test
 	public void testCreateShip() throws ModelException {
 		Ship ship = facade.createShip(100, 200, 10, -10, 20, Math.PI);
 		assertNotNull(ship);
@@ -44,49 +43,40 @@ public class test{
 		facade.createShip(100, 200, 10, -10, -20, -Math.PI);
 	}
 	
-	public void testgetPosition() {
+	@Test
+	public void testgetPosition()  throws ModelException {
+		Ship ship = facade.createShip(100, 100, 30, -15, 20, 0);
+		double[] position = facade.getShipPosition(ship);
+		assertEquals(100, position[0], EPSILON);
+		assertEquals(100, position[1], EPSILON);
+	}
+	
+	@Test
+	public void testgetVelocity()  throws ModelException {
+		Ship ship = facade.createShip(100, 100, 30, -15, 20, 0);
+		double[] vel = facade.getShipVelocity(ship);
+		assertEquals(30, vel[0], EPSILON);
+		assertEquals(-15, vel[1], EPSILON);
 		
 	}
 	
-	public void testgetVelocity(){
+	@Test
+	public void testgetRadius() throws ModelException {
+		Ship ship = facade.createShip(100, 100, 30, -15, 20, 0);
+		double rad = facade.getShipRadius(ship);
+		assertEquals(20, rad, EPSILON);
 		
 	}
 	
-	public void testgetRadius(){
+	@Test
+	public void testgetDirection()  throws ModelException {
+		Ship ship = facade.createShip(100, 100, 30, -15, 20, 0);
+		double dir = facade.getShipOrientation(ship);
+		assertEquals(0, dir, EPSILON);
+		
 		
 	}
 	
-	public void testgetAngle(){
-		
-	}
-	
-	public void testgetDirection(){
-		
-	}
-	
-	public void testsetPosition(){
-		
-	}
-	
-	public void testsetVelocity(){
-		
-	}
-	
-	public void testsetDirection(){
-		
-	}
-	
-	public void testsetAngle(){
-		
-	}
-	
-	public void testsetRadius(){
-		
-	}
-	
-	public void testgetSpeed(){
-		
-	}
 	
 	@Test
 	public void testMove() throws ModelException {
@@ -97,12 +87,22 @@ public class test{
 		assertEquals(130, position[0], EPSILON);
 		assertEquals(85, position[1], EPSILON);
 	}
-	
-	public void testturn(){
+	@Test
+	public void testturn() throws ModelException {
+		Ship ship = facade.createShip(100, 70, 23, 18, 20, 0.5*Math.PI);
+		facade.turn(ship, 0.5*Math.PI);
+		double dir = facade.getShipOrientation(ship);
+		assertEquals(Math.PI, dir, EPSILON);
 		
 	}
-	
-	public void testthrust() {
+	@Test
+	public void testthrust() throws ModelException {
+		Ship ship = facade.createShip(100, 70, 23, 18, 20,0);
+		facade.thrust(ship, 3);
+		double[] vel = facade.getShipVelocity(ship);
+		assertEquals(26, vel[0], EPSILON);
+		assertEquals(18, vel[1], EPSILON);
+		
 		
 	}
 	
