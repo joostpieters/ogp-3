@@ -108,21 +108,26 @@ public class test{
 	
 	@Test
 	public void testGetDistanceBetween() {
-		
+		Ship ship1 = facade.createShip(x, y, xVelocity, yVelocity, radius, orientation);
+		Ship ship2 = facade.createShip(x, y, xVelocity, yVelocity, radius, orientation);
 	}
 	
 	@Test
 	public void testOverlap() {
-	
+		Ship ship1 = facade.createShip(x, y, xVelocity, yVelocity, radius, orientation);
+		Ship ship2 = facade.createShip(x, y, xVelocity, yVelocity, radius, orientation);
 	}
 	
 	@Test
 	public void testGetTimeToCollision() {
-		
+		Ship ship1 = facade.createShip(x, y, xVelocity, yVelocity, radius, orientation);
+		Ship ship2 = facade.createShip(x, y, xVelocity, yVelocity, radius, orientation);
 	}
 	
 	@Test
 	public void testGetCollisionPosition() {
+		Ship ship1 = facade.createShip(x, y, xVelocity, yVelocity, radius, orientation);
+		Ship ship2 = facade.createShip(x, y, xVelocity, yVelocity, radius, orientation);
 		
 	}
 	
