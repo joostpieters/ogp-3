@@ -325,7 +325,7 @@ public class Ship{
 	 * @param ship2 A ship named ship2
 	 * @return Returns the difference in velocities as an array
 	 */
-	public double[] getDifferenceInVelocity(Ship ship2) {
+	private double[] getDifferenceInVelocity(Ship ship2) {
 		
 		double[] velocityThisShip = this.getVelocity();
 		double[] velocityShip2 = ship2.getVelocity();
@@ -348,7 +348,7 @@ public class Ship{
 	 * 		  ship2 is not created
 	 * 		  |ship2 == null
 	 */
-	public double getDistanceBetween(Ship ship2) throws IllegalArgumentException{
+	private double getDistanceBetween(Ship ship2) throws IllegalArgumentException{
 		
 		if (ship2 == null) throw new IllegalArgumentException("Ship2 does not exist!");
 		
@@ -380,7 +380,7 @@ public class Ship{
 	 * 		  | if (this == ship2) return true
 	 * @return If this ship is a different ship than ship2, then true is returned if the distance between them is negative,
 	 * false if the distance between them is positive.
-	 * 		  | return this.getDistanceBetween(ship2) < 0
+	 * 		  |this.getDistanceBetween(ship2) < 0
 	 * @throws IllegalArgumentException
 	 *		  ship2 is not created
 	 * 		  |ship2 == null
@@ -441,17 +441,20 @@ public class Ship{
 		}
 	}
 	/**
-	 * This function calculates the position at which 2 ships will collide, if ever they will collide.
+	 * This function calculates the position at which 2 ships will collide, if ever they will collide. This function does not apply to overlapping ships.
 	 * @param ship2 A ship named ship2
 	 * @return If the 2 ships never collide, null will be returned
 	 * @return If the 2 ships will collide, an array containing the x and y coordinate of the collision is returned
-	 * 		  |return new double[] {xPositionCollision, yPositionCollision}
 	 * @throws IllegalArgumentException
-	 *		  ship2 is not created
+	 *		  This ship and ship2 overlap or ship2 does not exist.
+	 * 		  |this.overlap(ship2)
 	 * 		  |ship2 == null
 	 */
 	public double[] getCollisionPosition(Ship ship2) throws IllegalArgumentException{
+		
 			if (ship2 == null) throw new IllegalArgumentException("Ship2 does not exist!");
+			
+			if (this.overlap(ship2)) throw new IllegalArgumentException("These ships overlap!");
 			
 			double timeToCollision = getTimeToCollision(ship2);
 			
