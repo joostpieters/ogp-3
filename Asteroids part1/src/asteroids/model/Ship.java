@@ -37,7 +37,7 @@ public class Ship{
 	/**
 	*	Constant representing the speed of the light
 	*/
-	private final double SPEEDOFLIGHT = 30000;
+	private final double SPEEDOFLIGHT = 300000;
 	
 	/**
 	* 	Constant representing the minimum value of the radius of each created ship
@@ -46,7 +46,7 @@ public class Ship{
 	
 	
 	/**
-	*	Initialization of a new ship with given position in x and y coordinates, horizontal and vertical velocity, the direction, radius and angle.
+	*	Initialization of a new ship with given position in x and y coordinates, horizontal and vertical velocity, the direction and radius.
 	*
 	*	@param xCoordinate
 	*	The xCoordinate of the ship
@@ -60,8 +60,6 @@ public class Ship{
 	*	The direction of the ship
 	*	@param radius
 	*	The radius of the ship
-	*	@param angle
-	*	The angle of the ship
 	*	@Pre	The radius needs to be => 10
 	* 			|new.getRadius >=10
 	*	@Post  The given xCoordinate and yCoordinate is assigned to the position of the ship.
@@ -72,21 +70,22 @@ public class Ship{
 	*			|new.getRadius = radius
 	*	@Post  The given direction is assigned to the direction of the ship.
 	*			|new.getDirection = direction
+	*	@throws IllegalArgumentException
+	 *		  One of the parameters is not valid i.e. not a number or the radius is invalid
+	 * 		  |(Double.isNaN(x)|| Double.isNaN(y) ||  Double.isNaN(xVelocity) ||Double.isNaN(yVelocity) ||Double.isNaN(radius) || Double.isNaN(direction)||(radius <= MINIMAL_RADIUS))
 	*/
 	
 	public Ship(double xCoordinate, double yCoordinate, double xVelocity, double yVelocity, double radius, double direction) throws IllegalArgumentException{
-		if(Double.isNaN(xCoordinate)|| Double.isNaN(yCoordinate) ||  Double.isNaN(xVelocity) ||Double.isNaN(yVelocity) ||Double.isNaN(radius) || Double.isNaN(direction)||(radius <= MINIMUMRADIUS))
+		if(Double.isNaN(xCoordinate) || Double.isNaN(yCoordinate) ||  Double.isNaN(xVelocity) ||Double.isNaN(yVelocity) || Double.isNaN(radius) || Double.isNaN(direction)|| (radius <= MINIMUMRADIUS))
 		{
 			throw new IllegalArgumentException();
 		}
-		
 		
 		
 		this.setPosition(xCoordinate,yCoordinate);
 		this.setVelocity(xVelocity, yVelocity);
 		this.position = this.getPosition();
 		this.velocity = this.getVelocity();
-		assert radius >= 10;
 		this.radius = radius;
 		this.direction = direction;
 	}
@@ -158,7 +157,7 @@ public class Ship{
 	}
 	
 	/** 
-	 * Assign the given x-coordinate and y-coordinate to the x-coordinate and y-coordinate of a ship of the ship.
+	 * Assign the given x-coordinate and y-coordinate to the x-coordinate and y-coordinate of the ship.
 	 * @param x
 	 * 		The value of x which will be assigned to the x-coordinate of the ship
 	 * @param y
@@ -175,11 +174,11 @@ public class Ship{
 	
 	
 	/** 
-	 * Assign the given x and y-velocity to the x and y-velocity of the ship.
+	 * Assign the given x-velocity and y-velocity to the x-velocity and y-velocity of the ship.
 	 * @param xvelocity
-	 * 		The value of xvel which will be assigned to the xvelocity of the ship
+	 * 		The value of xvel which will be assigned to the x-velocity of the ship
 	 * @param yvelocity
-	 * 		The value of yvel which will be assigned to the yvelocity of the ship
+	 * 		The value of yvel which will be assigned to the y-velocity of the ship
 	 * @Post |new.getVelocity() == {xvel, yvel}
 	 */
 	@Basic
@@ -222,10 +221,13 @@ public class Ship{
 	 * @param angle
 	 * 		The value of the radius which will be assigned to the radius of the ship
 	 * @Post |new.getRadius() == radius
+	 * @throws IllegalArgumentException
+	 * 			The radius must be larger than 10, the MINIMUMRADIUS
+	 * 			|radius <= MINIMUMRADIUS
 	*/
 	@Basic
 	public void setRadius(double radius) throws IllegalArgumentException {
-			if (radius < MINIMUMRADIUS) throw new IllegalArgumentException("Radius is not valid!");
+			if (radius <= MINIMUMRADIUS) throw new IllegalArgumentException("Radius is not valid!");
 			this.radius = radius;
 		}
 			
@@ -248,6 +250,9 @@ public class Ship{
 	 *	The time in which the ship moves
 	 *	@post The position is set to the new position
 	 *			|new.getPosition() == 
+	 *	@throws IllegalArgumentException
+	 *			The duration must be larger than zero
+	 *			|duration < 0
 	 */
 	public void move(double duration) throws IllegalArgumentException {
 			if (duration < 0) throw new IllegalArgumentException("The given duration is not valid");
@@ -284,7 +289,7 @@ public class Ship{
 	 * Change the velocity of the ship based on a the orientation, a given amount and the current velocity
 	 * @param amount
 	 * 		The total amount of acceleration
-	 * @pre amount > = 0
+	 * @Pre amount > = 0
 	 * @post Both velocities are changed based on the given amount, the current acceleration and the direction.
 	 * 		|new.getVelocity = {newxvelocity,newyvelocity}
 	 * @post The new velocity is not larger than the lightspeed

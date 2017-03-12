@@ -115,6 +115,16 @@ public class test{
 		
 		
 	}
+	@Test
+	public void testThrustlightspeed() throws ModelException {
+		Ship ship = facade.createShip(100, 70, 23, 18, 20,0);
+		facade.thrust(ship, 300005);
+		double[] vel = facade.getShipVelocity(ship);
+		assertEquals(300000, vel[0], EPSILON);
+		assertEquals(0, vel[1], EPSILON);
+		
+		
+	}
 	
 	@Test
 	public void testGetDistanceBetweenOverlappingShips() throws ModelException {
