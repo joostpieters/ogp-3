@@ -175,6 +175,14 @@ public class test{
 		assertEquals(Double.POSITIVE_INFINITY, time, EPSILON);
 	}
 	
+	// Not sure if this is the correct way to catch the exception.
+	@Test(expected = ModelException.class)
+	public void testGetTimeToCollisionOverlappingShips() throws ModelException {
+		Ship ship1 = facade.createShip(40, 20, 0, 0, 12, 0);
+		Ship shipOverlappingShip1 = facade.createShip(40, 25, 0, 0, 12, 0);
+		double time = facade.getTimeToCollision(ship1, shipOverlappingShip1);
+	}
+	
 	@Test
 	public void testGetCollisionPositionCollidingShips() throws ModelException {
 		Ship ship1 = facade.createShip(120, 40, 0, 0, 20, 0);
@@ -184,11 +192,18 @@ public class test{
 		assertEquals(40, collisionPosition[1], EPSILON);
 	}
 	
-	@Test(expected = ModelException.class)
+	@Test
 	public void testGetCollisionPositionNonCollidingShips() throws ModelException {
-		Ship ship1 = facade.createShip(40, 20, 0, 0, 10, 0);
-		Ship nonCollidingShip = facade.createShip(20, 80, 10, 0, 10, 0);
+		Ship ship1 = facade.createShip(40, 20, 0, 0, 15, 0);
+		Ship nonCollidingShip = facade.createShip(20, 80, 10, 0, 15, 0);
 		double[] collisionPosition = facade.getCollisionPosition(ship1, nonCollidingShip);
 		assertNull(collisionPosition);
+	}
+	
+	@Test(expected = ModelException.class)
+	public void testGetCollisionPositionOverlappingShips() throws ModelException {
+		Ship ship1 = facade.createShip(40, 20, 0, 0, 12, 0);
+		Ship shipOverlappingShip1 = facade.createShip(40, 25, 0, 0, 12, 0);
+		double[] position = facade.getCollisionPosition(ship1, shipOverlappingShip1);
 	}
 }
