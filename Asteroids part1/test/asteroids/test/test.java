@@ -175,7 +175,7 @@ public class test{
 		assertEquals(Double.POSITIVE_INFINITY, time, EPSILON);
 	}
 	
-	// Not sure if this is the correct way to catch the exception.
+	// Not sure if this is the correct way to check it
 	@Test(expected = ModelException.class)
 	public void testGetTimeToCollisionOverlappingShips() throws ModelException {
 		Ship ship1 = facade.createShip(40, 20, 0, 0, 12, 0);
@@ -199,7 +199,7 @@ public class test{
 		double[] collisionPosition = facade.getCollisionPosition(ship1, nonCollidingShip);
 		assertNull(collisionPosition);
 	}
-	
+	// Not sure if this is the correct way to check it
 	@Test(expected = ModelException.class)
 	public void testGetCollisionPositionOverlappingShips() throws ModelException {
 		Ship ship1 = facade.createShip(40, 20, 0, 0, 12, 0);
