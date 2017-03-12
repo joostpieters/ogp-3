@@ -405,19 +405,20 @@ public class Ship{
 	/**
 	 * If 2 ships will ever collide, returns the amount of seconds until that collision. If 2 ships
 	 * will never collide with each other, Double.POSITIVE_INFINITY is returned. Additionally, a ship
-	 * can never collide with itself.
+	 * can never collide with itself. As this method does not apply to overlapping ships, an exception
+	 * is thrown if the ships overlap.
 	 * @param ship2 A ship named ship2.
 	 * @return If this ship and ship2 are the same, Double.POSITIVE_INFINITY is returned
 	 * @return If 
 	 * @throws IllegalArgumentException
-	 *		  ship2 is not created
+	 *		  ship2 is not created or this ship and ship2 overlap
 	 * 		  |ship2 == null
+	 * 		  |this.overlap(ship2)
 	 */
 	public double getTimeToCollision(Ship ship2) throws IllegalArgumentException{
 		if (ship2 == null) throw new IllegalArgumentException("Ship2 does not exist!");
-		
+		if (this.overlap(ship2)) throw new IllegalArgumentException("These ships overlap!");
 		if (this == ship2) {
-			
 			return Double.POSITIVE_INFINITY;
 		}
 		
