@@ -97,8 +97,8 @@ public class Ship{
 	public Ship(){
 		this.setPosition(0,0);
 		this.setVelocity(0,0);
-		this.position = this.getPosition();
-		this.velocity = this.getVelocity();
+		// this.position = this.getPosition();
+		// this.velocity = this.getVelocity();
 		this.radius = 1;
 		this.direction = 0;
 	}
@@ -168,10 +168,7 @@ public class Ship{
 	public void setPosition(double x, double y) {
 		double[] pos = {x,y};
 	    this.position = pos;
-	
 	}
-	
-	
 	
 	/** 
 	 * Assign the given x-velocity and y-velocity to the x-velocity and y-velocity of the ship.
@@ -197,6 +194,7 @@ public class Ship{
 	*/
 	@Basic
 	public void setDirection(double direction)
+	// waarom assert?
 		{
 			assert(direction < 2*Math.PI && direction >= 0);
 			this.direction = direction;
@@ -210,9 +208,8 @@ public class Ship{
 	 * @Post |new.getAngle() == angle
 	*/
 	@Basic
-	public void setAngle(double angle)
-		{
-			this.angle = angle;
+	public void setAngle(double angle) {
+		this.angle = angle;
 		}
 		
 		
@@ -227,7 +224,7 @@ public class Ship{
 	*/
 	@Basic
 	public void setRadius(double radius) throws IllegalArgumentException {
-			if (radius <= MINIMUMRADIUS) throw new IllegalArgumentException("Radius is not valid!");
+			if (radius <= MINIMUMRADIUS) throw new IllegalArgumentException("The radius must be larger than 10!");
 			this.radius = radius;
 		}
 			
@@ -238,10 +235,11 @@ public class Ship{
 	*/
 
 
-	public double getSpeed(){
+	public double getSpeed() {
+		// waarom assert?
 		double speed = Math.sqrt((this.getVelocity()[0]* this.getVelocity()[0])+(this.getVelocity()[1]*this.getVelocity()[1]));
-		 assert speed <= SPEEDOFLIGHT;
-		 return speed;
+		assert speed <= SPEEDOFLIGHT;
+		return speed;
 	}
 	
 	/**
@@ -278,6 +276,7 @@ public class Ship{
 
 
 	public void turn(double givenangle){
+		// waarom assert? 
 		double newdirection = this.direction + givenangle;
 		assert(newdirection < 2*Math.PI && newdirection >= 0);
 		this.direction = newdirection;
@@ -319,6 +318,7 @@ public class Ship{
 	 * @return Returns the difference in positions as an array
 	 */
 	private double[] getDifferenceInPositions(Ship ship2) {
+		// exception
 		
 		double[] positionThisShip = this.getPosition();
 		double[] positionShip2 = ship2.getPosition();
@@ -335,6 +335,7 @@ public class Ship{
 	 * @return Returns the difference in velocities as an array
 	 */
 	private double[] getDifferenceInVelocity(Ship ship2) {
+		// exception
 		
 		double[] velocityThisShip = this.getVelocity();
 		double[] velocityShip2 = ship2.getVelocity();
@@ -359,10 +360,8 @@ public class Ship{
 	 */
 	public double getDistanceBetween(Ship ship2) throws IllegalArgumentException{
 		
-		if (ship2 == null) throw new IllegalArgumentException("Ship2 does not exist!");
-		
+		if (ship2 == null) throw new IllegalArgumentException("getDistanceBetween called with a non-existing ship!");
 		if (this == ship2) {
-
 			return 0;
 		}
 		
@@ -376,7 +375,6 @@ public class Ship{
 		
 		double distanceBetweenCenters = Math.sqrt(squaredDifferenceInX + squaredDifferenceInY);
 		return distanceBetweenCenters - radiusShip1 - radiusShip2;
-		
 	}
 	/**
 	 * This method returns true of false, depending if the ships overlap or not. 
@@ -396,7 +394,7 @@ public class Ship{
 	 */
 	public boolean overlap(Ship ship2) throws IllegalArgumentException{
 		
-		if (ship2 == null) throw new IllegalArgumentException("Ship2 does not exist!");
+		if (ship2 == null) throw new IllegalArgumentException("Overlap called with a non-existing ship!");
 		
 		if (this == ship2) return true;
 		else return this.getDistanceBetween(ship2) < 0;
@@ -416,8 +414,8 @@ public class Ship{
 	 * 		  |this.overlap(ship2)
 	 */
 	public double getTimeToCollision(Ship ship2) throws IllegalArgumentException{
-		if (ship2 == null) throw new IllegalArgumentException("Ship2 does not exist!");
-		if (this.overlap(ship2)) throw new IllegalArgumentException("These ships overlap!");
+		if (ship2 == null) throw new IllegalArgumentException("getTimeToCollision called with a non-existing ship!");
+		if (this.overlap(ship2)) throw new IllegalArgumentException("These two ships overlap!");
 		if (this == ship2) {
 			return Double.POSITIVE_INFINITY;
 		}
@@ -441,15 +439,18 @@ public class Ship{
 		
 		double d = Math.pow(inproductVandR, 2) - (inproductVandV) * (inproductRandR - Math.pow(sumOfRadiusses, 2));
 		
-		if (inproductVandR >= 0) {
+		if (inproductVandV == 0){
 			return Double.POSITIVE_INFINITY;
-		}else if (d <= 0) {
+		} else if (inproductVandR >= 0) {
 			return Double.POSITIVE_INFINITY;
-		}else{
+		} else if (d <= 0) {
+			return Double.POSITIVE_INFINITY;
+		} else{
 			double deltaT = - (inproductVandR + Math.sqrt(d)) / inproductVandV;
 			return deltaT;
 		}
 	}
+	
 	/**
 	 * This function calculates the position at which 2 ships will collide, if ever they will collide. This function does not apply to overlapping ships.
 	 * @param ship2 A ship named ship2
@@ -460,23 +461,23 @@ public class Ship{
 	 * 		  |this.overlap(ship2)
 	 * 		  |ship2 == null
 	 */
-	public double[] getCollisionPosition(Ship ship2) throws IllegalArgumentException{
+	public double[] getCollisionPosition(Ship ship2) throws IllegalArgumentException {
 		
-			if (ship2 == null) throw new IllegalArgumentException("Ship2 does not exist!");
+		if (ship2 == null) throw new IllegalArgumentException("Ship2 does not exist!");
+		
+		if (this.overlap(ship2)) throw new IllegalArgumentException("These two ships overlap!");
 			
-			if (this.overlap(ship2)) throw new IllegalArgumentException("These ships overlap!");
+		double timeToCollision = getTimeToCollision(ship2);
 			
-			double timeToCollision = getTimeToCollision(ship2);
+		if (timeToCollision == Double.POSITIVE_INFINITY) return null;
+
+		double[] positionThisShip = this.getPosition();
+		double[] velocityThisShip = this.getVelocity();
 			
-			if (timeToCollision == Double.POSITIVE_INFINITY) return null;
+		double xPositionCollision = positionThisShip[0] + velocityThisShip[0] * velocityThisShip[0];
+		double yPositionCollision = positionThisShip[1] + velocityThisShip[1] * velocityThisShip[1];
 			
-			double[] positionThisShip = this.getPosition();
-			double[] velocityThisShip = this.getVelocity();
-			
-			double xPositionCollision = positionThisShip[0] + velocityThisShip[0] * velocityThisShip[0];
-			double yPositionCollision = positionThisShip[1] + velocityThisShip[1] * velocityThisShip[1];
-			
-			return new double[] {xPositionCollision, yPositionCollision};
+		return new double[] {xPositionCollision, yPositionCollision};
 		
 	}
 }
