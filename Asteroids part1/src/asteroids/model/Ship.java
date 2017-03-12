@@ -383,9 +383,23 @@ public class Ship{
 	 * will never collide with each other, Double.POSITIVE_INFINITY is returned. Additionally, a ship
 	 * can never collide with itself. As this method does not apply to overlapping ships, an exception
 	 * is thrown if the ships overlap.
+	 * 
+	 * With (rxi2, ryi2) and (rxj2, ryj2) being the positions for which the 2 ships would be adjacent and
+	 * (rxi1, ryi1) and (rxj1, ryj1) being the starting positions of the 2 ships,
+	 * the amount of time until the potential collision can then be found by substituting the following equations:
+	 * 		- rxi2 = rxi1 + deltaT * vxi1
+	 * 		- ryi2 = ryi1 + deltaT * vyi1
+	 * 		- rxj2 = rxj2 + deltaT * vxj2
+	 * 		- ryj2 = ryj2 + deltaT * vyj2
+	 * into the following equation:
+	 * 		- sumOfRadiusses = (rxi2 - rxj2)² + (ryi2 - ryj2)²
+	 * and solving the new equation for deltaT.
+	 * 
 	 * @param ship2 A ship named ship2.
 	 * @return If this ship and ship2 are the same, Double.POSITIVE_INFINITY is returned
-	 * @return If 
+	 * @return If the 2 ships never collide, Double.POSITIVE_INFINITY is returned
+	 * 			|if (inproductVandV == 0)|if (inproductVandR >= 0)|if (d <= 0)
+	 * @return If there is in fact a point and time for which the 2 ships collide, the amount of time until that moment is returned
 	 * @throws IllegalArgumentException
 	 *			ship2 is not created or this ship and ship2 overlap
 	 *			|ship2 == null || this.overlap(ship2)
