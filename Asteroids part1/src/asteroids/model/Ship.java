@@ -414,7 +414,7 @@ public class Ship{
 		double inproductVandV = Math.pow(deltaVx, 2) + Math.pow(deltaVy, 2);
 		double inproductVandR = deltaVx * deltaX + deltaVy * deltaY;
 		
-		double d = Math.pow(inproductVandR, 2) - (inproductVandV) * (inproductRandR - Math.pow(sumOfRadiusses, 2));
+		double d = Math.pow(inproductVandR, 2) - inproductVandV * (inproductRandR - Math.pow(sumOfRadiusses, 2));
 		
 		if (inproductVandV == 0) {
 			return Double.POSITIVE_INFINITY;
@@ -439,7 +439,7 @@ public class Ship{
 	 */
 	public double[] getCollisionPosition(Ship ship2) throws IllegalArgumentException {
 		
-		if (ship2 == null) throw new IllegalArgumentException("Ship2 does not exist!");
+		if (ship2 == null) throw new IllegalArgumentException("getCollisionPosition called with a non-existing ship!");
 		
 		if (this.overlap(ship2)) throw new IllegalArgumentException("These two ships overlap!");
 			
@@ -450,8 +450,8 @@ public class Ship{
 		double[] positionThisShip = this.getPosition();
 		double[] velocityThisShip = this.getVelocity();
 			
-		double xPositionCollision = positionThisShip[0] + velocityThisShip[0] * velocityThisShip[0];
-		double yPositionCollision = positionThisShip[1] + velocityThisShip[1] * velocityThisShip[1];
+		double xPositionCollision = positionThisShip[0] + velocityThisShip[0] * timeToCollision;
+		double yPositionCollision = positionThisShip[1] + velocityThisShip[1] * timeToCollision;
 			
 		return new double[] {xPositionCollision, yPositionCollision};
 		

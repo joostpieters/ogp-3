@@ -110,83 +110,81 @@ public class test{
 		double[] vel = facade.getShipVelocity(ship);
 		assertEquals(300000, vel[0], EPSILON);
 		assertEquals(0, vel[1], EPSILON);
-		
-		
 	}
 	
 	@Test
 	public void testGetDistanceBetweenOverlappingShips() throws ModelException {
-		Ship ship1 = facade.createShip(40, 20, 0, 0, 10, 0);
-		Ship shipOverlappingShip1 = facade.createShip(40, 25, 0, 0, 10, 0);
+		Ship ship1 = facade.createShip(40, 20, 0, 0, 12, 0);
+		Ship shipOverlappingShip1 = facade.createShip(40, 25, 0, 0, 12, 0);
 		double distanceBetweenOverlappingShips = facade.getDistanceBetween(ship1, shipOverlappingShip1);
-		assertEquals(-15, distanceBetweenOverlappingShips, EPSILON);
+		assertEquals(-19, distanceBetweenOverlappingShips, EPSILON);
 	}
 	
 	@Test
 	public void testGetDistanceBetweenSameShip() throws ModelException {
-		Ship ship1 = facade.createShip(40, 20, 0, 0, 10, 0);
+		Ship ship1 = facade.createShip(20, 20, 0, 0, 20, 0);
 		double distanceBetweenSameShip = facade.getDistanceBetween(ship1, ship1);
 		assertEquals(0, distanceBetweenSameShip , EPSILON);
 	}
 	
 	@Test
 	public void testGetDistanceBetweenNonOverlappingShips() throws ModelException {
-		Ship ship1 = facade.createShip(40, 20, 0, 0, 10, 0);
-		Ship shipNotOverlappingShip1 = facade.createShip(80, 50, 0, 0, 10, 0);
+		Ship ship1 = facade.createShip(40, 20, 0, 0, 12, 0);
+		Ship shipNotOverlappingShip1 = facade.createShip(80, 50, 0, 0, 12, 0);
 		double distanceBetweenNonOverlappingShips = facade.getDistanceBetween(ship1, shipNotOverlappingShip1);
-		assertEquals(30, distanceBetweenNonOverlappingShips, EPSILON);
+		assertEquals(26, distanceBetweenNonOverlappingShips, EPSILON);
 	}
 	
 	@Test
 	public void testOverlapOverlappingShips() throws ModelException {
-		Ship ship1 = facade.createShip(40, 20, 0, 0, 10, 0);
-		Ship shipOverlappingShip1 = facade.createShip(40, 20, 0, 0, 10, 0);
+		Ship ship1 = facade.createShip(40, 20, 0, 0, 12, 0);
+		Ship shipOverlappingShip1 = facade.createShip(40, 25, 0, 0, 12, 0);
 		boolean overlappingShips = facade.overlap(ship1, shipOverlappingShip1);
-		assertEquals(true, overlappingShips);
+		assertTrue(overlappingShips);
 	}
 	
 	@Test
 	public void testOverlapSameShip() throws ModelException {
-		Ship ship1 = facade.createShip(40, 20, 0, 0, 10, 0);
+		Ship ship1 = facade.createShip(40, 20, 0, 0, 12, 0);
 		boolean overlappingSameShip = facade.overlap(ship1, ship1);		
-		assertEquals(true, overlappingSameShip);
+		assertTrue(overlappingSameShip);
 	}
 	
 	@Test
 	public void testOverlapNonOverlappingShips() throws ModelException {
-		Ship ship1 = facade.createShip(40, 20, 0, 0, 10, 0);
-		Ship shipNotOverlappingShip1 = facade.createShip(100, 100, 0, 0, 10, 0);
+		Ship ship1 = facade.createShip(50, 40, 0, 0, 25, 0);
+		Ship shipNotOverlappingShip1 = facade.createShip(0, 0, 0, 0, 25, 0);
 		boolean nonOverlappingShips = facade.overlap(ship1, shipNotOverlappingShip1);
-		assertEquals(false, nonOverlappingShips);
+		assertFalse(nonOverlappingShips);
 	}
 	
 	@Test
 	public void testGetTimeToCollisionCollidingShips() throws ModelException {
-		Ship ship1 = facade.createShip(40, 20, 0, 0, 10, 0);
-		Ship collidingShip = facade.createShip(0, 20, 10, 0, 10, 0);
+		Ship ship1 = facade.createShip(40, 20, 0, 0, 15, 0);
+		Ship collidingShip = facade.createShip(0, 20, 10, 0, 15, 0);
 		
 		double time = facade.getTimeToCollision(ship1, collidingShip);
-		assertEquals(3, time, EPSILON);
+		assertEquals(1, time, EPSILON);
 	}
 	
 	@Test
 	public void testGetTimeToCollisionNonCollidingShips() throws ModelException {
-		Ship ship1 = facade.createShip(40, 20, 0, 0, 10, 0);
-		Ship nonCollidingShip = facade.createShip(20, 80, 10, 0, 10, 0);
+		Ship ship1 = facade.createShip(40, 20, 10, 0, 15, 0);
+		Ship nonCollidingShip = facade.createShip(0, 20, 0, 0, 15, 0);
 		double time = facade.getTimeToCollision(ship1, nonCollidingShip);
 		assertEquals(Double.POSITIVE_INFINITY, time, EPSILON);
 	}
 	
 	@Test
 	public void testGetCollisionPositionCollidingShips() throws ModelException {
-		Ship ship1 = facade.createShip(40, 20, 0, 0, 10, 0);
-		Ship collidingShip = facade.createShip(0, 20, 10, 0, 10, 0);
+		Ship ship1 = facade.createShip(120, 40, 0, 0, 20, 0);
+		Ship collidingShip = facade.createShip(0, 40, 20, 0, 20, 0);
 		double[] collisionPosition = facade.getCollisionPosition(ship1, collidingShip);
-		assertEquals(30, collisionPosition[0], EPSILON);
-		assertEquals(20, collisionPosition[1], EPSILON);
+		assertEquals(120, collisionPosition[0], EPSILON);
+		assertEquals(40, collisionPosition[1], EPSILON);
 	}
 	
-	@Test
+	@Test(expected = ModelException.class)
 	public void testGetCollisionPositionNonCollidingShips() throws ModelException {
 		Ship ship1 = facade.createShip(40, 20, 0, 0, 10, 0);
 		Ship nonCollidingShip = facade.createShip(20, 80, 10, 0, 10, 0);
