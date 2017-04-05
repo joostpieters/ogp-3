@@ -384,22 +384,13 @@ public class Ship{
 	 * can never collide with itself. As this method does not apply to overlapping ships, an exception
 	 * is thrown if the ships overlap.
 	 * 
-	 * With (rxi2, ryi2) and (rxj2, ryj2) being the positions for which the 2 ships would be adjacent and
-	 * (rxi1, ryi1) and (rxj1, ryj1) being the starting positions of the 2 ships,
-	 * the amount of time until the potential collision can then be found by substituting the following equations:
-	 * 		- rxi2 = rxi1 + deltaT * vxi1
-	 * 		- ryi2 = ryi1 + deltaT * vyi1
-	 * 		- rxj2 = rxj2 + deltaT * vxj2
-	 * 		- ryj2 = ryj2 + deltaT * vyj2
-	 * into the following equation:
-	 * 		- sumOfRadiusses = (rxi2 - rxj2)² + (ryi2 - ryj2)²
-	 * and solving the new equation for deltaT.
-	 * 
 	 * @param ship2 A ship named ship2.
 	 * @return If this ship and ship2 are the same, Double.POSITIVE_INFINITY is returned
 	 * @return If the 2 ships never collide, Double.POSITIVE_INFINITY is returned
 	 * 			|if (inproductVandV == 0)|if (inproductVandR >= 0)|if (d <= 0)
-	 * @return If there is in fact a point and time for which the 2 ships collide, the amount of time until that moment is returned
+	 * @return 
+	 * 			If there is in fact a point and time for which the 2 ships collide, the amount of time until that moment is returned
+	 * 			|return -(inproductVandR + Math.sqrt(d)) / inproductVandV
 	 * @throws IllegalArgumentException
 	 *			ship2 is not created or this ship and ship2 overlap
 	 *			|ship2 == null || this.overlap(ship2)
@@ -437,8 +428,7 @@ public class Ship{
 		} else if (d <= 0) {
 			return Double.POSITIVE_INFINITY;
 		} else{
-			double deltaT = - (inproductVandR + Math.sqrt(d)) / inproductVandV;
-			return deltaT;
+			return - (inproductVandR + Math.sqrt(d)) / inproductVandV;
 		}
 	}
 	
@@ -451,23 +441,26 @@ public class Ship{
 	 *			This ship and ship2 overlap or ship2 does not exist.
 	 *			|this.overlap(ship2) || ship2 == null
 	 */
-	public double[] getCollisionPosition(Ship ship2) throws IllegalArgumentException {
-		
+	public double[] getCollisionPosition(Ship ship2) throws IllegalArgumentException {	
 		if (ship2 == null) throw new IllegalArgumentException("getCollisionPosition called with a non-existing ship!");
-		
 		if (this.overlap(ship2)) throw new IllegalArgumentException("These two ships overlap!");
-			
 		double timeToCollision = getTimeToCollision(ship2);
 			
 		if (timeToCollision == Double.POSITIVE_INFINITY) return null;
 
 		double[] positionThisShip = this.getPosition();
 		double[] velocityThisShip = this.getVelocity();
+		double[] positionShip2 = ship2.getPosition();
+		double[] velicityShip2 = ship2.getVelocity();
+		
+		double slope = Math.atan2(positionShip2[1]-positionThisShip[1], positionShip2[0] - positionThisShip[0]);
+		
 			
-		double xPositionCollision = positionThisShip[0] + velocityThisShip[0] * timeToCollision;
-		double yPositionCollision = positionThisShip[1] + velocityThisShip[1] * timeToCollision;
+		double xPositionCollision = positionThisShip[0] + velocityThisShip[0] * timeToCollision + Math.cos(slope) * this.getRadius();
+		double yPositionCollision = positionThisShip[1] + velocityThisShip[1] * timeToCollision + Math.sin(slope) * this.getRadius();
 			
 		return new double[] {xPositionCollision, yPositionCollision};
 		
 	}
+}
 }
