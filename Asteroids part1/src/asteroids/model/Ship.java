@@ -10,10 +10,7 @@ public class Ship{
  * @author Kevin Van der Schueren en Steven Zegers
  * @version Part 1
  */
-	/**
-	*	Variable representing the position of the ship in an array of length 2
-	*/
-	private double[] position = new double[2];
+	Position position;
 
 	/**
 	*	Variable representing the velocity of the ship in an array of length 2
@@ -79,7 +76,7 @@ public class Ship{
 		}
 		this.setPosition(xCoordinate,yCoordinate);
 		this.setVelocity(xVelocity, yVelocity);
-		this.position = this.getPosition();
+		this.position = this.position.getPosition();
 		this.velocity = this.getVelocity();
 		this.radius = radius;
 		this.direction = direction;
