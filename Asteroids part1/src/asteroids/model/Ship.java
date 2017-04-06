@@ -24,11 +24,7 @@ public class Ship{
 	*/
 	private double radius;
 	
-	/**
-	*	Variable representing the angle of the ship
-	*/
-	private double angle;
-	
+
 	/**
 	*	Variable representing the direction of the ship
 	*/
@@ -130,15 +126,7 @@ public class Ship{
 		return this.radius;
 	}
 	
-	/** 
-	 * Return the angle of the ship.
-	 * @return The angle of the ship is returned
-	 * 			|result == this.angle
-	 */
-	@Basic 
-	public double getAngle() {
-		return this.angle;
-	}
+
 	
 	/** 
 	 * Return the direction of the ship.
@@ -160,8 +148,28 @@ public class Ship{
 	 */
 	@Basic
 	public void setPosition(double x, double y) {
+		if (isValidPosition(x,y) == false) throw new IllegalArgumentException("The given position is not valid."); 
 		double[] pos = {x,y};
 	    this.position = pos;
+	}
+	
+	/**
+	 * Check if the given coordinates are valid to be assigned to the position.
+	 * @param  x
+	 *			The x-coordinate of the given position
+	 * @param y
+	 * 			The y-coordinate of the given position
+	 * @return Returns if the position is valid.
+	 *         | result = (Double.isNaN(x)||(Double.isNaN(y))
+	 */
+	
+	public boolean isValidPosition(double x, double y) {
+		if (Double.isNaN(x) || Double.isNaN(y))
+		{
+			return false;
+		}
+		else 
+			return true;
 	}
 	
 	/** 
@@ -174,8 +182,30 @@ public class Ship{
 	 */
 	@Basic
 	public void setVelocity(double xVel, double yVel) {
+		if (isValidVelocity(yVel, yVel) == false){
+			return;
+		}
 		double[] vel = {xVel,yVel};
 	    this.velocity = vel;
+	}
+	
+	/**
+	 * Check if the given coordinates are valid to be assigned to the velocity.
+	 * @param  x
+	 *			The x-coordinate of the given velocity
+	 * @param y
+	 * 			The y-coordinate of the given velocity
+	 * @return Returns if the position is valid.
+	 *         | result = (Double.isNaN(x)||(Double.isNaN(y))
+	 */
+	
+	public boolean isValidVelocity(double xVel, double yVel) {
+		if (Double.isNaN(xVel) || Double.isNaN(yVel))
+		{
+			return false;
+		}
+		else 
+			return true;
 	}
 	
 	/**
@@ -183,25 +213,28 @@ public class Ship{
 	 * @param direction
 	 * 		The value of the direction which will be assigned to the direction of the ship
 	 * @Pre The given direction is a valid value, i.e. it is between 0 and 2*PI
-	 * @Post |new.getDirection() == direction
+	 * 		|isValidDirection == true
+	 * @Post The current direction is set to the given direction.
+	 * 		|new.getDirection() == direction
 	*/
 	@Basic
 	public void setDirection(double direction) {
-			assert (direction < 2*Math.PI && direction >= 0);
+			isValidDirection(direction);
 			this.direction = direction;
 		}
 		
 	/**
-	* Assign the given angle to the angle of the ship.
-	 * @param angle
-	 * 		The value of the angle which will be assigned to the angle of the ship
-	 * @Post |new.getAngle() == angle
-	*/
-	@Basic
-	public void setAngle(double angle) {
-		this.angle = angle;
-		}
-		
+	 * Check if the direction is valid
+	 * @param  direction
+	 *			The direction that needs verification
+	 * @return Returns if the direction is valid.
+	 *         | result = ((direction < 2*Math.PI && direction >= 0))
+	 */
+	public boolean isValidDirection(double direction){
+		return (direction < 2*Math.PI && direction >= 0);
+	}
+	
+	
 	/**
 	* Assign the given radius to the radius of the ship.
 	 * @param angle
@@ -232,7 +265,7 @@ public class Ship{
 	 *	@param duration
 	 *	The time in which the ship moves
 	 *	@post The position is set to the new position
-	 *			|new.getPosition() == 
+	 *			|new.getPosition() == (newPosX, newPosY)
 	 *	@throws IllegalArgumentException
 	 *			The duration must be larger than zero
 	 *			|duration < 0
@@ -258,8 +291,7 @@ public class Ship{
 	 */
 	public void turn(double givenAngle) {
 		double newDirection = this.direction + givenAngle;
-		assert(newDirection < 2*Math.PI && newDirection >= 0);
-		this.direction = newDirection;
+		setDirection(newDirection);
 	}
 	
 	/**
@@ -462,5 +494,4 @@ public class Ship{
 		return new double[] {xPositionCollision, yPositionCollision};
 		
 	}
-}
 }
