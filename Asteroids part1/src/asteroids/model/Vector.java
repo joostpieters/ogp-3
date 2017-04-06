@@ -101,6 +101,18 @@ public class Vector {
 		return new Vector(new double[] {this.getXComponent() + otherVector.getXComponent(), this.getYComponent() + otherVector.getYComponent()});
 	}
 	/**
+	 * Subtracts two vectors
+	 * @param otherVector
+	 * 			The vector to be subtracted from this vector
+	 * @see implementation
+	 * @throws IllegalArgumentException
+	 * 			|otherVector == null
+	 */
+	public Vector subtractVectors(Vector otherVector) throws IllegalArgumentException {
+		if (otherVector == null) throw new IllegalArgumentException("subtractVectors called with non-existent vector.");
+		return new Vector(new double[] {this.getXComponent() - otherVector.getXComponent(), this.getYComponent() - otherVector.getYComponent()});
+	}
+	/**
 	 * Multiplies two vectors
 	 * @param otherVector
 	 * 			The vector we want to multiply with this vector

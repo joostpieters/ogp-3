@@ -329,6 +329,7 @@ public class Ship{
 	 */
 	private double[] getDifferenceInPositions(Ship ship2) throws IllegalArgumentException {
 		if (ship2 == null) throw new IllegalArgumentException("getDifferenceInPositions called with a non-existing ship!");
+		
 		double[] positionThisShip = this.getPosition();
 		double[] positionShip2 = ship2.getPosition();
 		
@@ -438,6 +439,7 @@ public class Ship{
 		double radiusShip2 = ship2.getRadius();
 		double sumOfRadiusses = radiusThisShip + radiusShip2;
 		
+		Vector positionThisShip = new Vector(this.getPosition());
 		double[] differenceInPositions = this.getDifferenceInPositions(ship2);
 		double[] differenceInVelocities = this.getDifferenceInVelocity(ship2);
 		
@@ -479,7 +481,7 @@ public class Ship{
 		double timeToCollision = getTimeToCollision(ship2);
 			
 		if (timeToCollision == Double.POSITIVE_INFINITY) return null;
-
+		
 		double[] positionThisShip = this.getPosition();
 		double[] velocityThisShip = this.getVelocity();
 		double[] positionShip2 = ship2.getPosition();
