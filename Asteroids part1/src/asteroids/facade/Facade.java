@@ -42,7 +42,7 @@ public class Facade implements IFacade {
 	 * x-coordinate at index 0 and the y-coordinate at index 1.
 	 */
 	public double[] getShipPosition(Ship ship) throws ModelException{
-		return ship.getPosition();
+		return ship.position.getPositionArray();
 	}
 	
 	
@@ -52,7 +52,7 @@ public class Facade implements IFacade {
 	 * along the X-axis at index 0 and the velocity along the Y-axis at index 1.
 	 */
 	public double[] getShipVelocity(Ship ship) throws ModelException {
-		return ship.getVelocity();
+		return ship.velocity.getVelocityArray();
 	}
 
 	/**

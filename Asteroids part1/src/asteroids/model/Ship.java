@@ -13,12 +13,12 @@ public class Ship{
 	/**
 	 * Variable representing the position of the ship
 	 */
-	Position position;
+	public Position position = new Position(0,0);
 
 	/**
 	*	Variable representing the velocity of the ship
 	*/
-	Velocity velocity;
+	public Velocity velocity = new Velocity(0,0);
 	/**
 	*	Variable representing the radius of the ship
 	*/
@@ -315,15 +315,9 @@ public class Ship{
 		Vector deltaR = new Vector(differenceInPositions);
 		Vector deltaV = new Vector(differenceInVelocities);
 		
-		double deltaX = differenceInPositions[0];
-		double deltaY = differenceInPositions[1];
-		
-		double deltaVx = differenceInVelocities[0];
-		double deltaVy = differenceInVelocities[1];
-		
-		double inproductRandR = Math.pow(deltaX, 2) + Math.pow(deltaY, 2);
-		double inproductVandV = Math.pow(deltaVx, 2) + Math.pow(deltaVy, 2);
-		double inproductVandR = deltaVx * deltaX + deltaVy * deltaY;
+		double inproductRandR = deltaR.dotProductVectors(deltaR);
+		double inproductVandV = deltaV.dotProductVectors(deltaV);
+		double inproductVandR = deltaV.dotProductVectors(deltaR);
 		
 		double d = Math.pow(inproductVandR, 2) - inproductVandV * (inproductRandR - Math.pow(sumOfRadiusses, 2));
 		
