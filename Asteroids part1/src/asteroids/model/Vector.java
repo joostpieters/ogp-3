@@ -144,5 +144,9 @@ public class Vector {
 	public Vector scalarProductVectors(double scalar) {
 		return new Vector(new double[] {scalar * this.getXComponent(), scalar * this.getYComponent()});
 	}
+	
+	public double[] vectorArray() {
+		return new double[] {this.x, this.y};
+	}
 }
 

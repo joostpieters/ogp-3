@@ -74,7 +74,7 @@ public class Ship{
 				|| Double.isNaN(radius) || Double.isNaN(direction)|| (radius <= MINIMUMRADIUS)) {
 			throw new IllegalArgumentException();
 		}
-		this.setPosition(xCoordinate,yCoordinate);
+		this.position.setPosition(xCoordinate,yCoordinate);
 		this.setVelocity(xVelocity, yVelocity);
 		this.position = this.position.getPosition();
 		this.velocity = this.getVelocity();
@@ -87,20 +87,10 @@ public class Ship{
 	*	The radius is a unit circle (1) and the direction is pointed to zero degrees. 
 	*/
 	public Ship() {
-		this.setPosition(0,0);
+		this.position.setPosition(0,0);
 		this.setVelocity(0,0);
 		this.radius = 1;
 		this.direction = 0;
-	}
-	
-	/** 
-	 * Return the position of the ship in an array of both coordinates.
-	 * @return The array with coordinates is returned
-	 * 			|result == this.position
-	 */
-	@Basic 
-	public double[] getPosition() {
-		return this.position;
 	}
 	
 	/** 
@@ -133,40 +123,6 @@ public class Ship{
 	@Basic 
 	public double getDirection() {
 		return this.direction;
-	}
-	
-	/** 
-	 * Assign the given x-coordinate and y-coordinate to the x-coordinate and y-coordinate of the ship.
-	 * @param x
-	 * 		The value of x which will be assigned to the x-coordinate of the ship
-	 * @param y
-	 * 		The value of y which will be assigned to the y-coordinate of the ship
-	 * @Post |new.getPosition() == {x,y}
-	 */
-	@Basic
-	public void setPosition(double x, double y) {
-		if (isValidPosition(x,y) == false) throw new IllegalArgumentException("The given position is not valid."); 
-		double[] pos = {x,y};
-	    this.position = pos;
-	}
-	
-	/**
-	 * Check if the given coordinates are valid to be assigned to the position.
-	 * @param  x
-	 *			The x-coordinate of the given position
-	 * @param y
-	 * 			The y-coordinate of the given position
-	 * @return Returns if the position is valid.
-	 *         | result = (Double.isNaN(x)||(Double.isNaN(y))
-	 */
-	
-	public boolean isValidPosition(double x, double y) {
-		if (Double.isNaN(x) || Double.isNaN(y))
-		{
-			return false;
-		}
-		else 
-			return true;
 	}
 	
 	/** 
@@ -269,11 +225,11 @@ public class Ship{
 	 */
 	public void move(double duration) throws IllegalArgumentException {
 			if (duration < 0) throw new IllegalArgumentException("The duration must be greater than zero");
-			double[] currentPos = this.getPosition();
+			double[] currentPos = this.position.getPositionArray();
 			double[] currentVel = this.getVelocity();
 			double newPosX = currentPos[0] + (currentVel[0] * duration);
 			double newPosY = currentPos[1] + (currentVel[1] * duration);
-			setPosition(newPosX,newPosY);
+			this.position.setPosition(newPosX, newPosY);
 	}
 	
 	/**
@@ -314,25 +270,6 @@ public class Ship{
 			newYVelocity = Math.sin(this.getDirection()) * SPEEDOFLIGHT;
 		}
 		this.setVelocity(newXVelocity,newYVelocity);	
-	}
-	
-	/**
-	 * Returns the difference in positions (both x and y) between the ship and ship2.
-	 * @param ship2 A ship named ship2
-	 * @return Returns the difference in positions as an array
-	 * @throws IllegalArgumentException
-	 * 			ship2 is not created
-	 * 			|ship2 == null
-	 */
-	private double[] getDifferenceInPositions(Ship ship2) throws IllegalArgumentException {
-		if (ship2 == null) throw new IllegalArgumentException("getDifferenceInPositions called with a non-existing ship!");
-		
-		double[] positionThisShip = this.getPosition();
-		double[] positionShip2 = ship2.getPosition();
-		
-		double[] differenceInPositions = {positionThisShip[0] - positionShip2[0], positionThisShip[1] - positionShip2[1]};
-		
-		return differenceInPositions;
 	}
 	
 	/**
@@ -377,7 +314,7 @@ public class Ship{
 		double radiusShip1 = this.getRadius();
 		double radiusShip2 = ship2.getRadius();
 		
-		double[] differenceInPositions = this.getDifferenceInPositions(ship2);
+		double[] differenceInPositions = this.position.getDifferenceInPositions(ship2.position);
 		
 		double squaredDifferenceInX = Math.pow(differenceInPositions[0], 2);
 		double squaredDifferenceInY = Math.pow(differenceInPositions[1], 2);
@@ -436,8 +373,7 @@ public class Ship{
 		double radiusShip2 = ship2.getRadius();
 		double sumOfRadiusses = radiusThisShip + radiusShip2;
 		
-		Vector positionThisShip = new Vector(this.getPosition());
-		double[] differenceInPositions = this.getDifferenceInPositions(ship2);
+		double[] differenceInPositions = this.position.getDifferenceInPositions(ship2.position);
 		double[] differenceInVelocities = this.getDifferenceInVelocity(ship2);
 		
 		double deltaX = differenceInPositions[0];
@@ -479,10 +415,9 @@ public class Ship{
 			
 		if (timeToCollision == Double.POSITIVE_INFINITY) return null;
 		
-		double[] positionThisShip = this.getPosition();
+		double[] positionThisShip = this.position.getPositionArray();
 		double[] velocityThisShip = this.getVelocity();
-		double[] positionShip2 = ship2.getPosition();
-		double[] velicityShip2 = ship2.getVelocity();
+		double[] positionShip2 = ship2.position.getPositionArray();
 		
 		double slope = Math.atan2(positionShip2[1]-positionThisShip[1], positionShip2[0] - positionThisShip[0]);
 			
