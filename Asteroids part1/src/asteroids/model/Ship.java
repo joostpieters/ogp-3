@@ -10,12 +10,15 @@ public class Ship{
  * @author Kevin Van der Schueren en Steven Zegers
  * @version Part 1
  */
+	/**
+	 * Variable representing the position of the ship
+	 */
 	Position position;
 
 	/**
-	*	Variable representing the velocity of the ship in an array of length 2
+	*	Variable representing the velocity of the ship
 	*/
-	private double[] velocity = new double[2];
+	Velocity velocity;
 	/**
 	*	Variable representing the radius of the ship
 	*/
@@ -75,9 +78,7 @@ public class Ship{
 			throw new IllegalArgumentException();
 		}
 		this.position.setPosition(xCoordinate,yCoordinate);
-		this.setVelocity(xVelocity, yVelocity);
-		this.position = this.position.getPosition();
-		this.velocity = this.getVelocity();
+		this.velocity.setVelocity(xVelocity, yVelocity);
 		this.radius = radius;
 		this.direction = direction;
 	}
@@ -88,19 +89,9 @@ public class Ship{
 	*/
 	public Ship() {
 		this.position.setPosition(0,0);
-		this.setVelocity(0,0);
+		this.velocity.setVelocity(0,0);
 		this.radius = 1;
 		this.direction = 0;
-	}
-	
-	/** 
-	 * Return the velocity of the ship in an array of x and y velocity.
-	 * @return The array with both velocities is returned
-	 * 			|result == this.velocity
-	 */
-	@Basic 
-	public double[] getVelocity() {
-		return this.velocity;
 	}
 	
 	/** 
@@ -123,42 +114,6 @@ public class Ship{
 	@Basic 
 	public double getDirection() {
 		return this.direction;
-	}
-	
-	/** 
-	 * Assign the given x-velocity and y-velocity to the x-velocity and y-velocity of the ship.
-	 * @param xvelocity
-	 * 		The value of xVel which will be assigned to the x-velocity of the ship
-	 * @param yvelocity
-	 * 		The value of yVel which will be assigned to the y-velocity of the ship
-	 * @Post |new.getVelocity() == {xVel, yVel}
-	 */
-	@Basic
-	public void setVelocity(double xVel, double yVel) {
-		if (isValidVelocity(yVel, yVel) == false){
-			return;
-		}
-		double[] vel = {xVel,yVel};
-	    this.velocity = vel;
-	}
-	
-	/**
-	 * Check if the given coordinates are valid to be assigned to the velocity.
-	 * @param  x
-	 *			The x-coordinate of the given velocity
-	 * @param y
-	 * 			The y-coordinate of the given velocity
-	 * @return Returns if the position is valid.
-	 *         | result = (Double.isNaN(x)||(Double.isNaN(y))
-	 */
-	
-	public boolean isValidVelocity(double xVel, double yVel) {
-		if (Double.isNaN(xVel) || Double.isNaN(yVel))
-		{
-			return false;
-		}
-		else 
-			return true;
 	}
 	
 	/**
@@ -208,7 +163,7 @@ public class Ship{
 	* @post |new.getSpeed == speed
 	*/
 	public double getSpeed() {
-		double speed = Math.sqrt((this.getVelocity()[0]* this.getVelocity()[0])+(this.getVelocity()[1]*this.getVelocity()[1]));
+		double speed = Math.sqrt((this.velocity.getXVelocity()* this.velocity.getXVelocity())+(this.velocity.getYVelocity()*this.velocity.getYVelocity()));
 		assert speed <= SPEEDOFLIGHT;
 		return speed;
 	}
@@ -226,7 +181,7 @@ public class Ship{
 	public void move(double duration) throws IllegalArgumentException {
 			if (duration < 0) throw new IllegalArgumentException("The duration must be greater than zero");
 			double[] currentPos = this.position.getPositionArray();
-			double[] currentVel = this.getVelocity();
+			double[] currentVel = this.velocity.getVelocityArray();
 			double newPosX = currentPos[0] + (currentVel[0] * duration);
 			double newPosY = currentPos[1] + (currentVel[1] * duration);
 			this.position.setPosition(newPosX, newPosY);
@@ -261,34 +216,15 @@ public class Ship{
 			amount = 0;
 		}
 		
-		double newXVelocity = (this.getVelocity()[0] + (amount*Math.cos(this.direction)));
-		double newYVelocity = (this.getVelocity()[1] + (amount*Math.sin(this.direction)));
+		double newXVelocity = (this.velocity.getXVelocity() + (amount*Math.cos(this.direction)));
+		double newYVelocity = (this.velocity.getYVelocity() + (amount*Math.sin(this.direction)));
 		double newSpeed = Math.sqrt((newXVelocity * newXVelocity) + (newYVelocity * newYVelocity));
 		
 		if (newSpeed > SPEEDOFLIGHT) {
 			newXVelocity = Math.cos(this.getDirection()) * SPEEDOFLIGHT;
 			newYVelocity = Math.sin(this.getDirection()) * SPEEDOFLIGHT;
 		}
-		this.setVelocity(newXVelocity,newYVelocity);	
-	}
-	
-	/**
-	 * Returns the difference in velocities (both x and y) between the ship and ship2, we don't throw an IllegalArgumentException
-	 * since we already did that in the method that calls this method. 
-	 * @param ship2 A ship named ship2
-	 * @return Returns the difference in velocities as an array
-	 * @throws IllegalArgumentException
-	 * 			ship2 is not created
-	 * 			|ship2 == null
-	 */
-	private double[] getDifferenceInVelocity(Ship ship2) throws IllegalArgumentException {
-		if (ship2 == null) throw new IllegalArgumentException("getDifferenceInVelocity called with a non-existing ship!");
-		double[] velocityThisShip = this.getVelocity();
-		double[] velocityShip2 = ship2.getVelocity();
-		
-		double[] differenceInVelocity = {velocityThisShip[0] - velocityShip2[0], velocityThisShip[1] - velocityShip2[1]};
-		
-		return differenceInVelocity;
+		this.velocity.setVelocity(newXVelocity,newYVelocity);	
 	}
 	
 	/**
@@ -374,7 +310,10 @@ public class Ship{
 		double sumOfRadiusses = radiusThisShip + radiusShip2;
 		
 		double[] differenceInPositions = this.position.getDifferenceInPositions(ship2.position);
-		double[] differenceInVelocities = this.getDifferenceInVelocity(ship2);
+		double[] differenceInVelocities = this.velocity.getDifferenceInVelocity(ship2.velocity);
+		
+		Vector deltaR = new Vector(differenceInPositions);
+		Vector deltaV = new Vector(differenceInVelocities);
 		
 		double deltaX = differenceInPositions[0];
 		double deltaY = differenceInPositions[1];
@@ -416,7 +355,7 @@ public class Ship{
 		if (timeToCollision == Double.POSITIVE_INFINITY) return null;
 		
 		double[] positionThisShip = this.position.getPositionArray();
-		double[] velocityThisShip = this.getVelocity();
+		double[] velocityThisShip = this.velocity.getVelocityArray();
 		double[] positionShip2 = ship2.position.getPositionArray();
 		
 		double slope = Math.atan2(positionShip2[1]-positionThisShip[1], positionShip2[0] - positionThisShip[0]);

@@ -22,6 +22,10 @@ public class Position {
 		if (!isValidPosition(y)) throw new IllegalArgumentException("Position called with an invalid position for y");
 		this.setPosition(x,y);
 	}
+	
+	private double x;
+	private double y;
+	
 	/**
 	 * Check if the given coordinates are valid to be assigned to the position.
 	 * @param  x
@@ -40,30 +44,37 @@ public class Position {
 			return true;
 	}
 	
-	private double x;
-	private double y;
+	
 	/**
 	 * Method to set the x value of the position
 	 * @param x The position on the x axis
 	 * @throws IllegalArgumentException
 	 * 			If the given value for x is not valid
 	 * 			|!isValidPosition(x)
+	 * @post
+	 * 			|new.getPositionX() == x
 	 */
+	@Basic
 	public void setPositionX(double x) throws IllegalArgumentException {
 		if (!isValidPosition(x)) throw new IllegalArgumentException("setPositionX called with invalid argument");
 		this.x = x;
 	}
+	
 	/**
 	 * Method to set the y value of the position
 	 * @param y The position on the y axis
 	 * @throws IllegalArgumentException
 	 * 			If the given value for y is not valid
 	 * 			|!isValidPosition(y)
+	 * @post
+	 * 			|new.getPositionY() == y
 	 */
+	@Basic
 	public void setPositionY(double y) throws IllegalArgumentException {
 		if (!isValidPosition(y)) throw new IllegalArgumentException("setPositionY called with invalid argument");
 		this.y = y;
 	}
+	
 	/**
 	 * Method to set both the x and y value of the position
 	 * @param x The position on the x axis
@@ -74,6 +85,8 @@ public class Position {
 	 * @throws IllegalArgumentException
 	 * 			If the given value for y is not valid
 	 * 			|!isValidPosition(y)
+	 * @Post 
+	 * 			|new.getPosition() == new Position(x,y)
 	 */
 	@Basic
 	public void setPosition(double x, double y) throws IllegalArgumentException {
@@ -82,6 +95,7 @@ public class Position {
 		this.setPositionX(x);
 		this.setPositionY(y);
 	}
+	
 	/**
 	 * Method that returns the position on the x axis
 	 * @see implementation
@@ -90,17 +104,21 @@ public class Position {
 	public double getPositionX() {
 		return this.x;
 	}
+	
 	/**
 	 * Method that returns the position on the y axis
 	 * @see implementation
 	 */
+	@Basic
 	public double getPositionY() {
 		return this.y;
 	}
+	
 	/**
 	 * Method that returns the position
 	 * @see implementation
 	 */
+	@Basic
 	public Position getPosition() {
 		return new Position(this.x, this.y);
 	}
@@ -109,6 +127,7 @@ public class Position {
 	 * Method that returns the position as an array of length 2
 	 * @see implementation
 	 */
+	@Basic
 	public double[] getPositionArray() {
 		return new double[] {this.x, this.y};
 	}
