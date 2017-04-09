@@ -1,7 +1,10 @@
 package asteroids.model;
+
+
+
 import be.kuleuven.cs.som.annotate.*;
 
-public class Ship{
+public class Ship extends CircularObject{
 	
 /**
  * Class which represents the implementation of the ship.
@@ -19,10 +22,6 @@ public class Ship{
 	*	Variable representing the velocity of the ship
 	*/
 	public Velocity velocity = new Velocity(0,0);
-	/**
-	*	Variable representing the radius of the ship
-	*/
-	private double radius;
 	
 
 	/**
@@ -31,15 +30,28 @@ public class Ship{
 	private double direction;
 	
 	/**
+	 * 	Variable representing the mass of the ship
+	 */
+	private double mass;
+	
+	
+	/**
 	*	Constant representing the speed of the light
 	*/
 	private final double SPEEDOFLIGHT = 300000;
 	
-	/**
-	* 	Constant representing the minimum value of the radius of each created ship
-	*/
-	private final double MINIMUMRADIUS = 10;
+
 	
+	/**
+	* 	Constant representing the minimum density of the radius of each created ship
+	*/
+	private final double DENSITY = 1.42*(10^12);
+	
+	/**
+	 * The state of the thruster
+	 */
+	private boolean thruster;
+
 	
 	/**
 	*	Initialization of a new ship with given position in x and y coordinates, horizontal and vertical velocity, the direction and radius.
@@ -71,40 +83,14 @@ public class Ship{
 	 * 		  |(Double.isNaN(x)|| Double.isNaN(y) ||  Double.isNaN(xVelocity) ||Double.isNaN(yVelocity) ||Double.isNaN(radius) || Double.isNaN(direction)||(radius <= MINIMAL_RADIUS))
 	*/
 	
-	public Ship(double xCoordinate, double yCoordinate, double xVelocity, double yVelocity, double radius, double direction) 
+	public Ship(double xCoordinate, double yCoordinate, double xVelocity, double yVelocity, double radius, double direction, double mass) 
 			throws IllegalArgumentException{
-		if(Double.isNaN(xCoordinate) || Double.isNaN(yCoordinate) ||  Double.isNaN(xVelocity) ||Double.isNaN(yVelocity) 
-				|| Double.isNaN(radius) || Double.isNaN(direction)|| (radius <= MINIMUMRADIUS)) {
-			throw new IllegalArgumentException();
-		}
-		this.position.setPosition(xCoordinate,yCoordinate);
-		this.velocity.setVelocity(xVelocity, yVelocity);
-		this.radius = radius;
-		this.direction = direction;
+				super(xCoordinate, yCoordinate, xVelocity, yVelocity, radius);
+				
+		this.setDirection(direction);
+		this.setMass(mass);
 	}
 	
-	/**
-	*	Initialization of a default ship with default values, i.e. x and y coordinates are zero as well as the vertical and horizontal velocity.
-	*	The radius is a unit circle (1) and the direction is pointed to zero degrees. 
-	*/
-	public Ship() {
-		this.position.setPosition(0,0);
-		this.velocity.setVelocity(0,0);
-		this.radius = 1;
-		this.direction = 0;
-	}
-	
-	/** 
-	 * Return the radius of the ship.
-	 * @return The radius of the ship is returned
-	 * 			|result == this.radius
-	 */
-	@Basic 
-	public double getRadius() {
-		return this.radius;
-	}
-	
-
 	
 	/** 
 	 * Return the direction of the ship.
@@ -144,19 +130,32 @@ public class Ship{
 	
 	
 	/**
-	* Assign the given radius to the radius of the ship.
-	 * @param angle
-	 * 		The value of the radius which will be assigned to the radius of the ship
-	 * @Post |new.getRadius() == radius
-	 * @throws IllegalArgumentException
-	 * 			The radius must be larger than 10, the MINIMUMRADIUS
-	 * 			|radius <= MINIMUMRADIUS
-	*/
-	@Basic
-	public void setRadius(double radius) throws IllegalArgumentException {
-			if (radius <= MINIMUMRADIUS) throw new IllegalArgumentException("The radius must be larger than 10!");
-			this.radius = radius;
+	 * Set the mass of the ship
+	 * @param mass
+	 * 		the mass which will be assigned to the ship
+	 */
+	public void setMass(double mass){
+		double masswithformula = (4/3)*Math.pow(this.getRadius(),3)*DENSITY;
+		if (mass >= masswithformula){
+			this.mass = mass;
 		}
+		else
+			this.mass = masswithformula;
+	}
+	
+	
+	/**
+	 * Get the total mass of the ship i.e. the bullets + the ship
+	 *
+	 */
+	public double getMass(){
+		double shipMass = this.mass;
+		//for (Bullet bullet : this.getBullets()) shipMass += bullet.getMass();
+		return shipMass;
+	}
+	
+	
+	
 			
 	/**
 	* Get the complete speed of the ship.
@@ -169,24 +168,41 @@ public class Ship{
 	}
 	
 	/**
-	 * 	Change the position of the spaceship based on the current position, velocity and a duration
-	 *	@param duration
-	 *	The time in which the ship moves
-	 *	@post The position is set to the new position
-	 *			|new.getPosition() == (newPosX, newPosY)
-	 *	@throws IllegalArgumentException
-	 *			The duration must be larger than zero
-	 *			|duration < 0
+	 * Enable the thruster
 	 */
-	public void move(double duration) throws IllegalArgumentException {
-			if (duration < 0) throw new IllegalArgumentException("The duration must be greater than zero");
-			double[] currentPos = this.position.getPositionArray();
-			double[] currentVel = this.velocity.getVelocityArray();
-			double newPosX = currentPos[0] + (currentVel[0] * duration);
-			double newPosY = currentPos[1] + (currentVel[1] * duration);
-			this.position.setPosition(newPosX, newPosY);
+	public void thrustOn(){
+		thruster = true;
 	}
 	
+	
+	/**
+	 * Disable the thruster
+	 */
+	public void thrustOff(){
+		thruster = false;
+	}
+	
+	public boolean checkThrusterStatus(){
+		return thruster;
+	}
+	
+	/**
+	 * Calculate the acceleration
+	 * @pre only if the thruster is enabled, there is an acceleration
+	 * @return the amount of acceleration
+	 */
+	public double getAcceleration(){
+		double acceleration = 0;
+		if (checkThrusterStatus() == false){
+			acceleration = 0;
+		}
+		else{
+		
+		double F = 1.1*Math.pow(10, 21);
+		acceleration = F/getMass();
+		}
+		return acceleration;
+	}
 	/**
 	 * Turn the ship i.e. move the direction
 	 * @Pre The angle is valid. This means the new direction is still between 0 and 2*PI
