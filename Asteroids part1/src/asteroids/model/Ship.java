@@ -343,7 +343,7 @@ public class Ship extends CircularObject{
 			return Double.POSITIVE_INFINITY;
 		} else if (d <= 0) {
 			return Double.POSITIVE_INFINITY;
-		} else{
+		} else {
 			return - (inproductVandR + Math.sqrt(d)) / inproductVandV;
 		}
 	}
@@ -357,7 +357,7 @@ public class Ship extends CircularObject{
 	 *			This ship and ship2 overlap or ship2 does not exist.
 	 *			|this.overlap(ship2) || ship2 == null
 	 */
-	public double[] getCollisionPosition(Ship ship2) throws IllegalArgumentException {	
+	public double[] getCollisionPosition(Ship ship2) throws IllegalArgumentException {
 		if (ship2 == null) throw new IllegalArgumentException("getCollisionPosition called with a non-existing ship!");
 		if (this.overlap(ship2)) throw new IllegalArgumentException("These two ships overlap!");
 		double timeToCollision = getTimeToCollision(ship2);
@@ -367,13 +367,19 @@ public class Ship extends CircularObject{
 		double[] positionThisShip = this.position.getPositionArray();
 		double[] velocityThisShip = this.velocity.getVelocityArray();
 		double[] positionShip2 = ship2.position.getPositionArray();
+		double[] velocityShip2 = ship2.velocity.getVelocityArray();
 		
-		double slope = Math.atan2(positionShip2[1]-positionThisShip[1], positionShip2[0] - positionThisShip[0]);
+		double xPositionCollisionThisShip = positionThisShip[0] + velocityThisShip[0] * timeToCollision;
+		double yPositionCollisionThisShip = positionThisShip[1] + velocityThisShip[1] * timeToCollision;
+		
+		double xPositionCollisionShip2 = positionShip2[0] + velocityShip2[0] * timeToCollision;
+		double yPositionCollisionShip2 = positionShip2[1] + velocityShip2[1] * timeToCollision;
+		
+		double slope = Math.atan2(yPositionCollisionShip2 - yPositionCollisionThisShip, xPositionCollisionShip2 - xPositionCollisionThisShip);
 			
-		double xPositionCollision = positionThisShip[0] + velocityThisShip[0] * timeToCollision + Math.cos(slope) * this.getRadius();
-		double yPositionCollision = positionThisShip[1] + velocityThisShip[1] * timeToCollision + Math.sin(slope) * this.getRadius();
+		double xPositionCollision = xPositionCollisionThisShip + Math.cos(slope) * this.getRadius();
+		double yPositionCollision = yPositionCollisionThisShip + Math.sin(slope) * this.getRadius();
 			
 		return new double[] {xPositionCollision, yPositionCollision};
-		
 	}
 }

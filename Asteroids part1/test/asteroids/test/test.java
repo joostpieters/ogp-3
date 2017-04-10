@@ -175,7 +175,6 @@ public class test{
 		assertEquals(Double.POSITIVE_INFINITY, time, EPSILON);
 	}
 	
-	// Not sure if this is the correct way to check it
 	@Test(expected = ModelException.class)
 	public void testGetTimeToCollisionOverlappingShips() throws ModelException {
 		Ship ship1 = facade.createShip(40, 20, 0, 0, 12, 0);
@@ -188,7 +187,7 @@ public class test{
 		Ship ship1 = facade.createShip(120, 40, 0, 0, 20, 0);
 		Ship collidingShip = facade.createShip(0, 40, 20, 0, 20, 0);
 		double[] collisionPosition = facade.getCollisionPosition(ship1, collidingShip);
-		assertEquals(120, collisionPosition[0], EPSILON);
+		assertEquals(100, collisionPosition[0], EPSILON);
 		assertEquals(40, collisionPosition[1], EPSILON);
 	}
 	
@@ -199,7 +198,7 @@ public class test{
 		double[] collisionPosition = facade.getCollisionPosition(ship1, nonCollidingShip);
 		assertNull(collisionPosition);
 	}
-	// Not sure if this is the correct way to check it
+	
 	@Test(expected = ModelException.class)
 	public void testGetCollisionPositionOverlappingShips() throws ModelException {
 		Ship ship1 = facade.createShip(40, 20, 0, 0, 12, 0);
