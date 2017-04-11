@@ -12,6 +12,17 @@ public class Ship extends CircularObject{
 /**
  * Class which represents the implementation of the ship.
  * 
+ * 		@Invar The position is valid
+ * 			|position.isValidPosition(xCoordinate)
+ * 			|position.isValidPosition(yCoordinate)
+ *	 	
+ * 		@Invar The Velocity is valid
+ *			|velocity.isValidVelocity(xVelocity) 
+ * 			|velocity.isValidVelocity(yVelocity)
+ * 
+ * 		@Invar The direction is valid
+ *			isValidDirection(getDirection()) 
+ * 	
  * 
  * @author Kevin Van der Schueren en Steven Zegers
  * @version Part 1
@@ -54,6 +65,12 @@ public class Ship extends CircularObject{
 	*/
 	private final double DENSITY = 1.42*(10^12);
 	
+	
+	/**
+	 * Constant representing the thruster force
+	 */
+	
+	private final double THRUSTERFORCE = 1.1E21;
 	/**
 	 * The state of the thruster
 	 */
@@ -64,6 +81,7 @@ public class Ship extends CircularObject{
 	 */
 	private Set<Bullet> bulletsCollection = new HashSet<Bullet>();
 
+	
 	
 	/**
 	*	Initialization of a new ship with given position in x and y coordinates, horizontal and vertical velocity, the direction and radius.
@@ -254,8 +272,8 @@ public class Ship extends CircularObject{
 		}
 		else{
 		
-			double F = 1.1*Math.pow(10, 21);
-			acceleration = F/getMass();
+			
+			acceleration = THRUSTERFORCE/getMass();
 		}
 		return acceleration;
 	}
