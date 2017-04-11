@@ -153,6 +153,4 @@ public class Velocity {
 		
 		return new double[] {velocityThisShip[0] - velocityShip2[0], velocityThisShip[1] - velocityShip2[1]};
 	}
-	
-	
 }

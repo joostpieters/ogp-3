@@ -439,5 +439,12 @@ public class Ship extends CircularObject{
 		double slope = Math.atan2(yPositionCollisionShip2 - yPositionCollisionThisShip, xPositionCollisionShip2 - xPositionCollisionThisShip);
 			
 		return new double[] {xPositionCollisionThisShip + Math.cos(slope) * this.getRadius(), yPositionCollisionThisShip + Math.sin(slope) * this.getRadius()};
-	}	
+	}
+	
+	
+	public double[] velocityAfterCollision(CircularObject object2) {
+		if(object2 instanceof Bullet) {
+			
+		}
+	}
 }
