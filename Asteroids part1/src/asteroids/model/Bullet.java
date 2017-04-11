@@ -20,6 +20,11 @@ public class Bullet extends CircularObject{
 	private final double MINIMUMBULLETRADIUS = 1;
 	
 	/**
+	 * Variable representing the current number of border collisions
+	 */
+	private double boundarycollisions = 3;
+	
+	/**
 	 * Initialization of a bullet with given position in x and y coordinates, horizontal and vertical velocity and a radius. 
 	 *@param xCoordinate
 	 *		The xCoordinate of the bullet
@@ -103,8 +108,16 @@ public class Bullet extends CircularObject{
 		}
 	}
 	
+	/**
+	 * Remove a boundary collision.
+	 * @post There is one boundary collision less than before.
+	 */
+	public void removeBoundaryCollision(){
+		boundarycollisions = boundarycollisions - 1;
+	}
 	
-
+	
+	
 	
 	
 	
