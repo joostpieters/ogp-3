@@ -1,5 +1,7 @@
 package asteroids.model;
 
+import java.util.Set;
+
 import be.kuleuven.cs.som.annotate.Basic;
 
 public abstract class CircularObject {
@@ -9,19 +11,40 @@ public abstract class CircularObject {
 	// DECLARATION OF VARIABLES AND CONSTANTS
 	//
 	
-	
+	/**
+	 * The position of the object
+	 */
 	public Position position = new Position(0,0);
 
+	/**
+	 * The velocity of the object
+	 */
 	public Velocity velocity = new Velocity(0,0);
 	
+	/**
+	 * The radius of the object
+	 */
 	private double radius;
 	
+	/**
+	 * The mass of the object
+	 */
 	public abstract double getMass();
 	
+	/**
+	 * The minimal radius of the object
+	 */
 	public abstract double getMinimalRadius();
 	
+	/**
+	 * Constant representing the speed of the light
+	 */
 	private final double SPEEDOFLIGHT = 300000;
 	
+	/**
+	 * The world the object lives in
+	 */
+	private World world;
 	
 	
 	/**
@@ -50,11 +73,31 @@ public abstract class CircularObject {
 	
 	}
 	
+	///
+	///WORLD
+	///
+	
+	/**
+	 * Get the world the object lives in.
+	 * @return the world where the object belongs to.
+	 * 			|result == World
+	 */
+	public World getWorld(){
+		return world;
+	}
+	
+	/**
+	 * Add an object to a given world
+	 * 
+	 */
+	public void addToWorld(World world){
+		this.world = world;
+	}
 	
 	
-	
-	
-	
+	///
+	///RADIUS
+	///
 	/**
 	 * Get the radius of the circular object
 	 * @return the radius is returned
@@ -86,10 +129,16 @@ public abstract class CircularObject {
 	}
 	
 	
+	
+	
+	
+	///
+	///OTHER METHODS
+	//
 	/**
 	 * 	Change the position of the space entity based on the current position, velocity and a duration
 	 *	@param duration
-	 *	The time in which the ship moves
+	 *	The time in which the circular object moves
 	 *	@post The position is set to the new position
 	 *			|new.getPosition() == (newPosX, newPosY)
 	 *	@throws IllegalArgumentException
