@@ -291,4 +291,18 @@ public abstract class CircularObject {
 			
 		return new double[] {xPositionCollisionThisShip + Math.cos(slope) * this.getRadius(), yPositionCollisionThisShip + Math.sin(slope) * this.getRadius()};
 	}
+	
+	public void collisionResolving(CircularObject object2) {
+		if(this instanceof Ship) {
+			if(object2 instanceof Ship) {
+				double sumOfRadiusses = this.getRadius() + object2.getRadius();
+				double sumOfMasses = this.getMass() + object2.getMass();
+				Vector deltaV = new Vector(this.velocity.getDifferenceInVelocity(object2.velocity));
+				Vector deltaR = new Vector(this.position.getDifferenceInPositions(object2.position));
+				double J = 2 * this.getMass() * object2.getMass() * (deltaV.dotProductVectors(deltaR))
+						/(sumOfRadiusses*sumOfMasses);
+				double jX = J * 
+			}
+		}
+	}
 }
