@@ -153,4 +153,142 @@ public abstract class CircularObject {
 			double newPosY = currentPos[1] + (currentVel[1] * duration);
 			this.position.setPosition(newPosX, newPosY);
 	}
+	
+	/**
+	 * This method calculates the minimum amount of distance that a circular object should travel in order to be adjacent to object2.
+	 * If the objects overlap, the distance will be negative, if the objects are the same, the returned value will be 0.
+	 * If the objects don't overlap and aren't the same, a positive value will be returned
+	 * 
+	 * @param object2 A circular object named object2 of which we want to know how far away it is from this object.
+	 * @return Returns the distance between this object and another object, named object2
+	 * 		  	|distanceBetweenCenters - radiusObject1 - radiusObject2
+	 * @return 
+	 * 			|if (this == object2) return 0;
+	 * @throws IllegalArgumentException
+	 * 			object2 is not created
+	 * 			|object2 == null
+	 */
+	public double getDistanceBetween(CircularObject object2) throws IllegalArgumentException {
+		
+		if (object2 == null) throw new IllegalArgumentException("getDistanceBetween called with a non-existing ship!");
+		if (this == object2) return 0;
+		
+		double radiusObject1 = this.getRadius();
+		double radiusObject2 = object2.getRadius();
+		
+		double[] differenceInPositions = this.position.getDifferenceInPositions(object2.position);
+		
+		double squaredDifferenceInX = Math.pow(differenceInPositions[0], 2);
+		double squaredDifferenceInY = Math.pow(differenceInPositions[1], 2);
+		
+		double distanceBetweenCenters = Math.sqrt(squaredDifferenceInX + squaredDifferenceInY);
+		return distanceBetweenCenters - radiusObject1 - radiusObject2;
+	}
+	/**
+	 * This method returns true of false, depending on if the objects overlap or not. 
+	 * As explained for the function getDistanceBetween, 2 circular objects that aren't the same overlap when the
+	 * distance between them is negative, then true will be returned. If two ships are the same, 
+	 * by convention they overlap. 
+	 * 
+	 * @param object2 A circular object called object2
+	 * @return If this object is the same as object2, then true is returned
+	 * 			|if (this == object2) return true
+	 * @return If this object is a different circular object than object2, then true is returned if the distance between them is negative,
+	 * false if the distance between them is positive.
+	 * 			|this.getDistanceBetween(object2) <= 0
+	 * @throws IllegalArgumentException
+	 *			object2 is not created
+	 *			|object2 == null
+	 */
+	public boolean overlap(CircularObject object2) throws IllegalArgumentException {
+		if (object2 == null) throw new IllegalArgumentException("Overlap called with a non-existing ship!");
+		
+		if (this == object2) return true;
+		else return this.getDistanceBetween(object2) <= 0;
+	}
+	
+	/**
+	 * If 2 circular objects will ever collide, returns the amount of seconds until that collision. If 2 objects
+	 * will never collide with each other, Double.POSITIVE_INFINITY is returned. Additionally, a circular object
+	 * can never collide with itself. As this method does not apply to overlapping circular objects, an exception
+	 * is thrown if the objects overlap.
+	 * 
+	 * @param object2 A circular object called object2
+	 * @return If this object and object2 are the same, Double.POSITIVE_INFINITY is returned
+	 * @return If the 2 circular objects never collide, Double.POSITIVE_INFINITY is returned
+	 * 			|if (inproductVandV == 0)|if (inproductVandR >= 0)|if (d <= 0)
+	 * @return 
+	 * 			If there is in fact a point and time for which the 2 circular objects collide, the amount of time until that moment is returned
+	 * 			|return -(inproductVandR + Math.sqrt(d)) / inproductVandV
+	 * @throws IllegalArgumentException
+	 *			object2 is not created or this circular object and object2 overlap
+	 *			|object2 == null || this.overlap(object2)
+	 */
+	public double getTimeToCollision(CircularObject object2) throws IllegalArgumentException{
+		if (object2 == null) throw new IllegalArgumentException("getTimeToCollision called with a non-existing ship!");
+		if (this.overlap(object2)) throw new IllegalArgumentException("These two ships overlap!");
+		if (this == object2) {
+			return Double.POSITIVE_INFINITY;
+		}
+		
+		double radiusThisShip = this.getRadius();
+		double radiusShip2 = object2.getRadius();
+		double sumOfRadiusses = radiusThisShip + radiusShip2;
+		
+		double[] differenceInPositions = this.position.getDifferenceInPositions(object2.position);
+		double[] differenceInVelocities = this.velocity.getDifferenceInVelocity(object2.velocity);
+		
+		Vector deltaR = new Vector(differenceInPositions);
+		Vector deltaV = new Vector(differenceInVelocities);
+		
+		double inproductRandR = deltaR.dotProductVectors(deltaR);
+		double inproductVandV = deltaV.dotProductVectors(deltaV);
+		double inproductVandR = deltaV.dotProductVectors(deltaR);
+		
+		double d = Math.pow(inproductVandR, 2) - inproductVandV * (inproductRandR - Math.pow(sumOfRadiusses, 2));
+		
+		if (inproductVandV == 0) {
+			return Double.POSITIVE_INFINITY;
+		} else if (inproductVandR >= 0) {
+			return Double.POSITIVE_INFINITY;
+		} else if (d <= 0) {
+			return Double.POSITIVE_INFINITY;
+		} else {
+			return - (inproductVandR + Math.sqrt(d)) / inproductVandV;
+		}
+	}
+	
+	/**
+	 * This function calculates the position at which the 2 circular objects will collide, if ever they will collide. This function does not apply to overlapping ships.
+	 * @param object2 A circular object called object2
+	 * @return If the 2 circular objects never collide, null will be returned
+	 * 			|if (timeToCollision == Double.POSITIVE_INFINITY) return null
+	 * @return If the 2 circular objects will collide, an array containing the x and y coordinate of the collision is returned
+	 * 			|return new double[] {xPositionCollisionThisShip + Math.cos(slope) * this.getRadius(), yPositionCollisionThisShip + Math.sin(slope) * this.getRadius()}
+	 * @throws IllegalArgumentException
+	 *			This object and object2 overlap or object2 does not exist.
+	 *			|this.overlap(ship2) || ship2 == null
+	 */
+	public double[] getCollisionPosition(CircularObject object2) throws IllegalArgumentException {
+		if (object2 == null) throw new IllegalArgumentException("getCollisionPosition called with a non-existing ship!");
+		if (this.overlap(object2)) throw new IllegalArgumentException("These two ships overlap!");
+		double timeToCollision = getTimeToCollision(object2);
+			
+		if (timeToCollision == Double.POSITIVE_INFINITY) return null;
+		
+		double[] positionThisShip = this.position.getPositionArray();
+		double[] velocityThisShip = this.velocity.getVelocityArray();
+		double[] positionShip2 = object2.position.getPositionArray();
+		double[] velocityShip2 = object2.velocity.getVelocityArray();
+		
+		double xPositionCollisionThisShip = positionThisShip[0] + velocityThisShip[0] * timeToCollision;
+		double yPositionCollisionThisShip = positionThisShip[1] + velocityThisShip[1] * timeToCollision;
+		
+		double xPositionCollisionShip2 = positionShip2[0] + velocityShip2[0] * timeToCollision;
+		double yPositionCollisionShip2 = positionShip2[1] + velocityShip2[1] * timeToCollision;
+		
+		double slope = Math.atan2(yPositionCollisionShip2 - yPositionCollisionThisShip, xPositionCollisionShip2 - xPositionCollisionThisShip);
+			
+		return new double[] {xPositionCollisionThisShip + Math.cos(slope) * this.getRadius(), yPositionCollisionThisShip + Math.sin(slope) * this.getRadius()};
+	}
 }
