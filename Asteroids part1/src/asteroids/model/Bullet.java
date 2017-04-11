@@ -116,9 +116,14 @@ public class Bullet extends CircularObject{
 		boundarycollisions = boundarycollisions - 1;
 	}
 	
+	/**
+	 * Retrieve the number of boundary collisions that are left for a certain bullet.
+	 * @return The number of boundary collisions
+	 */
 	
-	
-	
+	public double getBoundaryCollsionsLeft(){
+		return boundarycollisions;
+	}
 	
 	
 }
