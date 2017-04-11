@@ -8,9 +8,17 @@ import be.kuleuven.cs.som.annotate.Value;
 public class Bullet extends CircularObject{
  
 	
-	private static final int DENSITIY = 0;
+	/**
+	 * Constant representing the density of a bullet
+	 */
+	
 	private double DENSITY = 7.8*Math.pow(10,12);
 
+	/**
+	 * Constant representing the minimal radius of a bullet
+	 */
+	private final double MINIMUMBULLETRADIUS = 1;
+	
 	/**
 	 * Initialization of a bullet with given position in x and y coordinates, horizontal and vertical velocity and a radius. 
 	 *@param xCoordinate
@@ -33,21 +41,53 @@ public class Bullet extends CircularObject{
 	 */
 	public Bullet(double xCoordinate, double yCoordinate, double xVelocity, double yVelocity, double radius)
 		throws IllegalArgumentException { 
+			//using superclass Circular Object
 			super(xCoordinate, yCoordinate, xVelocity, yVelocity, radius);
 		}
 	
 	
+	
 	private Ship ship;
+	
+	
+	//
+	//GETTERS 
+	//
+	
 	
 	/**
 	 * Retrieve the ship that has this certain bullet
-	 * @return 
 	 * @return returns the ship where the bullet belongs to.
 	 * 		|result == this.ship
 	 */
-	public Ship getShip(){
+	public Ship getsourceShip(){
 		return this.ship;
 	}
+	
+	
+	/**
+	 * Get the mass of the bullet
+	 * @return the mass of the bullet
+	 * 			|result == mass;
+	 */
+	public double getMass(){
+		double bulletradius = getRadius();
+		return( 3/4 * Math.PI * Math.pow(bulletradius, 3) * DENSITY);
+	}
+	
+	/**
+	 * Get the minimal radius of the bullet (1)
+	 * @return The minimal radius of the bullet
+	 * 			|result == MINIMUMBULLETRADIUS
+	 */
+	public double getMinimalRadius(){
+		return MINIMUMBULLETRADIUS;
+	}
+	
+	//
+	//SETTERS
+	//
+	
 	
 	/**
 	 * Set the ship where the bullet belongs to.
@@ -55,21 +95,16 @@ public class Bullet extends CircularObject{
 	 * 		The ship where the bullet belongs to
 	 * @post
 	 * 		The bullet is assigned to the given ship
-	 * 		|this.getShip() == ship
+	 * 		|this.getsourceShip() == ship
 	 */
-	public void setShip(Ship ship){
+	public void setSourceShip(Ship ship){
 		if (ship == null){
 			this.ship = ship;
 		}
 	}
 	
-	public double getMass(){
-		double radius = getRadius();
-			
-		return( 3/4 * Math.PI * Math.pow(radius, 3) * DENSITIY);
 	
-	}
-	
+
 	
 	
 	
