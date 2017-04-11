@@ -2,6 +2,9 @@ package asteroids.model;
 
 
 
+import java.util.HashSet;
+import java.util.Set;
+
 import be.kuleuven.cs.som.annotate.*;
 
 public class Ship extends CircularObject{
@@ -9,6 +12,17 @@ public class Ship extends CircularObject{
 /**
  * Class which represents the implementation of the ship.
  * 
+ * 		@Invar The position is valid
+ * 			|position.isValidPosition(xCoordinate)
+ * 			|position.isValidPosition(yCoordinate)
+ *	 	
+ * 		@Invar The Velocity is valid
+ *			|velocity.isValidVelocity(xVelocity) 
+ * 			|velocity.isValidVelocity(yVelocity)
+ * 
+ * 		@Invar The direction is valid
+ *			isValidDirection(getDirection()) 
+ * 	
  * 
  * @author Kevin Van der Schueren en Steven Zegers
  * @version Part 1
@@ -41,17 +55,33 @@ public class Ship extends CircularObject{
 	private final double SPEEDOFLIGHT = 300000;
 	
 
+	/**
+	 * Constant representing the minimal radius of a bullet
+	 */
+	private final double MINIMUMSHIPRADIUS = 10;
 	
 	/**
 	* 	Constant representing the minimum density of the radius of each created ship
 	*/
 	private final double DENSITY = 1.42*(10^12);
 	
+	
+	/**
+	 * Constant representing the thruster force
+	 */
+	
+	private final double THRUSTERFORCE = 1.1E21;
 	/**
 	 * The state of the thruster
 	 */
 	private boolean thruster;
+	
+	/**
+	 * The collection of bullets a ship has
+	 */
+	private Set<Bullet> bulletsCollection = new HashSet<Bullet>();
 
+	
 	
 	/**
 	*	Initialization of a new ship with given position in x and y coordinates, horizontal and vertical velocity, the direction and radius.
@@ -116,6 +146,15 @@ public class Ship extends CircularObject{
 			isValidDirection(direction);
 			this.direction = direction;
 		}
+	
+	/**
+	 * Get the minimal radius of the ship (10)
+	 * @return The minimal radius of the bullet
+	 * 			|result == MINIMUMBULLETRADIUS
+	 */
+	public double getMinimalRadius(){
+		return MINIMUMSHIPRADIUS;
+	}
 		
 	/**
 	 * Check if the direction is valid
@@ -144,14 +183,31 @@ public class Ship extends CircularObject{
 	}
 	
 	
+	
 	/**
 	 * Get the total mass of the ship i.e. the bullets + the ship
-	 *
+	 * @return The total mass
+	 * 			|result = shipMass + massOfBullets;
 	 */
 	public double getMass(){
 		double shipMass = this.mass;
-		//for (Bullet bullet : this.getBullets()) shipMass += bullet.getMass();
-		return shipMass;
+		double massOfBullets = 0;
+		for (Bullet bullet : this.getBulletsOfShip())
+			massOfBullets += bullet.getMass();
+		
+		return (shipMass + massOfBullets);
+	}
+	
+	
+	
+	/**
+	 * Get a list of bullets of the ship
+	 * @return the list of bullets
+	 * 			|result == bulletsCollection
+	 */
+	public Set<Bullet> getBulletsOfShip(){
+		
+		return this.bulletsCollection;
 	}
 	
 	
@@ -166,6 +222,24 @@ public class Ship extends CircularObject{
 		assert speed <= SPEEDOFLIGHT;
 		return speed;
 	}
+
+	/**
+	 * Turn the ship i.e. move the direction
+	 * @Pre The angle is valid. This means the new direction is still between 0 and 2*PI
+	 * @param givenangle
+	 * 		The angle the ship has to turn
+	 * @post
+	 * 		The new direction is the old direction + the given angle
+	 * 		|new.getDirection == this.setDirection(this.getDirection() + givenangle)
+	 *
+	 */
+	public void turn(double givenAngle) {
+		double newDirection = this.direction + givenAngle;
+		setDirection(newDirection);
+	}
+	
+	
+	
 	
 	/**
 	 * Enable the thruster
@@ -188,7 +262,7 @@ public class Ship extends CircularObject{
 	
 	/**
 	 * Calculate the acceleration
-	 * @pre only if the thruster is enabled, there is an acceleration
+	 * @Pre only if the thruster is enabled, there is an acceleration
 	 * @return the amount of acceleration
 	 */
 	public double getAcceleration(){
@@ -198,24 +272,10 @@ public class Ship extends CircularObject{
 		}
 		else{
 		
-		double F = 1.1*Math.pow(10, 21);
-		acceleration = F/getMass();
+			
+			acceleration = THRUSTERFORCE/getMass();
 		}
 		return acceleration;
-	}
-	/**
-	 * Turn the ship i.e. move the direction
-	 * @Pre The angle is valid. This means the new direction is still between 0 and 2*PI
-	 * @param givenangle
-	 * 		The angle the ship has to turn
-	 * @post
-	 * 		The new direction is the old direction + the given angle
-	 * 		|new.getDirection == this.setDirection(this.getDirection() + givenangle)
-	 *
-	 */
-	public void turn(double givenAngle) {
-		double newDirection = this.direction + givenAngle;
-		setDirection(newDirection);
 	}
 	
 	/**

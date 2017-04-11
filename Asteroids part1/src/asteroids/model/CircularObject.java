@@ -2,29 +2,30 @@ package asteroids.model;
 
 import be.kuleuven.cs.som.annotate.Basic;
 
-public class CircularObject {
+public abstract class CircularObject {
 
-	/**
-	 * Variable representing the position of the ship
-	 */
+	
+	//
+	// DECLARATION OF VARIABLES AND CONSTANTS
+	//
+	
+	
 	public Position position = new Position(0,0);
 
-	/**
-	*	Variable representing the velocity of the ship
-	*/
 	public Velocity velocity = new Velocity(0,0);
-	/**
-	*	Variable representing the radius of the ship
-	*/
+	
 	private double radius;
 	
-	/**
-	* 	Constant representing the minimum value of the radius of each created ship
-	*/
-	private final double MINIMUMRADIUS = 10;
+	public abstract double getMass();
+	
+	public abstract double getMinimalRadius();
+	
+	private final double SPEEDOFLIGHT = 300000;
+	
+	
 	
 	/**
-	 * Initialisation of a circular object (ship or a bullet) with a given position, radius, velocity and mass
+	 * Initialization of a circular object (ship or a bullet) with a given position, velocity and radius
 	 *	@param xCoordinate
 	*	The xCoordinate of the object
 	*	@param yCoordinate
@@ -35,55 +36,53 @@ public class CircularObject {
 	*	The vertical velocity of the object
 	*	@param radius
 	*	The radius of the object
-	*	@param mass
-	*	The mass of the object
 	 */
 	
 	public CircularObject (double xCoordinate, double yCoordinate, double xVelocity, double yVelocity, double radius) throws IllegalArgumentException {
-		if (isValidRadius(radius) == false) throw new IllegalArgumentException("The given radius was not valid");
-		//if (isValidMass(mass) == false) throw new IllegalArgumentException("The given mass is not valid");
-		if(!position.isValidPosition(xCoordinate) || !position.isValidPosition(yCoordinate) ||  !velocity.isValidVelocity(xVelocity) || !velocity.isValidVelocity(yVelocity)) {
-			throw new IllegalArgumentException("Not a valid value");
+		if(!position.isValidPosition(xCoordinate) || !position.isValidPosition(yCoordinate) ||  !velocity.isValidVelocity(xVelocity) || !velocity.isValidVelocity(yVelocity) || (!isValidRadius(radius))) {
+			throw new IllegalArgumentException("Error. One or more values are not correct");
 		}
-		
+	//using position and velocity classes	
 	this.position.setPosition(xCoordinate,yCoordinate);
 	this.velocity.setVelocity(xVelocity, yVelocity);
-	this.radius = radius;
+	
+	this.setRadius(radius);
+	
 	}
 	
 	
 	
-	private boolean isValidRadius(double radius){
-		return (radius <= MINIMUMRADIUS);
-	}
 	
 	
 	
 	/**
-	* Assign the given radius to the radius of the entity.
-	 * @param angle
-	 * 		The value of the radius which will be assigned to the radius of the entity
-	 * @Post |new.getRadius() == radius
-	 * @throws IllegalArgumentException
-	 * 			The radius must be larger than 10, the MINIMUMRADIUS
-	 * 			|radius <= MINIMUMRADIUS
-	*/
-	@Basic
-	public void setRadius(double radius) throws IllegalArgumentException {
-			if (radius <= MINIMUMRADIUS) throw new IllegalArgumentException("The radius must be larger than 10!");
-			this.radius = radius;
-		}
-			
-	
-	
-	/** 
-	 * Return the radius of the object.
-	 * @return The radius of the object is returned
+	 * Get the radius of the circular object
+	 * @return the radius is returned
 	 * 			|result == this.radius
 	 */
-	@Basic 
-	public double getRadius() {
+	public double getRadius(){
 		return this.radius;
+	}
+	
+	/**
+	 * Check if the given radius is valid. For a ship it should be larger than 10, for a bullet larger than 1
+	 * @param radius
+	 * @return The validity of the radius
+	 */
+	public boolean isValidRadius(double radius){
+		return radius > getMinimalRadius();
+	}
+	
+	/**
+	 * Set the given radius to the radius of the circular object
+	 * @param radius
+	 * @post The given radius is set to the radius of the object
+	 * 			|this.radius = radius
+	 * @throws IllegalArgumentException if the the radius is not valid
+	 */
+	public void setRadius(double radius){
+		if (isValidRadius(radius) == false) throw new IllegalArgumentException("Invalid radius detected.");
+		this.radius = radius;
 	}
 	
 	
