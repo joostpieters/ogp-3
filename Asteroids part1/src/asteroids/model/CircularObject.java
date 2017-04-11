@@ -153,8 +153,4 @@ public abstract class CircularObject {
 			double newPosY = currentPos[1] + (currentVel[1] * duration);
 			this.position.setPosition(newPosX, newPosY);
 	}
-	
-	
-	
-	
 }
