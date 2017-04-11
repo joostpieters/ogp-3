@@ -122,7 +122,7 @@ public class Bullet extends CircularObject{
 	 */
 	
 	public double getBoundaryCollsionsLeft(){
-		return boundarycollisions;
+		return this.boundarycollisions;
 	}
 	
 	
