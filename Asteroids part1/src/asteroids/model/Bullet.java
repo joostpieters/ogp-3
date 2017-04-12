@@ -22,7 +22,7 @@ public class Bullet extends CircularObject{
 	/**
 	 * Variable representing the current number of border collisions
 	 */
-	private double boundaryCollisions = 0;
+	public double boundaryCollisions = 0;
 	/**
 	 * The position of the bullet
 	 */
@@ -230,4 +230,10 @@ public class Bullet extends CircularObject{
 			this.ship = ship;
 		}
 	}
+	
+	public void incrementBoundaryCollision() {
+		this.boundaryCollisions ++;
+	}
+	
+	public 
 }
