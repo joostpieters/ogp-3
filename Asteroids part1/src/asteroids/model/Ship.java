@@ -304,7 +304,7 @@ public class Ship extends CircularObject{
 	}
 	
 	public void collision(CircularObject object2) {
-		if(object2 instanceof Ship) {
+		if (object2 instanceof Ship) {
 			double sumOfRadiusses = this.getRadius() + object2.getRadius();
 			double sumOfMasses = this.getMass() + object2.getMass();
 			Vector deltaV = new Vector(this.velocity.getDifferenceInVelocity(object2.velocity));

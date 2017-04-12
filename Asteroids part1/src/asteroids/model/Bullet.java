@@ -235,5 +235,7 @@ public class Bullet extends CircularObject{
 		this.boundaryCollisions ++;
 	}
 	
-	public 
+	public void collision(CircularObject object2) {
+		
+	}
 }
