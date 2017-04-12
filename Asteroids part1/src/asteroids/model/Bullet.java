@@ -22,7 +22,16 @@ public class Bullet extends CircularObject{
 	/**
 	 * Variable representing the current number of border collisions
 	 */
-	private double boundarycollisions = 3;
+	private double boundaryCollisions = 0;
+	/**
+	 * The position of the bullet
+	 */
+	private Position position = new Position(0,0);
+	
+	/**
+	 * The velocity of the bullet
+	 */
+	private Velocity velocity = new Velocity(0,0);
 	
 	/**
 	 * Initialization of a bullet with given position in x and y coordinates, horizontal and vertical velocity and a radius. 
@@ -59,13 +68,73 @@ public class Bullet extends CircularObject{
 	//GETTERS 
 	//
 	
+	/**
+	 * Method that returns the x position of the bullet
+	 * @see implementation
+	 */
+	public double getXPosition() {
+		
+		return this.position.getPositionX();
+	}
+	/**
+	 * Method that returns the y position of the bullet
+	 * @see implementation
+	 */
+	public double getYPosition() {
+		
+		return this.position.getPositionY();
+	}
+	/**
+	 * Method that returns the x and y position of the bullet as an array of length 2
+	 * @see implementation
+	 */
+	public double[] getPositionArray() {
+		return this.position.getPositionArray();
+	}
+	/**
+	 * Method that returns the position of the bullet
+	 * @see implementation
+	 */
+	public Position getPosition() {
+		return this.position.getPosition();
+	}
+	/**
+	 * Returns the horizontal velocity of the bullet
+	 * @see implementation
+	 */
+	public double getXVelocity() {
+		return this.velocity.getXVelocity();
+	}
+	
+	/**
+	 * Returns the vertical velocity of the bullet
+	 * @see implementation
+	 */
+	public double getYVelocity() {
+		return this.velocity.getYVelocity();
+	}
+	
+	/**
+	 * Returns the horizontal and vertical velocity of the bullet as an array of length 2
+	 * @see implementation
+	 */
+	public double[] getVelocityArray() {
+		return this.velocity.getVelocityArray();
+	}
+	/**
+	 * Returns the velocity of the bullet
+	 * @see implementation
+	 */
+	public Velocity getVelocity() {
+		return this.velocity.getVelocity();
+	}
 	
 	/**
 	 * Retrieve the ship that has this certain bullet
 	 * @return returns the ship where the bullet belongs to.
 	 * 		|result == this.ship
 	 */
-	public Ship getsourceShip(){
+	public Ship getSourceShip(){
 		return this.ship;
 	}
 	
@@ -89,10 +158,64 @@ public class Bullet extends CircularObject{
 		return MINIMUMBULLETRADIUS;
 	}
 	
+	/**
+	 * Retrieve the number of boundary collisions of a bullet
+	 * @see implementation
+	 */
+	
+	public double getBoundaryCollisions() {
+		return this.boundaryCollisions;
+	}
+	
 	//
 	//SETTERS
 	//
+	/**
+	 * Method to set the x position of the bullet
+	 * @param x
+	 * @post
+	 * 			|new.getXPosition == x
+	 */
+	public void setXPosition(double x) {
+		//TODO: isValidPosition and throw exception
+		this.position.setPositionX(x);
+	}
+	/**
+	 * Method to set the y position of the bullet
+	 * @param y
+	 * @post
+	 * 			|new.getYPosition == y
+	 */
+	public void setYPosition(double y) {
+		//TODO: isValidPosition and throw exception
+		this.position.setPositionY(y);
+	}
+	/**
+	 * Method to set both x and y position of the bullet
+	 * @param x
+	 * @param y
+	 * @post
+	 * 			|new.getPosition = new Position(x,y)
+	 */
+	public void setPosition(double x, double y) {
+		//TODO: isValidPosition and throw exception
+		this.position.setPosition(x, y);
+	}
 	
+	public void setXVelocity(double x) {
+		//TODO: isValidVelocity and throw exception
+		this.velocity.setXVelocity(x);
+	}
+	
+	public void setYVelocity(double y) {
+		//TODO: isValidVelocity and throw exception
+		this.velocity.setYVelocity(y);
+	}
+	
+	public void setVelocity(double x, double y) {
+		//TODO: isValidVelocity and throw exception
+		this.velocity.setVelocity(x, y);
+	}
 	
 	/**
 	 * Set the ship where the bullet belongs to.
@@ -107,23 +230,4 @@ public class Bullet extends CircularObject{
 			this.ship = ship;
 		}
 	}
-	
-	/**
-	 * Remove a boundary collision.
-	 * @post There is one boundary collision less than before.
-	 */
-	public void removeBoundaryCollision(){
-		boundarycollisions = boundarycollisions - 1;
-	}
-	
-	/**
-	 * Retrieve the number of boundary collisions that are left for a certain bullet.
-	 * @return The number of boundary collisions
-	 */
-	
-	public double getBoundaryCollsionsLeft(){
-		return this.boundarycollisions;
-	}
-	
-	
 }

@@ -301,8 +301,29 @@ public abstract class CircularObject {
 				Vector deltaR = new Vector(this.position.getDifferenceInPositions(object2.position));
 				double J = 2 * this.getMass() * object2.getMass() * (deltaV.dotProductVectors(deltaR))
 						/(sumOfRadiusses*sumOfMasses);
-				double jX = J * 
+				double jX = J * this.position.getDifferenceInPositions(object2.position)[0]
+						/ sumOfRadiusses;
+				double jY = J * this.position.getDifferenceInPositions(object2.position)[1]
+						/ sumOfRadiusses;
+				double newXVelocityThisObject = this.velocity.getXVelocity() + jX/this.getMass();
+				double newYVelocityThisObject = this.velocity.getYVelocity() + jY/this.getMass();
+				double newXVelocityObject2 = object2.velocity.getXVelocity() + jX/object2.getMass();
+				double newYVelocityObject2 = object2.velocity.getYVelocity() + jY/object2.getMass();
+				
+				this.velocity.setVelocity(newXVelocityThisObject, newYVelocityThisObject);;
+				object2.velocity.setVelocity(newXVelocityObject2, newYVelocityObject2);
 			}
+			if(this.position.getPositionX() - this.getRadius() == 0 || this.position.getPositionX() + this.getRadius() == this.world.getWorldDimensionArray()[0]) {
+				double currentXVel = this.velocity.getXVelocity();
+				this.velocity.setXVelocity(-currentXVel);
+			}
+			if(this.position.getPositionY() - this.getRadius() == 0 || this.position.getPositionY() + this.getRadius == this.world.getWorldDimensionArray()[1]) {
+				double currentYVel = this.velocity.getYVelocity();
+				this.velocity.setYVelocity(-currentYVel);
+			}
+		}
+		if(this instanceof Bullet) {
+			if
 		}
 	}
 }
