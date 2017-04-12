@@ -44,7 +44,7 @@ public abstract class CircularObject {
 	/**
 	 * The world the object lives in
 	 */
-	private World world;
+	protected World world;
 	
 	
 	/**
