@@ -222,7 +222,45 @@ public class Ship extends CircularObject{
 		assert speed <= SPEEDOFLIGHT;
 		return speed;
 	}
-
+	
+	/**
+	 * Check if the bullet is a bullet that can be added to a ship, the bullet has to be initialized,
+	 * the bullet cannot be loaded onto another ship and the bullet cannot be loaded if its part of a different world
+	 * @param bullet
+	 * @return
+	 * 			|if (bullet == null) return false || if (bullet.getSourceShip() != this) return false 
+	 * 			|if (bullet.getWorld() != null && bullet.getWorld() != this.getWorld()) return false
+	 */
+	public boolean canAddToShip(Bullet bullet) {
+		if (bullet == null) return false;
+		if (bullet.getSourceShip() != this) return false;
+		if (bullet.getWorld() != null && bullet.getWorld() != this.getWorld()) return false;
+		return true;
+	}
+	
+	/**
+	 * Method to load a bullet onto a ship
+	 * @param bullet
+	 * @throws IllegalArgumentException
+	 * 			|!canAddToShip(bullet)
+	 */
+	public void loadBullet(Bullet bullet) throws IllegalArgumentException {
+		if (!canAddToShip(bullet)) throw new IllegalArgumentException("This bullet can not be loaded onto the ship.");
+		bullet.setPosition(this.position.getPositionX(), this.position.getPositionY());
+		bullet.setWorld(null);
+		this.bulletsCollection.add(bullet);
+	}
+	/**
+	 * Method to remove a bullet from a ship
+	 * @param bullet
+	 * @throws IllegalArgumentException
+	 * 			|bullet.getSourceShip() != this
+	 */
+	public void removeBullet(Bullet bullet) throws IllegalArgumentException {
+		if (bullet.getSourceShip() != this) throw new IllegalArgumentException("This bullet is not part of the ship");
+		bullet.setSourceShip(null);
+		this.bulletsCollection.remove(bullet);
+	}
 	/**
 	 * Turn the ship i.e. move the direction
 	 * @Pre The angle is valid. This means the new direction is still between 0 and 2*PI
@@ -237,10 +275,6 @@ public class Ship extends CircularObject{
 		double newDirection = this.direction + givenAngle;
 		setDirection(newDirection);
 	}
-	
-	
-	
-	
 	/**
 	 * Enable the thruster
 	 */
@@ -329,6 +363,15 @@ public class Ship extends CircularObject{
 		if (this.position.getPositionY() - this.getRadius() == 0 || this.position.getPositionY() + this.getRadius() == this.world.getWorldDimensionArray()[1]) {
 			double currentYVel = this.velocity.getYVelocity();
 			this.velocity.setYVelocity(-currentYVel);
+		}
+		if (object2 instanceof Bullet) {
+			Bullet bullet = (Bullet) object2;
+			if (bullet.getSourceShip() == this) {
+				this.loadBullet(bullet);
+			}
+		}
+		else {
+			
 		}
 	}
 }

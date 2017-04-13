@@ -87,10 +87,12 @@ public abstract class CircularObject {
 	}
 	
 	/**
-	 * Add an object to a given world
-	 * 
+	 * Set the world of a circular object
+	 * @throws IllegalArgumentException
+	 * 			|this.world != null
 	 */
-	public void addToWorld(World world){
+	public void setWorld(World world) throws IllegalArgumentException {
+		if (this.world != null) throw new IllegalArgumentException("This circular object is already part of a world.");
 		this.world = world;
 	}
 	
@@ -127,10 +129,6 @@ public abstract class CircularObject {
 		if (isValidRadius(radius) == false) throw new IllegalArgumentException("Invalid radius detected.");
 		this.radius = radius;
 	}
-	
-	
-	
-	
 	
 	///
 	///OTHER METHODS
@@ -170,7 +168,7 @@ public abstract class CircularObject {
 	 */
 	public double getDistanceBetween(CircularObject object2) throws IllegalArgumentException {
 		
-		if (object2 == null) throw new IllegalArgumentException("getDistanceBetween called with a non-existing ship!");
+		if (object2 == null) throw new IllegalArgumentException("getDistanceBetween called with a non-existing circular object!");
 		if (this == object2) return 0;
 		
 		double radiusObject1 = this.getRadius();
@@ -201,7 +199,7 @@ public abstract class CircularObject {
 	 *			|object2 == null
 	 */
 	public boolean overlap(CircularObject object2) throws IllegalArgumentException {
-		if (object2 == null) throw new IllegalArgumentException("Overlap called with a non-existing ship!");
+		if (object2 == null) throw new IllegalArgumentException("Overlap called with a non-existing circular object!");
 		
 		if (this == object2) return true;
 		else return this.getDistanceBetween(object2) <= 0;
@@ -225,8 +223,8 @@ public abstract class CircularObject {
 	 *			|object2 == null || this.overlap(object2)
 	 */
 	public double getTimeToCollision(CircularObject object2) throws IllegalArgumentException{
-		if (object2 == null) throw new IllegalArgumentException("getTimeToCollision called with a non-existing ship!");
-		if (this.overlap(object2)) throw new IllegalArgumentException("These two ships overlap!");
+		if (object2 == null) throw new IllegalArgumentException("getTimeToCollision called with a non-existing circular object!");
+		if (this.overlap(object2)) throw new IllegalArgumentException("These two circular objects overlap!");
 		if (this == object2) {
 			return Double.POSITIVE_INFINITY;
 		}
@@ -270,8 +268,8 @@ public abstract class CircularObject {
 	 *			|this.overlap(ship2) || ship2 == null
 	 */
 	public double[] getCollisionPosition(CircularObject object2) throws IllegalArgumentException {
-		if (object2 == null) throw new IllegalArgumentException("getCollisionPosition called with a non-existing ship!");
-		if (this.overlap(object2)) throw new IllegalArgumentException("These two ships overlap!");
+		if (object2 == null) throw new IllegalArgumentException("getCollisionPosition called with a non-existing circular object!");
+		if (this.overlap(object2)) throw new IllegalArgumentException("These two circular objects overlap!");
 		double timeToCollision = getTimeToCollision(object2);
 			
 		if (timeToCollision == Double.POSITIVE_INFINITY) return null;
@@ -291,4 +289,8 @@ public abstract class CircularObject {
 			
 		return new double[] {xPositionCollisionThisShip + Math.cos(slope) * this.getRadius(), yPositionCollisionThisShip + Math.sin(slope) * this.getRadius()};
 	}
+	
+	
+	
+	
 }

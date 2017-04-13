@@ -112,7 +112,7 @@ public class World {
 	public void addShipToWorld(Ship ship){
 		if (ship.getWorld() == this) throw new IllegalArgumentException("The ship is already part of this world");
 		if (ship.getWorld() != null) throw new IllegalArgumentException("The ship is already part of another world");
-		ship.addToWorld(this);
+		ship.setWorld(this);
 		shipsInWorld.add(ship);
 	}
 	
@@ -123,11 +123,16 @@ public class World {
 	 * @Pre A Ship is located at most in one World. In other words, the ship should not be part of another world or added twice
 	 * @post The ship is added to the world
 	 */
-	public void addBulletToWorld(Bullet bullet){
+	public void addBulletToWorld(Bullet bullet) throws IllegalArgumentException {
 		if (bullet.getWorld() == this) throw new IllegalArgumentException("The bullet is already part of this world");
 		if (bullet.getWorld() != null) throw new IllegalArgumentException("The bullet is already part of another world");
-		bullet.addToWorld(this);
+		bullet.setWorld(this);
 		bulletsInWorld.add(bullet);
+	}
+	
+	public void removeBullet(Bullet bullet) throws IllegalArgumentException {
+		if (bullet.getWorld() == null) throw new IllegalArgumentException("This bullet does not belong to a world. ");
+		bullet.setWorld(null);
 	}
 	
 	
