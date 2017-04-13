@@ -2,6 +2,7 @@ package asteroids.model;
 
 
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -263,7 +264,7 @@ public class Ship extends CircularObject{
 	 * @param bullets
 	 * 
 	 */
-	public void loadMultipleBullets(Set<Bullet> bullets){
+	public void loadMultipleBullets(Collection<Bullet> bullets){
 		for (Bullet bullet : bullets) loadBullet(bullet);
 	}
 	

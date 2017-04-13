@@ -66,12 +66,46 @@ public abstract class CircularObject {
 			throw new IllegalArgumentException("Error. One or more values are not correct");
 		}
 	//using position and velocity classes	
-	this.position.setPosition(xCoordinate,yCoordinate);
-	this.velocity.setVelocity(xVelocity, yVelocity);
+	this.setPosition(xCoordinate,yCoordinate);
+	this.setVelocity(xVelocity, yVelocity);
 	
 	this.setRadius(radius);
 	
 	}
+	
+	
+	/**
+	 * Method that returns the x and y position of the bullet as an array of length 2
+	 * @see implementation
+	 */
+	public double[] getPositionArray() {
+		return this.position.getPositionArray();
+	}
+	
+	/**
+	 * Method that returns the x and y position of the bullet as an array of length 2
+	 * @see implementation
+	 */
+	public double[] getVelocityArray() {
+		return this.velocity.getVelocityArray();
+	}
+	/**
+	 * Method to set both x and y position of the bullet
+	 * @param x
+	 * @param y
+	 * @post
+	 * 			|new.getPosition = new Position(x,y)
+	 */
+	public void setPosition(double x, double y) {
+		//TODO: isValidPosition and throw exception
+		this.position.setPosition(x, y);
+	}
+	
+	public void setVelocity(double x, double y) {
+		//TODO: isValidVelocity and throw exception
+		this.velocity.setVelocity(x, y);
+	}
+	
 	
 	///
 	///WORLD

@@ -135,7 +135,10 @@ public class World {
 		bullet.setWorld(null);
 	}
 	
-	
+	public void removeShip(Ship ship) throws IllegalArgumentException{
+		if(ship.getWorld() == null) throw new IllegalArgumentException("The ship does not belong to a world");
+		ship.setWorld(null);
+	}
 	
 	
 }
