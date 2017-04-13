@@ -210,7 +210,14 @@ public class Ship extends CircularObject{
 		return this.bulletsCollection;
 	}
 	
-	
+	/**
+	 * Get number of bullets on the ship
+	 * @return The amount of bullets loaded on the ship
+	 * 			|result == amount;
+	 */
+	public int getAmountOfBullets(){
+		return this.bulletsCollection.size();
+	}
 	
 			
 	/**
@@ -250,6 +257,16 @@ public class Ship extends CircularObject{
 		bullet.setWorld(null);
 		this.bulletsCollection.add(bullet);
 	}
+	
+	/**
+	 * Method to load multiple bullets on the ship.
+	 * @param bullets
+	 * 
+	 */
+	public void loadMultipleBullets(Set<Bullet> bullets){
+		for (Bullet bullet : bullets) loadBullet(bullet);
+	}
+	
 	/**
 	 * Method to remove a bullet from a ship
 	 * @param bullet
@@ -336,6 +353,35 @@ public class Ship extends CircularObject{
 		}
 		this.velocity.setVelocity(newXVelocity,newYVelocity);	
 	}
+	
+	
+	/**
+	 * Fire a bullet from the ship.
+	 * @Pre The ship still needs to have available bullets and the ship itself should be located in this world.
+	 * @post After being fired, the bullet is removed from the collection of bullets of the ship.
+	 * 
+	 */
+	
+	public void fire(){
+		if(this.getAmountOfBullets() < 0) return;
+		if(this.getWorld() == null) return;
+		Bullet firedbullet = this.getBulletsOfShip().iterator().next();
+		double bulletdirection = this.getDirection();
+		double bulletradius = firedbullet.getRadius();
+		double[] shipPosition = this.position.getPositionArray();
+		
+		double bulletXVelocity = 250*Math.cos(bulletdirection);
+		double bulletYVelocity = 250*Math.sin(bulletdirection);
+		double bulletXPosition = shipPosition[0] + (this.getRadius() + 2*bulletradius)*Math.cos(bulletdirection);
+		double bulletYPosition = shipPosition[1] + (this.getRadius() + 2*bulletradius)*Math.sin(bulletdirection);
+		
+		firedbullet.setSourceShip(this);
+		this.removeBullet(firedbullet);
+		firedbullet.setVelocity(bulletXVelocity, bulletYVelocity);
+		firedbullet.setPosition(bulletXPosition, bulletYPosition);
+		
+	}
+	
 	
 	public void collision(CircularObject object2) {
 		if (object2 instanceof Ship) {
