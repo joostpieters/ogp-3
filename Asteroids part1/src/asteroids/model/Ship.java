@@ -285,7 +285,7 @@ public class Ship extends CircularObject{
 	 * 		The angle the ship has to turn
 	 * @post
 	 * 		The new direction is the old direction + the given angle
-	 * 		|new.getDirection == this.setDirection(this.getDirection() + givenangle)
+	 * 		|new.getDirection == this.setDirection(this.getDirection() + givenAngle)
 	 *
 	 */
 	public void turn(double givenAngle) {
@@ -322,8 +322,6 @@ public class Ship extends CircularObject{
 			acceleration = 0;
 		}
 		else{
-		
-			
 			acceleration = THRUSTERFORCE/getMass();
 		}
 		return acceleration;
@@ -415,9 +413,11 @@ public class Ship extends CircularObject{
 			if (bullet.getSourceShip() == this) {
 				this.loadBullet(bullet);
 			}
+			else {
+				this.setWorld(null);
+				bullet.setWorld(null);
+			}
 		}
-		else {
-			
-		}
+		
 	}
 }
