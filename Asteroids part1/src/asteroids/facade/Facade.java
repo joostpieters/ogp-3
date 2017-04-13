@@ -2,47 +2,48 @@ package asteroids.facade;
 
 
 import asteroids.model.Ship;
-import asteroids.part1.facade.IFacade;
+
+import java.util.Collection;
+import java.util.Set;
+
+import asteroids.model.Bullet;
+import asteroids.model.CircularObject;
+import asteroids.model.Velocity;
+import asteroids.model.World;
+import asteroids.model.Position;
+import asteroids.part2.CollisionListener;
+import asteroids.part2.facade.IFacade;
 import asteroids.util.ModelException;
 
 
 public class Facade implements IFacade {
 	
-	/**
-	 * Create a new ship with a default position, velocity, radius and
-	 * direction.
-	 * 
-	 * Result is a unit circle centered on <code>(0, 0)</code> facing right. Its
-	 * speed is zero.
-	 */
-	
-	public Ship createShip() throws ModelException{
-		return new Ship();
-	}
 	
 	
 	/**
 	 * Create a new ship with the given position, velocity, radius and
-	 * orientation (in radians).
+	 * orientation and mass (in radians).
 	 */
-	public Ship createShip(double x, double y, double xVelocity, double yVelocity, double radius, double orientation)
-			throws ModelException{
-		try {
-			return new Ship(x, y, xVelocity, yVelocity, radius, orientation);
-		}
+	@Override
+	public Ship createShip(double x, double y, double xVelocity,
+			double yVelocity, double radius, double orientation, double mass)
+			throws ModelException {
+		try {	
+			return new Ship(x,y,xVelocity,yVelocity,radius,orientation, mass);
+		} 
 		catch(IllegalArgumentException excep){
 			ModelException mod = new ModelException(excep);
 			throw mod;
 		}
-		
 	}
+
 	
 	/**
 	 * Return the position of <code>ship</code> as an array of length 2, with the
 	 * x-coordinate at index 0 and the y-coordinate at index 1.
 	 */
 	public double[] getShipPosition(Ship ship) throws ModelException{
-		return ship.position.getPositionArray();
+		return ship.getPositionArray();
 	}
 	
 	
@@ -52,7 +53,7 @@ public class Facade implements IFacade {
 	 * along the X-axis at index 0 and the velocity along the Y-axis at index 1.
 	 */
 	public double[] getShipVelocity(Ship ship) throws ModelException {
-		return ship.velocity.getVelocityArray();
+		return ship.getVelocityArray();
 	}
 
 	/**
@@ -162,6 +163,324 @@ public class Facade implements IFacade {
 			throw mod;
 		}
 	}
+
+
+	@Override
+	public void terminateShip(Ship ship) throws ModelException {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public boolean isTerminatedShip(Ship ship) throws ModelException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public double getShipMass(Ship ship) throws ModelException {
+		return ship.getMass();
+	}
+
+
+	@Override
+	public World getShipWorld(Ship ship) throws ModelException {
+		return ship.getWorld();
+	}
+
+
+	@Override
+	public boolean isShipThrusterActive(Ship ship) throws ModelException {
+		return ship.checkThrusterStatus();
+	}
+
+
+	@Override
+	public void setThrusterActive(Ship ship, boolean active) throws ModelException {
+		ship.thrustOn();
+		
+	}
+
+
+	@Override
+	public double getShipAcceleration(Ship ship) throws ModelException {
+		return ship.getAcceleration();
+	}
+
+
+	@Override
+	public Bullet createBullet(double x, double y, double xVelocity, double yVelocity, double radius) throws ModelException{
+	try {	
+		return new Bullet(x,y,xVelocity,yVelocity,radius);
+	} 
+	catch(IllegalArgumentException excep){
+		ModelException mod = new ModelException(excep);
+		throw mod;
+	}
+	}
+
+
+	@Override
+	public void terminateBullet(Bullet bullet) throws ModelException {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public boolean isTerminatedBullet(Bullet bullet) throws ModelException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public double[] getBulletPosition(Bullet bullet) throws ModelException {
+		return bullet.getPositionArray();
+	}
+
+
+	@Override
+	public double[] getBulletVelocity(Bullet bullet) throws ModelException {
+		return bullet.getVelocityArray();
+	}
+
+
+	@Override
+	public double getBulletRadius(Bullet bullet) throws ModelException {
+		return bullet.getRadius();
+	}
+
+
+	@Override
+	public double getBulletMass(Bullet bullet) throws ModelException {
+		return bullet.getMass();
+	}
+
+
+	@Override
+	public World getBulletWorld(Bullet bullet) throws ModelException {
+		return bullet.getWorld();
+	}
+
+
+	@Override
+	public Ship getBulletShip(Bullet bullet) throws ModelException {
+		return bullet.getSourceShip();
+	}
+
+
+	@Override
+	public Ship getBulletSource(Bullet bullet) throws ModelException {
+		return bullet.getSourceShip();
+	}
+
+
+	@Override
+	public World createWorld(double width, double height) throws ModelException {
+		try {	
+			return new World(width, height);
+		} 
+		catch(IllegalArgumentException excep){
+			ModelException mod = new ModelException(excep);
+			throw mod;
+		}
+	}
+
+
+	@Override
+	public void terminateWorld(World world) throws ModelException {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public boolean isTerminatedWorld(World world) throws ModelException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public double[] getWorldSize(World world) throws ModelException {
+		return world.getWorldDimensionArray();
+	}
+
+
+	@Override
+	public Set<? extends Ship> getWorldShips(World world) throws ModelException {
+		return world.getAllShipsInWorld();
+	}
+
+
+	@Override
+	public Set<? extends Bullet> getWorldBullets(World world) throws ModelException {
+		return world.getAllBulletsInWorld();
+	}
+
+
+	@Override
+	public void addShipToWorld(World world, Ship ship) throws ModelException {
+		try {	
+			world.addShipToWorld(ship);
+		} 
+		catch(IllegalArgumentException excep){
+			ModelException mod = new ModelException(excep);
+			throw mod;
+		}
+		
+	}
+
+
+	@Override
+	public void removeShipFromWorld(World world, Ship ship) throws ModelException {
+		try {	
+			world.removeShip(ship);
+		} 
+		catch(IllegalArgumentException excep){
+			ModelException mod = new ModelException(excep);
+			throw mod;
+		}
+	}
+
+
+	@Override
+	public void addBulletToWorld(World world, Bullet bullet) throws ModelException {
+		try {	
+			world.addBulletToWorld(bullet);
+		} 
+		catch(IllegalArgumentException excep){
+			ModelException mod = new ModelException(excep);
+			throw mod;
+		}
+		
+	}
+
+
+	@Override
+	public void removeBulletFromWorld(World world, Bullet bullet) throws ModelException {
+		try {	
+			world.removeBullet(bullet);
+		} 
+		catch(IllegalArgumentException excep){
+			ModelException mod = new ModelException(excep);
+			throw mod;
+		}
+		
+	}
+
+
+	@Override
+	public Set<? extends Bullet> getBulletsOnShip(Ship ship) throws ModelException {
+		return ship.getBulletsOfShip();
+	}
+
+
+	@Override
+	public int getNbBulletsOnShip(Ship ship) throws ModelException {
+		return ship.getAmountOfBullets();
+	}
+
+
+	@Override
+	public void loadBulletOnShip(Ship ship, Bullet bullet) throws ModelException {
+		try {	
+			ship.loadBullet(bullet);
+		} 
+		catch(IllegalArgumentException excep){
+			ModelException mod = new ModelException(excep);
+			throw mod;
+		}
+		
+	}
+
+
+	@Override
+	public void loadBulletsOnShip(Ship ship, Collection<Bullet> bullets) throws ModelException {
+		ship.loadMultipleBullets(bullets);
+		
+	}
+
+
+	@Override
+	public void removeBulletFromShip(Ship ship, Bullet bullet) throws ModelException {
+		ship.removeBullet(bullet);
+		
+	}
+
+
+	@Override
+	public void fireBullet(Ship ship) throws ModelException {
+		ship.fire();
+		
+	}
+
+
+	@Override
+	public double getTimeCollisionBoundary(Object object) throws ModelException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public double[] getPositionCollisionBoundary(Object object) throws ModelException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public double getTimeCollisionEntity(Object entity1, Object entity2) throws ModelException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public double[] getPositionCollisionEntity(Object entity1, Object entity2) throws ModelException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public double getTimeNextCollision(World world) throws ModelException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public double[] getPositionNextCollision(World world) throws ModelException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void evolve(World world, double dt, CollisionListener collisionListener) throws ModelException {
+		//TODO
+	
+		
+	}
+
+
+	@Override
+	public Object getEntityAt(World world, double x, double y) throws ModelException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Set<? extends Object> getEntities(World world) throws ModelException {
+		return world.getAllCircularObjectsInWorld();
+	}
+
 
 	
 	
