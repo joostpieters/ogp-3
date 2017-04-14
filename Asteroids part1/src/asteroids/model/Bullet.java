@@ -34,6 +34,11 @@ public class Bullet extends CircularObject{
 	private Velocity velocity = new Velocity(0,0);
 	
 	/**
+	 * Boolean variable representing whether or not the bullet is terminated
+	 */
+	private boolean isTerminated = false;
+	
+	/**
 	 * Initialization of a bullet with given position in x and y coordinates, horizontal and vertical velocity and a radius. 
 	 *@param xCoordinate
 	 *		The xCoordinate of the bullet
@@ -62,7 +67,6 @@ public class Bullet extends CircularObject{
 	
 	
 	private Ship ship;
-	
 	
 	//
 	//GETTERS 
@@ -202,21 +206,6 @@ public class Bullet extends CircularObject{
 		this.position.setPosition(x, y);
 	}
 	
-	public void setXVelocity(double x) {
-		//TODO: isValidVelocity and throw exception
-		this.velocity.setXVelocity(x);
-	}
-	
-	public void setYVelocity(double y) {
-		//TODO: isValidVelocity and throw exception
-		this.velocity.setYVelocity(y);
-	}
-	
-	public void setVelocity(double x, double y) {
-		//TODO: isValidVelocity and throw exception
-		this.velocity.setVelocity(x, y);
-	}
-	
 	/**
 	 * Set the ship where the bullet belongs to.
 	 * @param ship
@@ -230,12 +219,28 @@ public class Bullet extends CircularObject{
 			this.ship = ship;
 		}
 	}
-	
+	/**
+	 * Method that increments the amount of times the bullet has collided with a boundary
+	 */
 	public void incrementBoundaryCollision() {
 		this.boundaryCollisions ++;
 	}
 	
-	public void collision(CircularObject object2) {
-		
+	public void terminateBullet() {
+		this.setWorld(null);
+		this.isTerminated = true;
+	}
+	public void collideWithBoundary(CircularObject object2) {
+		double xBoundaryWorld = this.world.getWorldDimensionArray()[0];
+		double yBoundaryWorld = this.world.getWorldDimensionArray()[1];
+		if (this.position.getPositionX() - this.getRadius() <= 0 || this.position.getPositionX() + this.getRadius() >= xBoundaryWorld) {
+			double currentXVel = this.velocity.getXVelocity();
+			double currentYVel = this.velocity.getYVelocity();
+			this.velocity.setVelocity(-currentXVel, -currentYVel);
+			this.incrementBoundaryCollision();
+		}
+		if (this.boundaryCollisions == 3) {
+			this.terminateBullet();
+		}
 	}
 }

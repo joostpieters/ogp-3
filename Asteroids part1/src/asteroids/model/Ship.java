@@ -81,6 +81,10 @@ public class Ship extends CircularObject{
 	 * The collection of bullets a ship has
 	 */
 	private Set<Bullet> bulletsCollection = new HashSet<Bullet>();
+	/**
+	 * Boolean variable that checks if a world is terminated or not
+	 */
+	private boolean isTerminated = false;
 
 	
 	
@@ -384,7 +388,16 @@ public class Ship extends CircularObject{
 	}
 	
 	
-	public void collision(CircularObject object2) {
+	public void terminateShip() {
+		this.setWorld(null);
+		this.isTerminated = true;
+	}
+	
+	public boolean isShipTerminated() {
+		return this.isTerminated;
+	}
+	
+	public void collisionEntity(CircularObject object2) {
 		if (object2 instanceof Ship) {
 			double sumOfRadiusses = this.getRadius() + object2.getRadius();
 			double sumOfMasses = this.getMass() + object2.getMass();
@@ -403,6 +416,25 @@ public class Ship extends CircularObject{
 			this.velocity.setVelocity(newXVelocityThisObject, newYVelocityThisObject);;
 			object2.velocity.setVelocity(newXVelocityObject2, newYVelocityObject2);
 		}
+		if (object2 instanceof Bullet) {
+			Bullet bullet = (Bullet) object2;
+			if (bullet.getSourceShip() == this) {
+				this.loadBullet(bullet);
+			}
+			else {
+				this.terminateShip();
+				bullet.terminateBullet();
+			}
+		}
+	}
+	
+	/**
+	 * Method that resolves collisions of a ship with a boundary
+	 * @post
+	 * 			|new.velocity.getXVelocity == -currentXVel
+	 * 			|new.velocity.getYVelocity == -currentYVel
+	 */
+	public void collideWithBoundary() {
 		if (this.position.getPositionX() - this.getRadius() == 0 || this.position.getPositionX() + this.getRadius() == this.world.getWorldDimensionArray()[0]) {
 			double currentXVel = this.velocity.getXVelocity();
 			this.velocity.setXVelocity(-currentXVel);
@@ -411,14 +443,6 @@ public class Ship extends CircularObject{
 			double currentYVel = this.velocity.getYVelocity();
 			this.velocity.setYVelocity(-currentYVel);
 		}
-		if (object2 instanceof Bullet) {
-			Bullet bullet = (Bullet) object2;
-			if (bullet.getSourceShip() == this) {
-				this.loadBullet(bullet);
-			}
-		}
-		else {
-			
-		}
 	}
+	
 }

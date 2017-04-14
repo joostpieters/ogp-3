@@ -38,6 +38,11 @@ public class World {
 	 */
 	private Set<CircularObject> circularObjectsInWorld = new HashSet<CircularObject>();
 	
+	/**
+	 * Boolean variable that indicates whether or not the world is terminated
+	 */
+	private boolean isTerminated = false;
+	
 	
 	
 	/**
@@ -138,6 +143,20 @@ public class World {
 	public void removeShip(Ship ship) throws IllegalArgumentException{
 		if(ship.getWorld() == null) throw new IllegalArgumentException("The ship does not belong to a world");
 		ship.setWorld(null);
+	}
+	
+	public void terminateWorld() {
+		for (Ship ship : shipsInWorld) {
+			this.removeShip(ship);
+		}
+		for (Bullet bullet : bulletsInWorld) {
+			this.removeBullet(bullet);
+		}
+		this.isTerminated = true;
+	}
+	
+	public boolean isWorldTerminated() {
+		return this.isTerminated;
 	}
 	
 	
