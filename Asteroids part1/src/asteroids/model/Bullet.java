@@ -225,15 +225,30 @@ public class Bullet extends CircularObject{
 	public void incrementBoundaryCollision() {
 		this.boundaryCollisions ++;
 	}
-	
+	/**
+	 * Method to terminate a bullet
+	 * @post
+	 * 			|new.getWorld == null
+	 * 			|isTerminated == true
+	 */
 	public void terminateBullet() {
 		this.setWorld(null);
 		this.isTerminated = true;
 	}
-	public void collideWithBoundary(CircularObject object2) {
+	
+	/**
+	 * Method to resolve collision between a bullet and the boundary of a world, if a bullet collides with a boundary of a world for
+	 * the third time, the bullet is terminated
+	 * @post
+	 * 			|if ((this.position.getPositionX() - this.getRadius() <= 0 || this.position.getPositionX() + this.getRadius() >= xBoundaryWorld) && this.boundaryCollisions < 3) 
+	 * 				new.velocity.getXVelocity = -currentXVel && new.velocity.getYVelocity = -currentYVel
+	 * 			|if (this.boundaryCollisions == 3) terminateBullet
+	 * 
+	 */
+	public void collideWithBoundary() {
 		double xBoundaryWorld = this.world.getWorldDimensionArray()[0];
 		double yBoundaryWorld = this.world.getWorldDimensionArray()[1];
-		if (this.position.getPositionX() - this.getRadius() <= 0 || this.position.getPositionX() + this.getRadius() >= xBoundaryWorld) {
+		if ((this.position.getPositionX() - this.getRadius() <= 0 || this.position.getPositionX() + this.getRadius() >= xBoundaryWorld) && this.boundaryCollisions < 3) {
 			double currentXVel = this.velocity.getXVelocity();
 			double currentYVel = this.velocity.getYVelocity();
 			this.velocity.setVelocity(-currentXVel, -currentYVel);
@@ -243,4 +258,17 @@ public class Bullet extends CircularObject{
 			this.terminateBullet();
 		}
 	}
+	
+	public void collideWithBullet(CircularObject object2) {
+		if (object2 instanceof Ship) {
+			Ship ship = (Ship)object2;
+			if (this.getSourceShip() == ship) ship.loadBullet(this);
+			else {
+				ship.terminateShip();
+				this.terminateBullet();
+			}
+		}
+	}
+	
+	
 }
