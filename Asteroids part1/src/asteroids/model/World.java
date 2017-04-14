@@ -135,16 +135,34 @@ public class World {
 		bulletsInWorld.add(bullet);
 	}
 	
+	/**
+	 * Method to remove a bullet from this world
+	 * @param bullet
+	 * @throws IllegalArgumentException
+	 * 			The bullet doesn't belong to this world
+	 * 			|bullet.getWorld() == null || bullet.getWorld() != this
+	 */
 	public void removeBullet(Bullet bullet) throws IllegalArgumentException {
-		if (bullet.getWorld() == null) throw new IllegalArgumentException("This bullet does not belong to a world. ");
+		if (bullet.getWorld() == null || bullet.getWorld() != this) throw new IllegalArgumentException("This bullet does not belong to a world. ");
 		bullet.setWorld(null);
 	}
-	
+	/**
+	 * Method to remove a ship from this world
+	 * @param ship
+	 * @throws IllegalArgumentException
+	 * 			The ship does not belong to this world
+	 * 			|ship.getWorld() == null || ship.getWorld() != this
+	 */
 	public void removeShip(Ship ship) throws IllegalArgumentException{
-		if(ship.getWorld() == null) throw new IllegalArgumentException("The ship does not belong to a world");
+		if(ship.getWorld() == null || ship.getWorld() != this) throw new IllegalArgumentException("The ship does not belong to a world");
 		ship.setWorld(null);
 	}
 	
+	/**
+	 * Method that removes all ships and bullets from the world
+	 * @post
+	 * 			|shipsInWorld.isEmpty() && bulletsInWorld.isEmpty()
+	 */
 	public void terminateWorld() {
 		for (Ship ship : shipsInWorld) {
 			this.removeShip(ship);
@@ -155,8 +173,24 @@ public class World {
 		this.isTerminated = true;
 	}
 	
+	/**
+	 * Method that returns whether or not this world is terminated
+	 * @see implementation
+	 */
 	public boolean isWorldTerminated() {
 		return this.isTerminated;
+	}
+	/**
+	 * Method that returns the object at position x,y. This method returns null if there is no object at the position, null is returned
+	 * @param x
+	 * @param y
+	 * @see implementation
+	 */
+	public Object getEntityAt(double x, double y) {
+		for (CircularObject object : this.getAllCircularObjectsInWorld()) {
+			if (object.position.getPositionX() == x && object.position.getPositionY() == y) return object;
+		}
+		return null;
 	}
 	
 	
