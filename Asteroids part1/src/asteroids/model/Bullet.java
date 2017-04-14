@@ -64,74 +64,11 @@ public class Bullet extends CircularObject{
 			super(xCoordinate, yCoordinate, xVelocity, yVelocity, radius);
 		}
 	
-	
-	
 	private Ship ship;
 	
 	//
 	//GETTERS 
 	//
-	
-	/**
-	 * Method that returns the x position of the bullet
-	 * @see implementation
-	 */
-	public double getXPosition() {
-		
-		return this.position.getPositionX();
-	}
-	/**
-	 * Method that returns the y position of the bullet
-	 * @see implementation
-	 */
-	public double getYPosition() {
-		
-		return this.position.getPositionY();
-	}
-	/**
-	 * Method that returns the x and y position of the bullet as an array of length 2
-	 * @see implementation
-	 */
-	public double[] getPositionArray() {
-		return this.position.getPositionArray();
-	}
-	/**
-	 * Method that returns the position of the bullet
-	 * @see implementation
-	 */
-	public Position getPosition() {
-		return this.position.getPosition();
-	}
-	/**
-	 * Returns the horizontal velocity of the bullet
-	 * @see implementation
-	 */
-	public double getXVelocity() {
-		return this.velocity.getXVelocity();
-	}
-	
-	/**
-	 * Returns the vertical velocity of the bullet
-	 * @see implementation
-	 */
-	public double getYVelocity() {
-		return this.velocity.getYVelocity();
-	}
-	
-	/**
-	 * Returns the horizontal and vertical velocity of the bullet as an array of length 2
-	 * @see implementation
-	 */
-	public double[] getVelocityArray() {
-		return this.velocity.getVelocityArray();
-	}
-	/**
-	 * Returns the velocity of the bullet
-	 * @see implementation
-	 */
-	public Velocity getVelocity() {
-		return this.velocity.getVelocity();
-	}
 	
 	/**
 	 * Retrieve the ship that has this certain bullet
@@ -239,7 +176,8 @@ public class Bullet extends CircularObject{
 	/**
 	 * Method to resolve collision between a bullet and the boundary of a world, if a bullet collides with a boundary of a world for
 	 * the third time, the bullet is terminated
-	 * @post
+	 * @post If the bullet collides with a boundary and hasn't collided with a boundary 3 times, then the boundaryCollisions variable is incremented and the velocities get negates,
+	 * 			when a bullet collides with a boundary for the 3rd time, the bullet is terminated
 	 * 			|if ((this.position.getPositionX() - this.getRadius() <= 0 || this.position.getPositionX() + this.getRadius() >= xBoundaryWorld) && this.boundaryCollisions < 3) 
 	 * 				new.velocity.getXVelocity = -currentXVel && new.velocity.getYVelocity = -currentYVel
 	 * 			|if (this.boundaryCollisions == 3) terminateBullet
@@ -259,6 +197,14 @@ public class Bullet extends CircularObject{
 		}
 	}
 	
+	/**
+	 * Method to resolve collision between a bullet and a circular object
+	 * @param object2
+	 * @post If the bullet collides with its source ship, then the bullet is loaded onto the ship
+	 * 			|ship.loadBullet(this)
+	 * @post If it collides with a different ship then both are terminated
+	 * 			|ship.terminateShip() && this.terminateBullet() 		
+	 */
 	public void collideWithBullet(CircularObject object2) {
 		if (object2 instanceof Ship) {
 			Ship ship = (Ship)object2;
