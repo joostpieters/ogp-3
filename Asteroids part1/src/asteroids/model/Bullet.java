@@ -79,7 +79,6 @@ public class Bullet extends CircularObject{
 		return this.ship;
 	}
 	
-	
 	/**
 	 * Get the mass of the bullet
 	 * @return the mass of the bullet
