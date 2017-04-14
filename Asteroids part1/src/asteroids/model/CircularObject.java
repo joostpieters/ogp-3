@@ -324,7 +324,42 @@ public abstract class CircularObject {
 		return new double[] {xPositionCollisionThisShip + Math.cos(slope) * this.getRadius(), yPositionCollisionThisShip + Math.sin(slope) * this.getRadius()};
 	}
 	
+	public double getTimeCollisionBoundary() {
+		if (this.getWorld() == null) return Double.POSITIVE_INFINITY;
+		double timeToCollisionX = 0;
+		double timeToCollisionY = 0;
+		
+		double positionX = this.position.getPositionX();
+		double positionY = this.position.getPositionY();
+		double velocityX = this.velocity.getXVelocity();
+		double velocityY = this.velocity.getYVelocity();
+		
+		double xBoundary = this.world.getWorldDimensionArray()[0];
+		double yBoundary = this.world.getWorldDimensionArray()[1];
+		
+		if (velocityX == 0) timeToCollisionX = Double.POSITIVE_INFINITY;
+		if (velocityY == 0) timeToCollisionY = Double.POSITIVE_INFINITY;
+		if (velocityX > 0) timeToCollisionX = (xBoundary - positionX)/velocityX;
+		if (velocityX < 0) timeToCollisionX = Math.abs((positionX)/velocityX);
+		if (velocityY > 0) timeToCollisionY = (yBoundary - positionY)/velocityY;
+		if (velocityY < 0) timeToCollisionY = Math.abs((positionY)/velocityY);
+		return Math.min(timeToCollisionX, timeToCollisionY);
+	}
 	
+	public double[] getPositionCollisionBoundary() {
+		if (this.getWorld() == null) return null;
+		if (this.getTimeCollisionBoundary() == Double.POSITIVE_INFINITY) return null;
+		double xPosition = this.position.getPositionX();
+		double yPosition = this.position.getPositionY();
+		double xVel = this.velocity.getXVelocity();
+		double yVel = this.velocity.getYVelocity();
+		double timeToCollision = this.getTimeCollisionBoundary();
+		
+		double xPosCollision = xPosition + xVel * timeToCollision;
+		double yPosCollision = yPosition + yVel * timeToCollision;
+		
+		return new double[] {xPosCollision, yPosCollision};
+	}
 	
 	
 }
