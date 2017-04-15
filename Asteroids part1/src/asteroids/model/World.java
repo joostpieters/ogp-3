@@ -102,8 +102,11 @@ public class World {
 	 * 			|result == shipsInWorld
 	 */
 	public Set<CircularObject> getAllCircularObjectsInWorld(){
+<<<<<<< HEAD
 		
 			
+=======
+>>>>>>> origin/master
 		circularObjectsInWorld.addAll(bulletsInWorld);
 		circularObjectsInWorld.addAll(shipsInWorld);
 		return circularObjectsInWorld;
@@ -266,6 +269,13 @@ public class World {
 	 * Method to evolve the world a certain amount of seconds
 	 * @param dt 
 	 * @param collisionListener
+	 * @post All of the circular objects are moved to the correct position after dt seconds and velocities are updated
+	 * 			|for (CircularObject object : this.getAllCircularObjectsInWorld()) object.move(dt) && 
+	 * 			for (Ship ship : this.getAllShipsInWorld()) {
+	 *				if (ship.checkThrusterStatus()) {
+	 *					ship.updateVelocity(dt);
+	 *				}
+	 * 			
 	 */
 	public void evolve(double dt, CollisionListener collisionListener) {
 		double tC = this.getTimeNextCollision();
