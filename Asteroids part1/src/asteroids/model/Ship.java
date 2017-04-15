@@ -404,12 +404,19 @@ public class Ship extends CircularObject{
 	
 	
 	
-	
+	/**
+	 * Method that terminates a ship
+	 * @post this.isTerminated = true
+	 */
 	public void terminateShip() {
 		this.setWorld(null);
 		this.isTerminated = true;
 	}
 	
+	/**
+	 * Method that returns whether or not the ship is terminated
+	 * @see implementation
+	 */
 	public boolean isShipTerminated() {
 		return this.isTerminated;
 	}
@@ -420,6 +427,7 @@ public class Ship extends CircularObject{
 	 * @effect
 	 * 		|if (object2 instanceof Ship) this.velocity.getVelocity() = new Velocity(newXVelocityThisObject, newYVelocityThisObject)
 	 * 		&& object.velocity.getVelocity() = new Velocity(newXVelocityObject2, newYVelocityObject2);
+	 * 		|if (object2 instanceof Bullet) this.loadBullet(bullet) || (this.terminateShip() && bullet.terminateBullet))
 	 */
 	public void collisionCircularObject(CircularObject object2) {
 		if (object2 instanceof Ship) {

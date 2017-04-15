@@ -42,6 +42,7 @@ public class Facade implements IFacade {
 	 * Return the position of <code>ship</code> as an array of length 2, with the
 	 * x-coordinate at index 0 and the y-coordinate at index 1.
 	 */
+	@Override
 	public double[] getShipPosition(Ship ship) throws ModelException{
 		return ship.getPositionArray();
 	}
@@ -52,6 +53,7 @@ public class Facade implements IFacade {
 	 * Return the velocity of <code>ship</code> as an array of length 2, with the velocity
 	 * along the X-axis at index 0 and the velocity along the Y-axis at index 1.
 	 */
+	@Override
 	public double[] getShipVelocity(Ship ship) throws ModelException {
 		return ship.getVelocityArray();
 	}
@@ -59,6 +61,7 @@ public class Facade implements IFacade {
 	/**
 	 * Return the radius of <code>ship</code>.
 	 */
+	@Override
 	public double getShipRadius(Ship ship) throws ModelException{
 		return ship.getRadius();
 	}
@@ -66,37 +69,37 @@ public class Facade implements IFacade {
 	/**
 	 * Return the orientation of <code>ship</code> (in radians).
 	 */
+	@Override
 	public double getShipOrientation(Ship ship) throws ModelException{
 		return ship.getDirection();
 	}
 
-	/**
-	 * Update <code>ship</code>'s position, assuming it moves <code>dt</code>
-	 * seconds at its current velocity.
-	 */
-	public void move(Ship ship, double dt) throws ModelException{
-		try{ ship.move(dt);
-		} 
-		catch(IllegalArgumentException excep){
-			ModelException mod = new ModelException(excep);
-			throw mod;
-		}
-	}
-
-	/**
-	 * Update <code>ship</code>'s velocity based on its current velocity, its
-	 * direction and the given <code>amount</code>.
-	 */
-	public void thrust(Ship ship, double amount) throws ModelException{
-		ship.thrust(amount);
-		
-	}
+//**
+//* Update <code>ship</code>'s position, assuming it moves <code>dt</code>
+//* seconds at its current velocity.
+//*/
+//ublic void move(Ship ship, double dt) throws ModelException{
+//	try{ ship.move(dt);
+//	} 
+//	catch(IllegalArgumentException excep){
+//		ModelException mod = new ModelException(excep);
+//		throw mod;
+//	}
+//
+//
+//**
+//* Update <code>ship</code>'s velocity based on its current velocity, its
+//* direction and the given <code>amount</code>.
+//*/
+//
+//
 
 	/**
 	 * Update the direction of <code>ship</code> by adding <code>angle</code>
 	 * (in radians) to its current direction. <code>angle</code> may be
 	 * negative.
 	 */
+	@Override
 	public void turn(Ship ship, double angle) throws ModelException{
 		ship.turn(angle);
 	}
@@ -109,6 +112,7 @@ public class Facade implements IFacade {
 	 * result must be negative if the ships overlap. The distance between a ship
 	 * and itself is 0.
 	 */
+	@Override
 	public double getDistanceBetween(Ship ship1, Ship ship2) throws ModelException{
 		try{ return ship1.getDistanceBetween(ship2);
 		}
@@ -122,6 +126,7 @@ public class Facade implements IFacade {
 	 * Check whether <code>ship1</code> and <code>ship2</code> overlap. A ship
 	 * always overlaps with itself.
 	 */
+	@Override
 	public boolean overlap(Ship ship1, Ship ship2) throws ModelException{
 	try { return ship1.overlap(ship2);
 	}
@@ -137,6 +142,7 @@ public class Facade implements IFacade {
 	 * <code>ship1</code> and <code>ship2</code>, or Double.POSITIVE_INFINITY if
 	 * they never collide. A ship never collides with itself.
 	 */
+	@Override
 	public double getTimeToCollision(Ship ship1, Ship ship2) throws ModelException{
 		try {
 			return ship1.getTimeToCollision(ship2);
@@ -155,6 +161,7 @@ public class Facade implements IFacade {
 	 * the element at index 0 represents the x-coordinate and the element at
 	 * index 1 represents the y-coordinate.
 	 */
+	@Override
 	public double[] getCollisionPosition(Ship ship1, Ship ship2) throws ModelException{
 		try {
 			return ship1.getCollisionPosition(ship2);
