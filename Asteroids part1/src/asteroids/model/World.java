@@ -258,13 +258,21 @@ public class World {
 		return collidingObjects;
 	}
 	
+	/**
+	 * Method to evolve the world a certain amount of seconds
+	 * @param dt 
+	 * @param collisionListener
+	 */
 	public void evolve(double dt, CollisionListener collisionListener) {
 		double tC = this.getTimeNextCollision();
-				
+		
 		while (tC <= dt) {
 			CircularObject[] firstCollidingObjects = this.getNextCollidingObjects();
 			double[] positionFirstCollision = this.getPositionNextCollision();
 			for (CircularObject object1 : this.getAllCircularObjectsInWorld()) object1.move(tC);
+			for (Ship ship : this.getAllShipsInWorld()) {
+				if (ship.checkThrusterStatus()) ship.updateVelocity(tC);
+			}
 			if (firstCollidingObjects[1] == null) {
 				if (firstCollidingObjects[0] instanceof Ship) {
 					Ship ship = (Ship)firstCollidingObjects[0];
@@ -292,5 +300,11 @@ public class World {
 			tC = this.getTimeNextCollision();
 		}
 		for (CircularObject object : this.getAllCircularObjectsInWorld()) object.move(dt);
+		for (Ship ship : this.getAllShipsInWorld()) {
+			if (ship.checkThrusterStatus()) {
+				ship.updateVelocity(dt);
+			}
+		}
+		
 	}
 }

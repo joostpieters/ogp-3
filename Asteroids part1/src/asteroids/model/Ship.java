@@ -445,6 +445,21 @@ public class Ship extends CircularObject{
 		}
 	}
 	
+	
+	public void updateVelocity(double dt) {
+		
+		double velocityX = this.velocity.getXVelocity();
+		double velocityY = this.velocity.getYVelocity();
+		double orientation = this.getDirection();
+		double massShip = this.getMass();
+		double acceleration = this.THRUSTERFORCE / massShip;
+		
+		double newXVelocity = velocityX + acceleration * Math.cos(orientation) * dt;
+		double newYVelocity = velocityY + acceleration * Math.sin(orientation) * dt;
+		
+		this.velocity.setVelocity(newXVelocity, newYVelocity);
+	}
+	
 	/**
 	 * Method that resolves collisions of a ship with a boundary
 	 * @post
