@@ -335,6 +335,7 @@ public class Ship extends CircularObject{
 		return acceleration;
 	}
 	
+	
 	/**
 	 * Change the velocity of the ship based on a the orientation, a given amount and the current velocity
 	 * @param amount
@@ -392,13 +393,12 @@ public class Ship extends CircularObject{
 		}
 		else{ 
 			for (CircularObject obj: this.getWorld().getAllCircularObjectsInWorld()){
-				if(obj.overlap(firedbullet)){
-					//firedbullet.collisionEntity();
+				if (obj.overlap(firedbullet)) {
+					firedbullet.collisionCircularObject(obj);
 				}
-				
-			
 			}
 		}
+		
 	}
 	
 	
