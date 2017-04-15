@@ -351,6 +351,36 @@ public class test{
 	}
 	
 	
+	@Test
+	public void testgetTimeToCollision() throws ModelException {
+		World world = facade.createWorld(8000, 4000);
+		Ship ship1 = facade.createShip(80, 0, 0, 0, 20, 0, 1.1E18);
+		Ship ship2 = facade.createShip(0, 0, 20, 0, 20, 0, 1.1E18);
+		double time = ship1.getTimeToCollision(ship2);
+		assertNotNull(time);
+		assertEquals(2, time, EPSILON);
+	}
+	
+	@Test
+	public void testgetTimeToCollisionNoCollision() throws ModelException {
+		Ship ship1 = facade.createShip(150, 150, 0, 0, 20, 0, 2000);
+		Ship ship2 = facade.createShip(0, 0, 20, 0, 20, 0, 2000);
+		assertEquals(Double.POSITIVE_INFINITY, ship1.getTimeToCollision(ship2), EPSILON);
+	}
+	
+	@Test
+	public void testcollisionTimeAndPositionBoundary() throws ModelException{
+		Ship ship = facade.createShip(800, 100, 10, 0, 11, 0,500);
+		World world = facade.createWorld(3000, 3000);
+		facade.addShipToWorld(world, ship);
+		double time = facade.getTimeCollisionBoundary(ship);
+		assertEquals(220,time,EPSILON);
+		double[] position = facade.getPositionCollisionBoundary(ship);
+		assertEquals(3000,position[0],EPSILON);
+		assertEquals(100,position[1],EPSILON);
+	}
+	
+
 	
 }	
 	
