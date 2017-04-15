@@ -413,7 +413,10 @@ public class Ship extends CircularObject{
 		return this.isTerminated;
 	}
 	
-	//TODO: documentation
+	/**
+	 * Method to resolve 
+	 * @param object2
+	 */
 	public void collisionCircularObject(CircularObject object2) {
 		if (object2 instanceof Ship) {
 			double sumOfRadiusses = this.getRadius() + object2.getRadius();
