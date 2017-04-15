@@ -68,7 +68,6 @@ public abstract class CircularObject {
 	//using position and velocity classes	
 	this.setPosition(xCoordinate,yCoordinate);
 	this.setVelocity(xVelocity, yVelocity);
-	
 	this.setRadius(radius);
 	
 	}
@@ -117,7 +116,7 @@ public abstract class CircularObject {
 	 * 			|result == World
 	 */
 	public World getWorld(){
-		return world;
+		return this.world;
 	}
 	
 	/**
@@ -179,11 +178,11 @@ public abstract class CircularObject {
 	 */
 	public void move(double duration) throws IllegalArgumentException {
 			if (duration < 0) throw new IllegalArgumentException("The duration must be greater than zero");
-			double[] currentPos = this.position.getPositionArray();
-			double[] currentVel = this.velocity.getVelocityArray();
+			double[] currentPos = this.getPositionArray();
+			double[] currentVel = this.getVelocityArray();
 			double newPosX = currentPos[0] + (currentVel[0] * duration);
 			double newPosY = currentPos[1] + (currentVel[1] * duration);
-			this.position.setPosition(newPosX, newPosY);
+			this.setPosition(newPosX, newPosY);
 	}
 	
 	/**
@@ -327,10 +326,10 @@ public abstract class CircularObject {
 			
 		if (timeToCollision == Double.POSITIVE_INFINITY) return null;
 		
-		double[] positionThisShip = this.position.getPositionArray();
-		double[] velocityThisShip = this.velocity.getVelocityArray();
-		double[] positionShip2 = object2.position.getPositionArray();
-		double[] velocityShip2 = object2.velocity.getVelocityArray();
+		double[] positionThisShip = this.getPositionArray();
+		double[] velocityThisShip = this.getVelocityArray();
+		double[] positionShip2 = object2.getPositionArray();
+		double[] velocityShip2 = object2.getVelocityArray();
 		
 		double xPositionCollisionThisShip = positionThisShip[0] + velocityThisShip[0] * timeToCollision;
 		double yPositionCollisionThisShip = positionThisShip[1] + velocityThisShip[1] * timeToCollision;
@@ -343,19 +342,24 @@ public abstract class CircularObject {
 		return new double[] {xPositionCollisionThisShip + Math.cos(slope) * this.getRadius(), yPositionCollisionThisShip + Math.sin(slope) * this.getRadius()};
 	}
 	
-	//TODO
+	/**
+	 * Method that returns the time to a first potential collision with a boundary
+	 * @return If the object does not belong to a world, Double.POSITIVE_INFINITY is returned, otherwise the minimum time to the first collision is returned
+	 * 			|if (this.getWorld() == null) return Double.POSITIVE_INFINITY
+	 * 			|Math.min(timeToCollisionX, timeToCollisionY)
+	 */
 	public double getTimeCollisionBoundary() {
 		if (this.getWorld() == null) return Double.POSITIVE_INFINITY;
 		double timeToCollisionX = 0;
 		double timeToCollisionY = 0;
 		
-		double positionX = this.position.getPositionX();
-		double positionY = this.position.getPositionY();
-		double velocityX = this.velocity.getXVelocity();
-		double velocityY = this.velocity.getYVelocity();
+		double positionX = this.getPositionArray()[0];
+		double positionY = this.getPositionArray()[1];
+		double velocityX = this.getVelocityArray()[0];
+		double velocityY = this.getVelocityArray()[1];
 		
-		double xBoundary = this.world.getWorldDimensionArray()[0];
-		double yBoundary = this.world.getWorldDimensionArray()[1];
+		double xBoundary = this.getWorld().getWorldDimensionArray()[0];
+		double yBoundary = this.getWorld().getWorldDimensionArray()[1];
 		
 		if (velocityX == 0) timeToCollisionX = Double.POSITIVE_INFINITY;
 		if (velocityY == 0) timeToCollisionY = Double.POSITIVE_INFINITY;
@@ -366,20 +370,22 @@ public abstract class CircularObject {
 		return Math.min(timeToCollisionX, timeToCollisionY);
 	}
 	
-	//TODO
+	/**
+	 * Method that returns the position of the first collision of a circular object with a boundary
+	 * @return If the object doesn't belong to a world or it will not collide with a boundary, null is returned
+	 * 			otherwise the position of the collision is returned
+	 * 			|
+	 */
 	public double[] getPositionCollisionBoundary() {
 		if (this.getWorld() == null) return null;
 		if (this.getTimeCollisionBoundary() == Double.POSITIVE_INFINITY) return null;
-		double xPosition = this.position.getPositionX();
-		double yPosition = this.position.getPositionY();
-		double xVel = this.velocity.getXVelocity();
-		double yVel = this.velocity.getYVelocity();
+		double xPosition = this.getPositionArray()[0];
+		double yPosition = this.getPositionArray()[1];
+		double xVel = this.getVelocityArray()[0];
+		double yVel = this.getVelocityArray()[1];
 		double timeToCollision = this.getTimeCollisionBoundary();
 		
-		double xPosCollision = xPosition + xVel * timeToCollision;
-		double yPosCollision = yPosition + yVel * timeToCollision;
-		
-		return new double[] {xPosCollision, yPosCollision};
+		return new double[] {xPosition + xVel * timeToCollision, yPosition + yVel * timeToCollision};
 	}
 	
 	
