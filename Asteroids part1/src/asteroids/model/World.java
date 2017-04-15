@@ -102,6 +102,10 @@ public class World {
 	 * 			|result == shipsInWorld
 	 */
 	public Set<CircularObject> getAllCircularObjectsInWorld(){
+		
+			
+		circularObjectsInWorld.addAll(bulletsInWorld);
+		circularObjectsInWorld.addAll(shipsInWorld);
 		return circularObjectsInWorld;
 	}
 	
@@ -189,8 +193,8 @@ public class World {
 	 * @see implementation
 	 */
 	public Object getEntityAt(double x, double y) {
-		for (CircularObject object : this.getAllCircularObjectsInWorld()) {
-			if (object.getPositionArray()[0] == x && object.getPositionArray()[1] == y) return object;
+		for (CircularObject obj : this.getAllCircularObjectsInWorld()) {
+			if (obj.position.getPositionX() == x && obj.position.getPositionY() == y) return obj;
 		}
 		return null;
 	}	
@@ -269,7 +273,6 @@ public class World {
 		while (tC <= dt) {
 			CircularObject[] firstCollidingObjects = this.getNextCollidingObjects();
 			double[] positionFirstCollision = this.getPositionNextCollision();
-			
 			for (CircularObject object1 : this.getAllCircularObjectsInWorld()) object1.move(tC);
 			for (Ship ship : this.getAllShipsInWorld()) {
 				if (ship.checkThrusterStatus()) ship.updateVelocity(tC);

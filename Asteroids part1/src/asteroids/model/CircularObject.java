@@ -343,7 +343,6 @@ public abstract class CircularObject {
 		return new double[] {xPositionCollisionThisShip + Math.cos(slope) * this.getRadius(), yPositionCollisionThisShip + Math.sin(slope) * this.getRadius()};
 	}
 	
-	//TODO
 	public double getTimeCollisionBoundary() {
 		if (this.getWorld() == null) return Double.POSITIVE_INFINITY;
 		double timeToCollisionX = 0;
@@ -366,7 +365,6 @@ public abstract class CircularObject {
 		return Math.min(timeToCollisionX, timeToCollisionY);
 	}
 	
-	//TODO
 	public double[] getPositionCollisionBoundary() {
 		if (this.getWorld() == null) return null;
 		if (this.getTimeCollisionBoundary() == Double.POSITIVE_INFINITY) return null;
