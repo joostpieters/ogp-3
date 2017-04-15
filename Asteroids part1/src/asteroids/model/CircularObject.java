@@ -223,8 +223,11 @@ public abstract class CircularObject {
 	 * @return If the distance between the centers of the circular objects is bigger than 99% of the sum of the radiuses and
 	 * smaller than 101% of the radiuses of the sum of the radiuses then true is returned, otherwise false is returned
 	 * 			|if (0.99 * sumOfRadius <= distanceBetweenCenters && distanceBetweenCenters <= 1.01 * sumOfRadius) return true;
+	 * @throws IllegalArgumentException
+	 * 			|object2 == null
 	 */
-	public boolean apparantlyCollidesWith(CircularObject object2) {
+	public boolean apparantlyCollidesWith(CircularObject object2) throws IllegalArgumentException {
+		if (object2 == null) throw new IllegalArgumentException("apparantlyCollidesWith called with non-existent circular object.");
 		double sumOfRadius = this.getRadius() + object2.getRadius();
 		double distanceBetweenCenters = this.getDistanceBetween(object2) + sumOfRadius;
 		if (0.99 * sumOfRadius <= distanceBetweenCenters && distanceBetweenCenters <= 1.01 * sumOfRadius) return true;

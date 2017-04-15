@@ -214,5 +214,45 @@ public class World {
 		}
 		return timeNextCollision;
 	}
+	/**
+	 * Method that returns the position of the next collision
+	 * @return
+	 * 			|collidingObjects[0].getCollisionPosition(collidingObjects[1])
+	 */
+	public double[] getPositionNextCollision() {
+		double timeNextCollision = this.getTimeNextCollision();
+		CircularObject[] collidingObjects = this.getNextCollidingObjects();
+		if (timeNextCollision == Double.POSITIVE_INFINITY) return null;
+		if (collidingObjects[0] == null && collidingObjects[1] == null) return null;
+		if (collidingObjects[1] == null) return collidingObjects[0].getPositionCollisionBoundary();
+		else return collidingObjects[0].getCollisionPosition(collidingObjects[1]);
+	}
 	
+	/**
+	 * Help method that returns an array containing either a null array if there will be no collision, 
+	 * an array with 1 object (second element null if colliding with a boundary) 
+	 * or an array with 2 objects if the next collision is between 2 entities
+	 * @see implementation
+	 */
+	public CircularObject[] getNextCollidingObjects() {
+		// this method uses the same reasoning as the getTimeNextCollision method, but instead this time we will return an array of length 2
+		// containing either 2 null objects if there is no collision, 1 object (if colliding with a boundary) or 2 initialized objects if 2 circular
+		// objects collide
+		double timeNextCollision = Double.POSITIVE_INFINITY;
+		CircularObject[] collidingObjects = {null, null};
+		for (CircularObject object1 : this.getAllCircularObjectsInWorld()) {
+			if (object1.getTimeCollisionBoundary() < timeNextCollision) {
+				collidingObjects = new CircularObject[] {object1, null}; 
+				timeNextCollision = object1.getTimeCollisionBoundary();
+			}
+			for (CircularObject object2 : this.getAllCircularObjectsInWorld()) {
+				if (object1.apparantlyCollidesWith(object2)) return new CircularObject[] {object1, object2};
+				if (object1.getTimeToCollision(object2) < timeNextCollision) {
+					collidingObjects = new CircularObject[] {object1, object2};
+					timeNextCollision = object1.getTimeToCollision(object2);
+				}
+			}
+		}
+		return collidingObjects;
+	}
 }
