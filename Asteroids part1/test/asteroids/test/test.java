@@ -210,7 +210,7 @@ public class test{
 		assertEquals(facade.isShipThrusterActive(ship1), true);
 	}
 	
-	//Check thruster status after stetting to not active
+	//Check thruster status after setting to not active
 	@Test
 	public void testThrusterStatusOFF() throws ModelException{
 		Ship ship1 = facade.createShip(40, 20, 0, 0, 12, 0,10);
