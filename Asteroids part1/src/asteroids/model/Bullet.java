@@ -155,10 +155,16 @@ public class Bullet extends CircularObject{
 	public void collideWithBoundary() {
 		double xBoundaryWorld = this.world.getWorldDimensionArray()[0];
 		double yBoundaryWorld = this.world.getWorldDimensionArray()[1];
-		if ((this.position.getPositionX() - this.getRadius() <= 0 || this.position.getPositionX() + this.getRadius() >= xBoundaryWorld) && this.boundaryCollisions < 3) {
-			double currentXVel = this.velocity.getXVelocity();
-			double currentYVel = this.velocity.getYVelocity();
-			this.velocity.setVelocity(-currentXVel, -currentYVel);
+		if ((this.getPositionArray()[0] - this.getRadius() <= 0 || this.getPositionArray()[0] + this.getRadius() >= xBoundaryWorld) && this.boundaryCollisions < 3) {
+			double currentXVel = this.getVelocityArray()[0];
+			double currentYVel = this.getVelocityArray()[1];
+			this.setVelocity(-currentXVel, currentYVel);
+			this.incrementBoundaryCollision();
+		}
+		if ((this.getPositionArray()[1] - this.getRadius() <= 0 || this.getPositionArray()[1] + this.getRadius() >= yBoundaryWorld) && this.boundaryCollisions < 3) {
+			double currentXVel = this.getVelocityArray()[0];
+			double currentYVel = this.getVelocityArray()[1];
+			this.setVelocity(currentXVel, -currentYVel);
 			this.incrementBoundaryCollision();
 		}
 		if (this.boundaryCollisions == 3) {

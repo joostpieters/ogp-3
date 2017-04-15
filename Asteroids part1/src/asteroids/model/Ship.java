@@ -71,7 +71,8 @@ public class Ship extends CircularObject{
 	 * Constant representing the thruster force
 	 */
 	
-	private final double THRUSTERFORCE = 1.1E21;
+	private final double THRUSTERFORCE = 1.1 * Math.pow(10, 21);
+	
 	/**
 	 * The state of the thruster
 	 */
@@ -258,7 +259,7 @@ public class Ship extends CircularObject{
 	 */
 	public void loadBullet(Bullet bullet) throws IllegalArgumentException {
 		if (!canAddToShip(bullet)) throw new IllegalArgumentException("This bullet can not be loaded onto the ship.");
-		bullet.setPosition(this.position.getPositionX(), this.position.getPositionY());
+		bullet.setPosition(this.getPositionArray()[0], this.getPositionArray()[1]);
 		bullet.setWorld(null);
 		bullet.setSourceShip(this);
 		this.bulletsCollection.add(bullet);
@@ -375,7 +376,7 @@ public class Ship extends CircularObject{
 		Bullet firedbullet = this.getBulletsOfShip().iterator().next();
 		double bulletdirection = this.getDirection();
 		double bulletradius = firedbullet.getRadius();
-		double[] shipPosition = this.position.getPositionArray();
+		double[] shipPosition = this.getPositionArray();
 		
 		double bulletXVelocity = 250*Math.cos(bulletdirection);
 		double bulletYVelocity = 250*Math.sin(bulletdirection);
@@ -414,8 +415,11 @@ public class Ship extends CircularObject{
 	}
 	
 	/**
-	 * Method to resolve 
+	 * Method to resolve collisions of a ship with another circular object
 	 * @param object2
+	 * @effect
+	 * 		|if (object2 instanceof Ship) this.velocity.getVelocity() = new Velocity(newXVelocityThisObject, newYVelocityThisObject)
+	 * 		&& object.velocity.getVelocity() = new Velocity(newXVelocityObject2, newYVelocityObject2);
 	 */
 	public void collisionCircularObject(CircularObject object2) {
 		if (object2 instanceof Ship) {
@@ -429,12 +433,12 @@ public class Ship extends CircularObject{
 					/ sumOfRadiusses;
 			double jY = J * this.position.getDifferenceInPositions(object2.position)[1]
 					/ sumOfRadiusses;
-			double newXVelocityThisObject = this.velocity.getXVelocity() + jX/this.getMass();
-			double newYVelocityThisObject = this.velocity.getYVelocity() + jY/this.getMass();
-			double newXVelocityObject2 = object2.velocity.getXVelocity() + jX/object2.getMass();
-			double newYVelocityObject2 = object2.velocity.getYVelocity() + jY/object2.getMass();
-			this.velocity.setVelocity(newXVelocityThisObject, newYVelocityThisObject);;
-			object2.velocity.setVelocity(newXVelocityObject2, newYVelocityObject2);
+			double newXVelocityThisObject = this.getVelocityArray()[0] + jX/this.getMass();
+			double newYVelocityThisObject = this.getVelocityArray()[1] + jY/this.getMass();
+			double newXVelocityObject2 = object2.getVelocityArray()[0] + jX/object2.getMass();
+			double newYVelocityObject2 = object2.getVelocityArray()[1] + jY/object2.getMass();
+			this.setVelocity(newXVelocityThisObject, newYVelocityThisObject);
+			object2.setVelocity(newXVelocityObject2, newYVelocityObject2);
 		}
 		if (object2 instanceof Bullet) {
 			Bullet bullet = (Bullet) object2;
@@ -448,11 +452,16 @@ public class Ship extends CircularObject{
 		}
 	}
 	
-	
+	/**
+	 * Method that updates the velocity of a ship after dt seconds
+	 * @param dt
+	 * @post
+	 * 			|new.getXVelocity = newXVelocity
+	 * 			|new.getYVelocity = newYVelocity
+	 */
 	public void updateVelocity(double dt) {
-		
-		double velocityX = this.velocity.getXVelocity();
-		double velocityY = this.velocity.getYVelocity();
+		double velocityX = this.getVelocityArray()[0];
+		double velocityY = this.getVelocityArray()[1];
 		double orientation = this.getDirection();
 		double massShip = this.getMass();
 		double acceleration = this.THRUSTERFORCE / massShip;
@@ -460,8 +469,10 @@ public class Ship extends CircularObject{
 		double newXVelocity = velocityX + acceleration * Math.cos(orientation) * dt;
 		double newYVelocity = velocityY + acceleration * Math.sin(orientation) * dt;
 		
-		this.velocity.setVelocity(newXVelocity, newYVelocity);
+		this.setVelocity(newXVelocity, newYVelocity);
 	}
+	
+	
 	
 	/**
 	 * Method that resolves collisions of a ship with a boundary
@@ -470,13 +481,13 @@ public class Ship extends CircularObject{
 	 * 			|new.velocity.getYVelocity == -currentYVel
 	 */
 	public void collideWithBoundary() {
-		if (this.position.getPositionX() - this.getRadius() == 0 || this.position.getPositionX() + this.getRadius() == this.world.getWorldDimensionArray()[0]) {
-			double currentXVel = this.velocity.getXVelocity();
-			this.velocity.setXVelocity(-currentXVel);
+		if (this.getPositionArray()[0] - this.getRadius() == 0 || this.getPositionArray()[0]+ this.getRadius() == this.getWorld().getWorldDimensionArray()[0]) {
+			double currentXVel = this.getVelocityArray()[0];
+			this.setVelocity(-currentXVel, this.getVelocityArray()[1]);
 		}
-		if (this.position.getPositionY() - this.getRadius() == 0 || this.position.getPositionY() + this.getRadius() == this.world.getWorldDimensionArray()[1]) {
-			double currentYVel = this.velocity.getYVelocity();
-			this.velocity.setYVelocity(-currentYVel);
+		if (this.getPositionArray()[0] - this.getRadius() == 0 || this.getPositionArray()[1] + this.getRadius() == this.getWorld().getWorldDimensionArray()[1]) {
+			double currentYVel = this.getVelocityArray()[1];
+			this.setVelocity(this.getVelocityArray()[0], -currentYVel);
 		}
 	}
 	

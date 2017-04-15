@@ -190,7 +190,7 @@ public class World {
 	 */
 	public Object getEntityAt(double x, double y) {
 		for (CircularObject object : this.getAllCircularObjectsInWorld()) {
-			if (object.position.getPositionX() == x && object.position.getPositionY() == y) return object;
+			if (object.getPositionArray()[0] == x && object.getPositionArray()[1] == y) return object;
 		}
 		return null;
 	}	
@@ -269,6 +269,7 @@ public class World {
 		while (tC <= dt) {
 			CircularObject[] firstCollidingObjects = this.getNextCollidingObjects();
 			double[] positionFirstCollision = this.getPositionNextCollision();
+			
 			for (CircularObject object1 : this.getAllCircularObjectsInWorld()) object1.move(tC);
 			for (Ship ship : this.getAllShipsInWorld()) {
 				if (ship.checkThrusterStatus()) ship.updateVelocity(tC);
