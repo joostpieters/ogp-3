@@ -245,7 +245,7 @@ public class Ship extends CircularObject{
 	 */
 	public boolean canAddToShip(Bullet bullet) {
 		if (bullet == null) return false;
-		if (bullet.getSourceShip() != this) return false;
+		if (bullet.getSourceShip() == this) return false;
 		if (bullet.getWorld() != null && bullet.getWorld() != this.getWorld()) return false;
 		return true;
 	}
@@ -260,6 +260,7 @@ public class Ship extends CircularObject{
 		if (!canAddToShip(bullet)) throw new IllegalArgumentException("This bullet can not be loaded onto the ship.");
 		bullet.setPosition(this.position.getPositionX(), this.position.getPositionY());
 		bullet.setWorld(null);
+		bullet.setSourceShip(this);
 		this.bulletsCollection.add(bullet);
 	}
 	

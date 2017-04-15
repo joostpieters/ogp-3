@@ -107,40 +107,7 @@ public class Bullet extends CircularObject{
 		return this.boundaryCollisions;
 	}
 	
-	//
-	//SETTERS
-	//
-	/**
-	 * Method to set the x position of the bullet
-	 * @param x
-	 * @post
-	 * 			|new.getXPosition == x
-	 */
-	public void setXPosition(double x) {
-		//TODO: isValidPosition and throw exception
-		this.position.setPositionX(x);
-	}
-	/**
-	 * Method to set the y position of the bullet
-	 * @param y
-	 * @post
-	 * 			|new.getYPosition == y
-	 */
-	public void setYPosition(double y) {
-		//TODO: isValidPosition and throw exception
-		this.position.setPositionY(y);
-	}
-	/**
-	 * Method to set both x and y position of the bullet
-	 * @param x
-	 * @param y
-	 * @post
-	 * 			|new.getPosition = new Position(x,y)
-	 */
-	public void setPosition(double x, double y) {
-		//TODO: isValidPosition and throw exception
-		this.position.setPosition(x, y);
-	}
+	
 	
 	/**
 	 * Set the ship where the bullet belongs to.
@@ -151,9 +118,7 @@ public class Bullet extends CircularObject{
 	 * 		|this.getsourceShip() == ship
 	 */
 	public void setSourceShip(Ship ship){
-		if (ship == null){
-			this.ship = ship;
-		}
+		this.ship = ship;
 	}
 	/**
 	 * Method that increments the amount of times the bullet has collided with a boundary
@@ -170,6 +135,11 @@ public class Bullet extends CircularObject{
 	public void terminateBullet() {
 		this.setWorld(null);
 		this.isTerminated = true;
+	}
+	
+	
+	public boolean isBulletTerminated(){
+		return isTerminated;
 	}
 	
 	/**
