@@ -412,8 +412,9 @@ public class Ship extends CircularObject{
 	public boolean isShipTerminated() {
 		return this.isTerminated;
 	}
+	
 	//TODO: documentation
-	public void collisionEntity(CircularObject object2) {
+	public void collisionCircularObject(CircularObject object2) {
 		if (object2 instanceof Ship) {
 			double sumOfRadiusses = this.getRadius() + object2.getRadius();
 			double sumOfMasses = this.getMass() + object2.getMass();

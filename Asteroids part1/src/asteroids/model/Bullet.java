@@ -174,7 +174,7 @@ public class Bullet extends CircularObject{
 	 * @post If it collides with a different ship then both are terminated
 	 * 			|ship.terminateShip() && this.terminateBullet() 		
 	 */
-	public void collideWithBullet(CircularObject object2) {
+	public void collisionCircularObject(CircularObject object2) {
 		if (object2 instanceof Ship) {
 			Ship ship = (Ship)object2;
 			if (this.getSourceShip() == ship) ship.loadBullet(this);
@@ -182,6 +182,11 @@ public class Bullet extends CircularObject{
 				ship.terminateShip();
 				this.terminateBullet();
 			}
+		}
+		else {
+			Bullet bullet = (Bullet)object2;
+			this.terminateBullet();
+			bullet.terminateBullet();
 		}
 	}
 	

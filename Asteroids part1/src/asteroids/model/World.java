@@ -4,6 +4,8 @@ package asteroids.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import asteroids.part2.CollisionListener;
+
 
 
 
@@ -254,5 +256,41 @@ public class World {
 			}
 		}
 		return collidingObjects;
+	}
+	
+	public void evolve(double dt, CollisionListener collisionListener) {
+		double tC = this.getTimeNextCollision();
+				
+		while (tC <= dt) {
+			CircularObject[] firstCollidingObjects = this.getNextCollidingObjects();
+			double[] positionFirstCollision = this.getPositionNextCollision();
+			for (CircularObject object1 : this.getAllCircularObjectsInWorld()) object1.move(tC);
+			if (firstCollidingObjects[1] == null) {
+				if (firstCollidingObjects[0] instanceof Ship) {
+					Ship ship = (Ship)firstCollidingObjects[0];
+					ship.collideWithBoundary();
+					collisionListener.boundaryCollision(ship, positionFirstCollision[0], positionFirstCollision[1]);
+				}
+				if (firstCollidingObjects[1] instanceof Bullet) {
+					Bullet bullet = (Bullet)firstCollidingObjects[1];
+					bullet.collideWithBoundary();
+					collisionListener.boundaryCollision(bullet, positionFirstCollision[0], positionFirstCollision[1]);
+				}
+			}
+			else {
+				if (firstCollidingObjects[0] instanceof Ship) {
+					Ship ship = (Ship) firstCollidingObjects[0];
+					ship.collisionCircularObject(firstCollidingObjects[1]);
+					collisionListener.objectCollision(firstCollidingObjects[0], firstCollidingObjects[1], positionFirstCollision[0], positionFirstCollision[1]);
+				}
+				if (firstCollidingObjects[1] instanceof Bullet) {
+					Bullet bullet = (Bullet)firstCollidingObjects[0];
+					bullet.collisionCircularObject(firstCollidingObjects[1]);
+				}
+			}
+			dt = dt - tC;
+			tC = this.getTimeNextCollision();
+		}
+		for (CircularObject object : this.getAllCircularObjectsInWorld()) object.move(dt);
 	}
 }
