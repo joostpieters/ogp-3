@@ -342,15 +342,13 @@ public abstract class CircularObject {
 		return new double[] {xPositionCollisionThisShip + Math.cos(slope) * this.getRadius(), yPositionCollisionThisShip + Math.sin(slope) * this.getRadius()};
 	}
 	
-<<<<<<< HEAD
-=======
+
 	/**
 	 * Method that returns the time to a first potential collision with a boundary
 	 * @return If the object does not belong to a world, Double.POSITIVE_INFINITY is returned, otherwise the minimum time to the first collision is returned
 	 * 			|if (this.getWorld() == null) return Double.POSITIVE_INFINITY
 	 * 			|Math.min(timeToCollisionX, timeToCollisionY)
 	 */
->>>>>>> origin/master
 	public double getTimeCollisionBoundary() {
 		if (this.getWorld() == null) return Double.POSITIVE_INFINITY;
 		double timeToCollisionX = 0;
@@ -373,15 +371,13 @@ public abstract class CircularObject {
 		return Math.min(timeToCollisionX, timeToCollisionY);
 	}
 	
-<<<<<<< HEAD
-=======
+
 	/**
 	 * Method that returns the position of the first collision of a circular object with a boundary
 	 * @return If the object doesn't belong to a world or it will not collide with a boundary, null is returned
 	 * 			otherwise the position of the collision is returned
 	 * 			|
 	 */
->>>>>>> origin/master
 	public double[] getPositionCollisionBoundary() {
 		if (this.getWorld() == null) return null;
 		if (this.getTimeCollisionBoundary() == Double.POSITIVE_INFINITY) return null;
