@@ -191,7 +191,28 @@ public class World {
 			if (object.position.getPositionX() == x && object.position.getPositionY() == y) return object;
 		}
 		return null;
-	}
+	}	
 	
+	/**
+	 * Method that returns the time to the next collisions in the world, if there are 2 objects that apparently collide with each other, then 0 is returned
+	 * if there are no collisions, Double.POSITIVE_INFINITY will be returned
+	 * @see implementation
+	 */
+	public double getTimeNextCollision() {
+		double timeNextCollision = Double.POSITIVE_INFINITY;
+		for (CircularObject object1 : this.getAllCircularObjectsInWorld()) {
+			// if the object collides with a boundary in a time shorter than the previous shortest time, this is the new shortest time
+			timeNextCollision = Math.min(timeNextCollision, object1.getTimeCollisionBoundary());
+			// we now check if this object will collide with any other entity (bullet/ship) in a time shorter than what was our previous shortest time
+			// if so we change the shortest time variable
+			for (CircularObject object2 : this.getAllCircularObjectsInWorld()) {
+				if (object1 != object2) {
+					if (object1.apparantlyCollidesWith(object2)) return 0; // if 2 objects apparently collide with each other, this means that their is a collision so 0 is returned
+					if (object1.getTimeToCollision(object2) < timeNextCollision) timeNextCollision = object1.getTimeToCollision(object2);
+				}
+			}
+		}
+		return timeNextCollision;
+	}
 	
 }

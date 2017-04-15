@@ -214,8 +214,24 @@ public abstract class CircularObject {
 		double squaredDifferenceInY = Math.pow(differenceInPositions[1], 2);
 		
 		double distanceBetweenCenters = Math.sqrt(squaredDifferenceInX + squaredDifferenceInY);
-		return distanceBetweenCenters - radiusObject1 - radiusObject2;
+		return distanceBetweenCenters - (radiusObject1 + radiusObject2);
 	}
+	/**
+	 * Boolean method that returns whether or not 2 circular objects apparently collide
+	 * @param object1
+	 * @param object2
+	 * @return If the distance between the centers of the circular objects is bigger than 99% of the sum of the radiuses and
+	 * smaller than 101% of the radiuses of the sum of the radiuses then true is returned, otherwise false is returned
+	 * 			|if (0.99 * sumOfRadius <= distanceBetweenCenters && distanceBetweenCenters <= 1.01 * sumOfRadius) return true;
+	 */
+	public boolean apparantlyCollidesWith(CircularObject object2) {
+		double sumOfRadius = this.getRadius() + object2.getRadius();
+		double distanceBetweenCenters = this.getDistanceBetween(object2) + sumOfRadius;
+		if (0.99 * sumOfRadius <= distanceBetweenCenters && distanceBetweenCenters <= 1.01 * sumOfRadius) return true;
+		return false;
+	}
+	
+	
 	/**
 	 * This method returns true of false, depending on if the objects overlap or not. 
 	 * As explained for the function getDistanceBetween, 2 circular objects that aren't the same overlap when the
@@ -227,7 +243,7 @@ public abstract class CircularObject {
 	 * 			|if (this == object2) return true
 	 * @return If this object is a different circular object than object2, then true is returned if the distance between them is negative,
 	 * false if the distance between them is positive.
-	 * 			|this.getDistanceBetween(object2) <= 0
+	 * 			|this.getDistanceBetween(object2) + this.getRadius() + object2.getRadius()) <= (0.99 * (this.getRadius() + object2.getRadius())
 	 * @throws IllegalArgumentException
 	 *			object2 is not created
 	 *			|object2 == null
@@ -236,7 +252,7 @@ public abstract class CircularObject {
 		if (object2 == null) throw new IllegalArgumentException("Overlap called with a non-existing circular object!");
 		
 		if (this == object2) return true;
-		else return this.getDistanceBetween(object2) <= 0;
+		else return (this.getDistanceBetween(object2) + this.getRadius() + object2.getRadius()) <= (0.99 * (this.getRadius() + object2.getRadius()));
 	}
 	
 	/**
