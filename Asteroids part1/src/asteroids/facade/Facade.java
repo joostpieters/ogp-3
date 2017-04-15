@@ -91,6 +91,8 @@ public class Facade implements IFacade {
 //* Update <code>ship</code>'s velocity based on its current velocity, its
 //* direction and the given <code>amount</code>.
 //*/
+//	public void thrust(Ship ship, double amount) throws ModelException{
+//		ship.thrust(amount);
 //
 //
 
