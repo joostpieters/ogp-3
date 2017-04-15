@@ -167,15 +167,14 @@ public class Facade implements IFacade {
 
 	@Override
 	public void terminateShip(Ship ship) throws ModelException {
-		// TODO Auto-generated method stub
+		ship.terminateShip();
 		
 	}
 
 
 	@Override
 	public boolean isTerminatedShip(Ship ship) throws ModelException {
-		// TODO Auto-generated method stub
-		return false;
+		return ship.isShipTerminated();
 	}
 
 
@@ -199,7 +198,8 @@ public class Facade implements IFacade {
 
 	@Override
 	public void setThrusterActive(Ship ship, boolean active) throws ModelException {
-		ship.thrustOn();
+		if (active) ship.thrustOn();
+		else ship.thrustOff();
 		
 	}
 
@@ -224,15 +224,14 @@ public class Facade implements IFacade {
 
 	@Override
 	public void terminateBullet(Bullet bullet) throws ModelException {
-		// TODO Auto-generated method stub
+		bullet.terminateBullet();
 		
 	}
 
 
 	@Override
 	public boolean isTerminatedBullet(Bullet bullet) throws ModelException {
-		// TODO Auto-generated method stub
-		return false;
+		return bullet.isBulletTerminated();
 	}
 
 
@@ -292,15 +291,14 @@ public class Facade implements IFacade {
 
 	@Override
 	public void terminateWorld(World world) throws ModelException {
-		// TODO Auto-generated method stub
+		world.terminateWorld();
 		
 	}
 
 
 	@Override
 	public boolean isTerminatedWorld(World world) throws ModelException {
-		// TODO Auto-generated method stub
-		return false;
+		return world.isWorldTerminated();
 	}
 
 
@@ -421,43 +419,39 @@ public class Facade implements IFacade {
 
 	@Override
 	public double getTimeCollisionBoundary(Object object) throws ModelException {
-		// TODO Auto-generated method stub
-		return 0;
+		return ((CircularObject)object).getTimeCollisionBoundary();
 	}
 
 
 	@Override
 	public double[] getPositionCollisionBoundary(Object object) throws ModelException {
-		// TODO Auto-generated method stub
-		return null;
+		return ((CircularObject)object).getPositionCollisionBoundary();
 	}
 
 
 	@Override
 	public double getTimeCollisionEntity(Object entity1, Object entity2) throws ModelException {
-		// TODO Auto-generated method stub
-		return 0;
+		if (!(entity1 instanceof CircularObject && entity2 instanceof CircularObject)) throw new ModelException("The given objects are not entities.");
+		return ((CircularObject)entity1).getTimeToCollision((CircularObject)entity2);
 	}
 
 
 	@Override
 	public double[] getPositionCollisionEntity(Object entity1, Object entity2) throws ModelException {
-		// TODO Auto-generated method stub
-		return null;
+		if (!(entity1 instanceof CircularObject && entity2 instanceof CircularObject)) throw new ModelException("The given objects are not entities.");
+		return ((CircularObject)entity1).getCollisionPosition((CircularObject)entity2);
 	}
 
 
 	@Override
 	public double getTimeNextCollision(World world) throws ModelException {
-		// TODO Auto-generated method stub
-		return 0;
+		return world.getTimeNextCollision();
 	}
 
 
 	@Override
 	public double[] getPositionNextCollision(World world) throws ModelException {
-		// TODO Auto-generated method stub
-		return null;
+		return world.getPositionNextCollision();
 	}
 
 
@@ -471,8 +465,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public Object getEntityAt(World world, double x, double y) throws ModelException {
-		// TODO Auto-generated method stub
-		return null;
+		return world.getEntityAt(x, y);
 	}
 
 
