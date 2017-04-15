@@ -363,14 +363,13 @@ public abstract class CircularObject {
 		
 		if (velocityX == 0) timeToCollisionX = Double.POSITIVE_INFINITY;
 		if (velocityY == 0) timeToCollisionY = Double.POSITIVE_INFINITY;
-		if (velocityX > 0) timeToCollisionX = (xBoundary - positionX)/velocityX;
-		if (velocityX < 0) timeToCollisionX = Math.abs((positionX)/velocityX);
-		if (velocityY > 0) timeToCollisionY = (yBoundary - positionY)/velocityY;
-		if (velocityY < 0) timeToCollisionY = Math.abs((positionY)/velocityY);
+		if (velocityX > 0) timeToCollisionX = (xBoundary - positionX  - this.getRadius())/velocityX;
+		if (velocityX < 0) timeToCollisionX = Math.abs((positionX - this.getRadius())/velocityX);
+		if (velocityY > 0) timeToCollisionY = (yBoundary - positionY - this.getRadius())/velocityY;
+		if (velocityY < 0) timeToCollisionY = Math.abs((positionY - this.getRadius())/velocityY);
 		return Math.min(timeToCollisionX, timeToCollisionY);
 	}
 	
-
 	/**
 	 * Method that returns the position of the first collision of a circular object with a boundary
 	 * @return If the object doesn't belong to a world or it will not collide with a boundary, null is returned

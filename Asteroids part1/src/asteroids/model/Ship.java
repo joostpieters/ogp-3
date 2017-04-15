@@ -481,11 +481,11 @@ public class Ship extends CircularObject{
 	 * 			|new.velocity.getYVelocity == -currentYVel
 	 */
 	public void collideWithBoundary() {
-		if (this.getPositionArray()[0] - this.getRadius() == 0 || this.getPositionArray()[0]+ this.getRadius() == this.getWorld().getWorldDimensionArray()[0]) {
+		if (((this.getPositionArray()[0] - this.getRadius()) <= 0) || ((this.getPositionArray()[0] + this.getRadius()) >= this.getWorld().getWorldDimensionArray()[0])) {
 			double currentXVel = this.getVelocityArray()[0];
 			this.setVelocity(-currentXVel, this.getVelocityArray()[1]);
 		}
-		if (this.getPositionArray()[0] - this.getRadius() == 0 || this.getPositionArray()[1] + this.getRadius() == this.getWorld().getWorldDimensionArray()[1]) {
+		if (((this.getPositionArray()[1] - this.getRadius()) == 0) || ((this.getPositionArray()[1] + this.getRadius()) == this.getWorld().getWorldDimensionArray()[1])) {
 			double currentYVel = this.getVelocityArray()[1];
 			this.setVelocity(this.getVelocityArray()[0], -currentYVel);
 		}
