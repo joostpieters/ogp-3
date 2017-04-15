@@ -252,7 +252,6 @@ public abstract class CircularObject {
 	 */
 	public boolean overlap(CircularObject object2) throws IllegalArgumentException {
 		if (object2 == null) throw new IllegalArgumentException("Overlap called with a non-existing circular object!");
-		
 		if (this == object2) return true;
 		else return (this.getDistanceBetween(object2) + this.getRadius() + object2.getRadius()) <= (0.99 * (this.getRadius() + object2.getRadius()));
 	}
@@ -376,7 +375,7 @@ public abstract class CircularObject {
 	 * Method that returns the position of the first collision of a circular object with a boundary
 	 * @return If the object doesn't belong to a world or it will not collide with a boundary, null is returned
 	 * 			otherwise the position of the collision is returned
-	 * 			|
+	 * 			|new double[] {xPosition + xVel * timeToCollision, yPosition + yVel * timeToCollision}
 	 */
 	public double[] getPositionCollisionBoundary() {
 		if (this.getWorld() == null) return null;

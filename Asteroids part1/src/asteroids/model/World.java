@@ -112,6 +112,42 @@ public class World {
 	///
 	
 	/**
+	 * Boolean method that indicates whether or not the ship in question can be part of this world
+	 * @param ship
+	 * @see implementation
+	 */
+	private boolean validShip(Ship ship) {
+		if (ship.getWorld() != this && ship.getWorld() != null) return false;
+		for (CircularObject object : this.getAllCircularObjectsInWorld()) {
+			if (ship.overlap(object)) return false;
+		}
+		return true;
+	}
+	/**
+	 * Boolean method that indicates whether or not the bullet in question can be part of this world
+	 * @param bullet
+	 * @see implementation
+	 */
+	private boolean validBullet(Bullet bullet) {
+		if (bullet.getWorld() != this && bullet.getWorld() != null) return false;
+		for (CircularObject object: this.getAllCircularObjectsInWorld()) {
+			if (bullet.overlap(object)) return false;
+		}
+		return true;
+	}
+	//TODO
+	private boolean shipOutOfBound(Ship ship) {
+		if (ship.getPositionArray()[0] - ship.getRadius() <= 0 || ship.getPositionArray()[0] + ship.getRadius() >= this.getWorldDimensionArray()[0]) return true;
+		if (ship.getPositionArray()[1] - ship.getRadius() <= 0 || ship.getPositionArray()[1] + ship.getRadius() >= this.getWorldDimensionArray()[1]) return true;
+		return false;
+	}
+	//TODO
+	private boolean bulletOutOfBound(Bullet bullet) {
+		if (bullet.getPositionArray()[0] - bullet.getRadius() <= 0 || bullet.getPositionArray()[0] + bullet.getRadius() >= this.getWorldDimensionArray()[0]) return true;
+		if (bullet.getPositionArray()[1] - bullet.getRadius() <= 0 || bullet.getPositionArray()[1] + bullet.getRadius() >= this.getWorldDimensionArray()[1]) return true;
+		return false;
+	}
+	/**
 	 * Add a ship to the given world
 	 * @param ship
 	 * 		The ship that will be added to the world
@@ -119,8 +155,7 @@ public class World {
 	 * @post The ship is added to the world
 	 */
 	public void addShipToWorld(Ship ship){
-		if (ship.getWorld() == this) throw new IllegalArgumentException("The ship is already part of this world");
-		if (ship.getWorld() != null) throw new IllegalArgumentException("The ship is already part of another world");
+		if (!validShip(ship) || shipOutOfBound(ship)) throw new IllegalArgumentException("This ship can not be added to the world.");
 		ship.setWorld(this);
 		shipsInWorld.add(ship);
 	}
@@ -133,8 +168,7 @@ public class World {
 	 * @post The ship is added to the world
 	 */
 	public void addBulletToWorld(Bullet bullet) throws IllegalArgumentException {
-		if (bullet.getWorld() == this) throw new IllegalArgumentException("The bullet is already part of this world");
-		if (bullet.getWorld() != null) throw new IllegalArgumentException("The bullet is already part of another world");
+		if (!validBullet(bullet) || bulletOutOfBound(bullet)) throw new IllegalArgumentException("This bullet cannot be added to the world.");
 		bullet.setWorld(this);
 		bulletsInWorld.add(bullet);
 	}
