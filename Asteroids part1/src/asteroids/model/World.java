@@ -102,6 +102,8 @@ public class World {
 	 * 			|result == shipsInWorld
 	 */
 	public Set<CircularObject> getAllCircularObjectsInWorld(){
+		circularObjectsInWorld.addAll(bulletsInWorld);
+		circularObjectsInWorld.addAll(shipsInWorld);
 		return circularObjectsInWorld;
 	}
 	
