@@ -367,7 +367,7 @@ public class Ship extends CircularObject{
 	 * Fire a bullet from the ship.
 	 * @Pre The ship still needs to have available bullets and the ship itself should be located in this world.
 	 * @post After being fired, the bullet is removed from the collection of bullets of the ship.
-	 * 
+	 * @post If allowed by addBulletToWorld, the bullet is added to the space.
 	 */
 	
 	public void fire(){
@@ -400,6 +400,9 @@ public class Ship extends CircularObject{
 		}
 		
 	}
+	
+	
+	
 	
 	public void terminateShip() {
 		this.setWorld(null);
