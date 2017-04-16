@@ -380,23 +380,22 @@ public class Ship extends CircularObject{
 		
 		double bulletXVelocity = 250*Math.cos(bulletdirection);
 		double bulletYVelocity = 250*Math.sin(bulletdirection);
-		double bulletXPosition = shipPosition[0] + (this.getRadius() + bulletradius)*Math.cos(bulletdirection);
-		double bulletYPosition = shipPosition[1] + (this.getRadius() + bulletradius)*Math.sin(bulletdirection);
+		double bulletXPosition = shipPosition[0] + (this.getRadius() + 2*bulletradius)*Math.cos(bulletdirection);
+		double bulletYPosition = shipPosition[1] + (this.getRadius() + 2*bulletradius)*Math.sin(bulletdirection);
 		
 		firedbullet.setSourceShip(this);
 		this.removeBullet(firedbullet);
 		firedbullet.setVelocity(bulletXVelocity, bulletYVelocity);
 		firedbullet.setPosition(bulletXPosition, bulletYPosition);
-		if ((firedbullet.getPositionArray()[0] + bulletradius > this.getWorld().getWorldDimensionArray()[0]) || 
-				(firedbullet.getPositionArray()[1] + bulletradius > this.getWorld().getWorldDimensionArray()[1]) ||
-				(firedbullet.getPositionArray()[0] + bulletradius < 0) || (firedbullet.getPositionArray()[1] < 0)){
-			firedbullet.terminateBullet();
+		try{
+			this.getWorld().addBulletToWorld(firedbullet);
 		}
-		else{ 
+		catch (IllegalArgumentException exception){ 
 			for (CircularObject obj: this.getWorld().getAllCircularObjectsInWorld()){
 				if (obj.overlap(firedbullet)) {
 					firedbullet.collisionCircularObject(obj);
-				}
+			
+			}
 			}
 		}
 		
