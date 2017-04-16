@@ -194,6 +194,7 @@ public class World {
 		bullet.setWorld(null);
 		this.bulletsInWorld.remove(bullet);
 	}
+	
 	/**
 	 * Method to remove a ship from this world
 	 * @param ship
@@ -257,8 +258,7 @@ public class World {
 			for (CircularObject object2 : this.getAllCircularObjectsInWorld()) {
 				if (object1 != object2) {
 					if (object1.apparantlyCollidesWith(object2)) return 0; // if 2 objects apparently collide with each other, this means that there is a collision so 0 is returned
-					//if (object1.getTimeToCollision(object2) < timeNextCollision) timeNextCollision = object1.getTimeToCollision(object2);
-					Math.min(timeNextCollision, object1.getTimeToCollision(object2));
+					timeNextCollision = Math.min(timeNextCollision, object1.getTimeToCollision(object2));
 				}
 			}
 		}
@@ -287,17 +287,20 @@ public class World {
 		// objects collide
 		double timeNextCollision = Double.POSITIVE_INFINITY;
 		CircularObject[] collidingObjects = {null, null};
+		
 		for (CircularObject object1 : this.getAllCircularObjectsInWorld()) {
-			if (object1.getTimeCollisionBoundary() < timeNextCollision) {
+			double T = object1.getTimeCollisionBoundary();
+			if (T < timeNextCollision) {
 				collidingObjects = new CircularObject[] {object1, null}; 
-				timeNextCollision = object1.getTimeCollisionBoundary();
+				timeNextCollision = T;
 			}
 			for (CircularObject object2 : this.getAllCircularObjectsInWorld()) {
 				if (object1 != object2) {
 					if (object1.apparantlyCollidesWith(object2)) return new CircularObject[] {object1, object2};
-					if (object1.getTimeToCollision(object2) < timeNextCollision) {
+					T = object1.getTimeToCollision(object2);
+					if (T < timeNextCollision) {
 						collidingObjects = new CircularObject[] {object1, object2};
-						timeNextCollision = object1.getTimeToCollision(object2);
+						timeNextCollision = T;
 					}
 				}
 			}
@@ -324,9 +327,9 @@ public class World {
 		double[] positionFirstCollision = this.getPositionNextCollision();
 		while (tC <= deltaT) {
 			for (CircularObject object1 : this.getAllCircularObjectsInWorld()) object1.move(tC);
-			for (Ship ship : this.getAllShipsInWorld()) {
-				if (ship.checkThrusterStatus()) ship.updateVelocity(tC);
-			}
+			//for (Ship ship : this.getAllShipsInWorld()) {
+				//if (ship.checkThrusterStatus()) ship.updateVelocity(tC);
+			//}
 			
 			if (firstCollidingObjects[1] == null) {
 				if (firstCollidingObjects[0] instanceof Ship) {
@@ -364,11 +367,11 @@ public class World {
 			firstCollidingObjects = this.getNextCollidingObjects();
 		}
 		for (CircularObject object : this.getAllCircularObjectsInWorld()) object.move(dt);
-		for (Ship ship : this.getAllShipsInWorld()) {
-			if (ship.checkThrusterStatus()) {
-				ship.updateVelocity(dt);
-			}
-		}
+		//for (Ship ship : this.getAllShipsInWorld()) {
+			//if (ship.checkThrusterStatus()) {
+				//ship.updateVelocity(dt);
+			//}
+		//}
 		
 	}
 }

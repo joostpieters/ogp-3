@@ -404,8 +404,21 @@ public abstract class CircularObject {
 		double yVel = this.getVelocityArray()[1];
 		double timeToCollision = this.getTimeCollisionBoundary();
 		
-		return new double[] {xPosition + xVel * timeToCollision, yPosition + yVel * timeToCollision};
+		double xPosB = xPosition + xVel * timeToCollision;
+		double yPosB = yPosition + yVel * timeToCollision;
+		
+		if (((xPosB - this.getRadius()) <= 0)) {
+			xPosB = xPosB - this.getRadius();
+		}
+		if ((xPosB + this.getRadius()) >= this.getWorld().getWorldDimensionArray()[0]) {
+			xPosB = xPosB + this.getRadius();
+		}
+		if (((yPosB - this.getRadius()) <= 0)) {
+			yPosB = yPosB - this.getRadius();
+		}
+		if ((yPosB + this.getRadius()) >= this.getWorld().getWorldDimensionArray()[1]) {
+			yPosB = yPosB + this.getRadius();
+		}
+		return new double[] {xPosB, yPosB};
 	}
-	
-	
 }

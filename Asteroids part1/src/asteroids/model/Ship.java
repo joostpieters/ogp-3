@@ -368,7 +368,7 @@ public class Ship extends CircularObject{
 			newXVelocity = Math.cos(this.getDirection()) * SPEEDOFLIGHT;
 			newYVelocity = Math.sin(this.getDirection()) * SPEEDOFLIGHT;
 		}
-		this.setVelocity(newXVelocity,newYVelocity);	
+		this.setVelocity(newXVelocity, newYVelocity);	
 	}
 	
 	
@@ -379,7 +379,7 @@ public class Ship extends CircularObject{
 	 * @post If allowed by addBulletToWorld, the bullet is added to the space.
 	 */
 	
-	public void fire(){
+	public void fire() {
 		if(this.getAmountOfBullets() < 0) return;
 		if(this.getWorld() == null) return;
 		Bullet firedbullet = this.getBulletsOfShip().iterator().next();
@@ -501,7 +501,7 @@ public class Ship extends CircularObject{
 			double currentXVel = this.getVelocityArray()[0];
 			this.setVelocity(-currentXVel, this.getVelocityArray()[1]);
 		}
-		if (((this.getPositionArray()[1] - this.getRadius()) == 0) || ((this.getPositionArray()[1] + this.getRadius()) == this.getWorld().getWorldDimensionArray()[1])) {
+		if (((this.getPositionArray()[1] - this.getRadius()) <= 0) || ((this.getPositionArray()[1] + this.getRadius()) >= this.getWorld().getWorldDimensionArray()[1])) {
 		//if (!(this.apparantlyWithinBoundaryY())) {
 			double currentYVel = this.getVelocityArray()[1];
 			this.setVelocity(this.getVelocityArray()[0], -currentYVel);
