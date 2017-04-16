@@ -335,6 +335,16 @@ public class Ship extends CircularObject{
 		return acceleration;
 	}
 	
+	/**
+	 * Move the ship for a certain amount of time with its calculated acceleration
+	 * @param time
+	 * @post The ship moves and accelerates if necessary for the given time
+	 * 		
+	 */
+	public void move(double time){
+		super.move(time);
+		thrust(getAcceleration()*time);
+	}
 	
 	/**
 	 * Change the velocity of the ship based on a the orientation, a given amount and the current velocity
