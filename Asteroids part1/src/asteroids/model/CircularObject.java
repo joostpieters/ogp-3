@@ -221,7 +221,7 @@ public abstract class CircularObject {
 	 * @param object2
 	 * @return If the distance between the centers of the circular objects is bigger than 99% of the sum of the radiuses and
 	 * smaller than 101% of the radiuses of the sum of the radiuses then true is returned, otherwise false is returned
-	 * 			|if (0.99 * sumOfRadius <= distanceBetweenCenters && distanceBetweenCenters <= 1.01 * sumOfRadius) return true;
+	 * 			|if (0.99 * sumOfRadius < distanceBetweenCenters && distanceBetweenCenters < 1.01 * sumOfRadius) return true;
 	 * @throws IllegalArgumentException
 	 * 			|object2 == null
 	 */
@@ -229,7 +229,7 @@ public abstract class CircularObject {
 		if (object2 == null) throw new IllegalArgumentException("apparantlyCollidesWith called with non-existent circular object.");
 		double sumOfRadius = this.getRadius() + object2.getRadius();
 		double distanceBetweenCenters = this.getDistanceBetween(object2) + sumOfRadius;
-		if (0.99 * sumOfRadius <= distanceBetweenCenters && distanceBetweenCenters <= 1.01 * sumOfRadius) return true;
+		if (0.99 * sumOfRadius < distanceBetweenCenters && distanceBetweenCenters < 1.01 * sumOfRadius) return true;
 		return false;
 	}
 	
@@ -255,6 +255,25 @@ public abstract class CircularObject {
 		if (this == object2) return true;
 		else return (this.getDistanceBetween(object2) + this.getRadius() + object2.getRadius()) <= (0.99 * (this.getRadius() + object2.getRadius()));
 	}
+	//TODO
+	public boolean apparantlyWithinBoundary() {
+		return (apparantlyWithinBoundaryX() && apparantlyWithinBoundaryY());
+	}
+	
+	//TODO
+	public boolean apparantlyWithinBoundaryX() {
+		if (this.getPositionArray()[0] <= 0.99 * this.getRadius()) return false;
+		if (this.getWorld().getWorldDimensionArray()[0] - this.getPositionArray()[0] <= 0.99 * this.getRadius()) return false;
+		return true;
+	}
+	
+	//TODO
+	public boolean apparantlyWithinBoundaryY() {
+		if (this.getPositionArray()[1] <= 0.99 * this.getRadius()) return false;
+		if (this.getWorld().getWorldDimensionArray()[1] - this.getPositionArray()[1] <= 0.99 * this.getRadius()) return false;
+		return true;
+	}
+	
 	
 	/**
 	 * If 2 circular objects will ever collide, returns the amount of seconds until that collision. If 2 objects

@@ -246,11 +246,12 @@ public class World {
 			for (CircularObject object2 : this.getAllCircularObjectsInWorld()) {
 				if (object1 != object2) {
 					if (object1.apparantlyCollidesWith(object2)) return 0; // if 2 objects apparently collide with each other, this means that there is a collision so 0 is returned
-					if (object1.getTimeToCollision(object2) < timeNextCollision) timeNextCollision = object1.getTimeToCollision(object2);
+					//if (object1.getTimeToCollision(object2) < timeNextCollision) timeNextCollision = object1.getTimeToCollision(object2);
+					Math.min(timeNextCollision, object1.getTimeToCollision(object2));
 				}
 			}
 		}
-		return timeNextCollision;
+		return Math.max(0, timeNextCollision);
 	}
 	/**
 	 * Method that returns the position of the next collision
@@ -306,8 +307,8 @@ public class World {
 	 * 			
 	 */
 	public void evolve(double dt, CollisionListener collisionListener) {
-		double tC = this.getTimeNextCollision();
 		double deltaT = dt;
+		double tC = this.getTimeNextCollision();
 		CircularObject[] firstCollidingObjects = this.getNextCollidingObjects();
 		double[] positionFirstCollision = this.getPositionNextCollision();
 		while (tC <= deltaT) {
@@ -335,8 +336,8 @@ public class World {
 					//if (collisionListener == null) System.out.println("collision listener null");
 					//if (firstCollidingObjects[0] == null) System.out.println("firstCollidingObjects[0] null");
 					//if (firstCollidingObjects[1] == null) System.out.println("firstCollidingObjects[1] null");
-					System.out.println(positionFirstCollision[0]);
-					System.out.println(positionFirstCollision[1]);
+					// System.out.println(positionFirstCollision[0]);
+					// System.out.println(positionFirstCollision[1]);
 					collisionListener.objectCollision(firstCollidingObjects[0], firstCollidingObjects[1], positionFirstCollision[0], positionFirstCollision[1]);
 				}
 				

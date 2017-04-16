@@ -64,8 +64,7 @@ public class Ship extends CircularObject{
 	/**
 	* 	Constant representing the minimum density of the radius of each created ship
 	*/
-	private final double DENSITY = 1.42*(10^12);
-	
+	private final double DENSITY = 1.42 * Math.pow(10, 12);
 	
 	/**
 	 * Constant representing the thruster force
@@ -405,7 +404,7 @@ public class Ship extends CircularObject{
 	
 	
 	public void terminateShip() {
-		this.setWorld(null);
+		this.getWorld().removeShip(this);
 		this.isTerminated = true;
 	}
 	
@@ -424,21 +423,26 @@ public class Ship extends CircularObject{
 		if (object2 instanceof Ship) {
 			double sumOfRadiusses = this.getRadius() + object2.getRadius();
 			double sumOfMasses = this.getMass() + object2.getMass();
+			
 			Vector deltaV = new Vector(this.velocity.getDifferenceInVelocity(object2.velocity));
 			Vector deltaR = new Vector(this.position.getDifferenceInPositions(object2.position));
+			
 			double J = 2 * this.getMass() * object2.getMass() * (deltaV.dotProductVectors(deltaR))
 					/(sumOfRadiusses*sumOfMasses);
 			double jX = J * this.position.getDifferenceInPositions(object2.position)[0]
 					/ sumOfRadiusses;
 			double jY = J * this.position.getDifferenceInPositions(object2.position)[1]
 					/ sumOfRadiusses;
+			
 			double newXVelocityThisObject = this.getVelocityArray()[0] + jX/this.getMass();
 			double newYVelocityThisObject = this.getVelocityArray()[1] + jY/this.getMass();
-			double newXVelocityObject2 = object2.getVelocityArray()[0] + jX/object2.getMass();
-			double newYVelocityObject2 = object2.getVelocityArray()[1] + jY/object2.getMass();
+			double newXVelocityObject2 = object2.getVelocityArray()[0] - jX/object2.getMass();
+			double newYVelocityObject2 = object2.getVelocityArray()[1] - jY/object2.getMass();
+			
 			this.setVelocity(newXVelocityThisObject, newYVelocityThisObject);
 			object2.setVelocity(newXVelocityObject2, newYVelocityObject2);
 		}
+		
 		if (object2 instanceof Bullet) {
 			Bullet bullet = (Bullet) object2;
 			if (bullet.getSourceShip() == this) {
@@ -471,8 +475,6 @@ public class Ship extends CircularObject{
 		this.setVelocity(newXVelocity, newYVelocity);
 	}
 	
-	
-	
 	/**
 	 * Method that resolves collisions of a ship with a boundary
 	 * @post
@@ -481,10 +483,12 @@ public class Ship extends CircularObject{
 	 */
 	public void collideWithBoundary() {
 		if (((this.getPositionArray()[0] - this.getRadius()) <= 0) || ((this.getPositionArray()[0] + this.getRadius()) >= this.getWorld().getWorldDimensionArray()[0])) {
+		//if (!(this.apparantlyWithinBoundaryX())) {
 			double currentXVel = this.getVelocityArray()[0];
 			this.setVelocity(-currentXVel, this.getVelocityArray()[1]);
 		}
 		if (((this.getPositionArray()[1] - this.getRadius()) == 0) || ((this.getPositionArray()[1] + this.getRadius()) == this.getWorld().getWorldDimensionArray()[1])) {
+		//if (!(this.apparantlyWithinBoundaryY())) {
 			double currentYVel = this.getVelocityArray()[1];
 			this.setVelocity(this.getVelocityArray()[0], -currentYVel);
 		}

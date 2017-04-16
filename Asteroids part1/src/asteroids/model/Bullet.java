@@ -133,7 +133,7 @@ public class Bullet extends CircularObject{
 	 * 			|isTerminated == true
 	 */
 	public void terminateBullet() {
-		this.setWorld(null);
+		this.getWorld().removeBullet(this);
 		this.isTerminated = true;
 	}
 	
