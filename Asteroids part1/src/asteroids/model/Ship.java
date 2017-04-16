@@ -402,9 +402,6 @@ public class Ship extends CircularObject{
 		
 	}
 	
-	
-	
-	
 	public void terminateShip() {
 		this.setWorld(null);
 		this.isTerminated = true;

@@ -181,7 +181,7 @@ public class World {
 	 * 			|bullet.getWorld() == null || bullet.getWorld() != this
 	 */
 	public void removeBullet(Bullet bullet) throws IllegalArgumentException {
-		if (bullet.getWorld() == null || bullet.getWorld() != this) throw new IllegalArgumentException("This bullet does not belong to a world. ");
+		if (bullet.getWorld() != this) throw new IllegalArgumentException("This bullet does not belong to this world. ");
 		bullet.setWorld(null);
 	}
 	/**
@@ -192,7 +192,7 @@ public class World {
 	 * 			|ship.getWorld() == null || ship.getWorld() != this
 	 */
 	public void removeShip(Ship ship) throws IllegalArgumentException{
-		if(ship.getWorld() == null || ship.getWorld() != this) throw new IllegalArgumentException("The ship does not belong to a world");
+		if(ship.getWorld() != this) throw new IllegalArgumentException("The ship does not belong to a world");
 		ship.setWorld(null);
 	}
 	
@@ -226,7 +226,7 @@ public class World {
 	 */
 	public Object getEntityAt(double x, double y) {
 		for (CircularObject obj : this.getAllCircularObjectsInWorld()) {
-			if (obj.position.getPositionX() == x && obj.position.getPositionY() == y) return obj;
+			if (obj.getPositionArray()[0] == x && obj.getPositionArray()[1] == y) return obj;
 		}
 		return null;
 	}	
@@ -245,7 +245,7 @@ public class World {
 			// if so we change the shortest time variable
 			for (CircularObject object2 : this.getAllCircularObjectsInWorld()) {
 				if (object1 != object2) {
-					if (object1.apparantlyCollidesWith(object2)) return 0; // if 2 objects apparently collide with each other, this means that their is a collision so 0 is returned
+					if (object1.apparantlyCollidesWith(object2)) return 0; // if 2 objects apparently collide with each other, this means that there is a collision so 0 is returned
 					if (object1.getTimeToCollision(object2) < timeNextCollision) timeNextCollision = object1.getTimeToCollision(object2);
 				}
 			}
@@ -258,10 +258,7 @@ public class World {
 	 * 			|collidingObjects[0].getCollisionPosition(collidingObjects[1])
 	 */
 	public double[] getPositionNextCollision() {
-		double timeNextCollision = this.getTimeNextCollision();
 		CircularObject[] collidingObjects = this.getNextCollidingObjects();
-		if (timeNextCollision == Double.POSITIVE_INFINITY) return null;
-		if (collidingObjects[0] == null && collidingObjects[1] == null) return null;
 		if (collidingObjects[1] == null) return collidingObjects[0].getPositionCollisionBoundary();
 		else return collidingObjects[0].getCollisionPosition(collidingObjects[1]);
 	}
@@ -310,14 +307,15 @@ public class World {
 	 */
 	public void evolve(double dt, CollisionListener collisionListener) {
 		double tC = this.getTimeNextCollision();
-		
-		while (tC <= dt) {
-			CircularObject[] firstCollidingObjects = this.getNextCollidingObjects();
-			double[] positionFirstCollision = this.getPositionNextCollision();
+		double deltaT = dt;
+		CircularObject[] firstCollidingObjects = this.getNextCollidingObjects();
+		double[] positionFirstCollision = this.getPositionNextCollision();
+		while (tC <= deltaT) {
 			for (CircularObject object1 : this.getAllCircularObjectsInWorld()) object1.move(tC);
 			for (Ship ship : this.getAllShipsInWorld()) {
 				if (ship.checkThrusterStatus()) ship.updateVelocity(tC);
 			}
+			
 			if (firstCollidingObjects[1] == null) {
 				if (firstCollidingObjects[0] instanceof Ship) {
 					Ship ship = (Ship)firstCollidingObjects[0];
@@ -325,7 +323,7 @@ public class World {
 					collisionListener.boundaryCollision(ship, positionFirstCollision[0], positionFirstCollision[1]);
 				}
 				if (firstCollidingObjects[0] instanceof Bullet) {
-					Bullet bullet = (Bullet)firstCollidingObjects[1];
+					Bullet bullet = (Bullet)firstCollidingObjects[0];
 					bullet.collideWithBoundary();
 					collisionListener.boundaryCollision(bullet, positionFirstCollision[0], positionFirstCollision[1]);
 				}
@@ -334,16 +332,24 @@ public class World {
 				if (firstCollidingObjects[0] instanceof Ship) {
 					Ship ship = (Ship) firstCollidingObjects[0];
 					ship.collisionCircularObject(firstCollidingObjects[1]);
+					//if (collisionListener == null) System.out.println("collision listener null");
+					//if (firstCollidingObjects[0] == null) System.out.println("firstCollidingObjects[0] null");
+					//if (firstCollidingObjects[1] == null) System.out.println("firstCollidingObjects[1] null");
+					System.out.println(positionFirstCollision[0]);
+					System.out.println(positionFirstCollision[1]);
 					collisionListener.objectCollision(firstCollidingObjects[0], firstCollidingObjects[1], positionFirstCollision[0], positionFirstCollision[1]);
 				}
+				
 				if (firstCollidingObjects[0] instanceof Bullet) {
 					Bullet bullet = (Bullet)firstCollidingObjects[0];
 					bullet.collisionCircularObject(firstCollidingObjects[1]);
 					collisionListener.objectCollision(firstCollidingObjects[0], firstCollidingObjects[1], positionFirstCollision[0], positionFirstCollision[1]);
 				}
 			}
-			dt = dt - tC;
+			deltaT = deltaT - tC;
 			tC = this.getTimeNextCollision();
+			positionFirstCollision = this.getPositionNextCollision();
+			firstCollidingObjects = this.getNextCollidingObjects();
 		}
 		for (CircularObject object : this.getAllCircularObjectsInWorld()) object.move(dt);
 		for (Ship ship : this.getAllShipsInWorld()) {

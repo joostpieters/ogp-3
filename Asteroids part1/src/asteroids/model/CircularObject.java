@@ -125,7 +125,7 @@ public abstract class CircularObject {
 	 * 			|this.world != null
 	 */
 	public void setWorld(World world) throws IllegalArgumentException {
-		if (this.world != null) throw new IllegalArgumentException("This circular object is already part of a world.");
+		if (this.world != null && this.world != this.getWorld()) throw new IllegalArgumentException("This circular object is already part of a world.");
 		this.world = world;
 	}
 	
