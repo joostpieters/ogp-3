@@ -409,15 +409,19 @@ public class Ship extends CircularObject{
 		}
 		
 	}
-	
-	
-	
-	
+	/**
+	 * Method to terminate the ship
+	 * @post this.isShipTerminated = true;
+	 */
 	public void terminateShip() {
 		this.getWorld().removeShip(this);
 		this.isTerminated = true;
 	}
 	
+	/**
+	 * Method that returns whether or not the ship is terminated
+	 * @return
+	 */
 	public boolean isShipTerminated() {
 		return this.isTerminated;
 	}

@@ -135,18 +135,27 @@ public class World {
 		}
 		return true;
 	}
-	//TODO
+	/**
+	 * checks if the ship is within boundaries of the world
+	 * @param ship
+	 * @see implementation
+	 */
 	private boolean shipOutOfBound(Ship ship) {
 		if (ship.getPositionArray()[0] - ship.getRadius() <= 0 || ship.getPositionArray()[0] + ship.getRadius() >= this.getWorldDimensionArray()[0]) return true;
 		if (ship.getPositionArray()[1] - ship.getRadius() <= 0 || ship.getPositionArray()[1] + ship.getRadius() >= this.getWorldDimensionArray()[1]) return true;
 		return false;
 	}
-	//TODO
+	/**
+	 * checks if the bullet is within boundaries of this world
+	 * @param bullet
+	 * @see implementation
+	 */
 	private boolean bulletOutOfBound(Bullet bullet) {
 		if (bullet.getPositionArray()[0] - bullet.getRadius() <= 0 || bullet.getPositionArray()[0] + bullet.getRadius() >= this.getWorldDimensionArray()[0]) return true;
 		if (bullet.getPositionArray()[1] - bullet.getRadius() <= 0 || bullet.getPositionArray()[1] + bullet.getRadius() >= this.getWorldDimensionArray()[1]) return true;
 		return false;
 	}
+	
 	/**
 	 * Add a ship to the given world
 	 * @param ship
@@ -183,6 +192,7 @@ public class World {
 	public void removeBullet(Bullet bullet) throws IllegalArgumentException {
 		if (bullet.getWorld() != this) throw new IllegalArgumentException("This bullet does not belong to this world. ");
 		bullet.setWorld(null);
+		this.bulletsInWorld.remove(bullet);
 	}
 	/**
 	 * Method to remove a ship from this world
@@ -194,6 +204,7 @@ public class World {
 	public void removeShip(Ship ship) throws IllegalArgumentException{
 		if(ship.getWorld() != this) throw new IllegalArgumentException("The ship does not belong to a world");
 		ship.setWorld(null);
+		this.shipsInWorld.remove(ship);
 	}
 	
 	/**
