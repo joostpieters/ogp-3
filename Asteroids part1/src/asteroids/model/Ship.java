@@ -443,32 +443,7 @@ public class Ship extends CircularObject{
 			double newXVelocityThisObject = this.getVelocityArray()[0] + jX/this.getMass();
 			double newYVelocityThisObject = this.getVelocityArray()[1] + jY/this.getMass();
 			double newXVelocityObject2 = object2.getVelocityArray()[0] - jX/object2.getMass();
-			double newYVelocityObject2 = object2.getVelocityArray()[1] - jY/object2.getMass();
-			
-			
-			System.out.println(this.getRadius());
-			System.out.println(object2.getRadius());
-			System.out.println(this.getMass());
-			System.out.println(object2.getMass());
-			System.out.println(this.getPositionArray()[0]);
-			System.out.println(object2.getPositionArray()[0]);
-			System.out.println(this.position.getDifferenceInPositions(object2.position)[0]);
-			System.out.println(this.getPositionArray()[1]);
-			System.out.println(object2.getPositionArray()[1]);
-			System.out.println(this.position.getDifferenceInPositions(object2.position)[1]);
-			System.out.println(deltaV.dotProductVectors(deltaR));
-			
-			
-			System.out.println(this.getVelocityArray()[0]);
-			System.out.println(newXVelocityThisObject);
-			System.out.println(this.getVelocityArray()[1]);
-			System.out.println(newYVelocityThisObject);
-			
-			System.out.println(object2.getVelocityArray()[0]);
-			System.out.println(newXVelocityObject2);
-			System.out.println(object2.getVelocityArray()[1]);
-			System.out.println(newYVelocityObject2);
-			
+			double newYVelocityObject2 = object2.getVelocityArray()[1] - jY/object2.getMass();		
 			this.setVelocity(newXVelocityThisObject, newYVelocityThisObject);
 			object2.setVelocity(newXVelocityObject2, newYVelocityObject2);
 		}
@@ -483,26 +458,6 @@ public class Ship extends CircularObject{
 				bullet.terminateBullet();
 			}
 		}
-	}
-	
-	/**
-	 * Method that updates the velocity of a ship after dt seconds
-	 * @param dt
-	 * @post
-	 * 			|new.getXVelocity = newXVelocity
-	 * 			|new.getYVelocity = newYVelocity
-	 */
-	public void updateVelocity(double dt) {
-		double velocityX = this.getVelocityArray()[0];
-		double velocityY = this.getVelocityArray()[1];
-		double orientation = this.getDirection();
-		double massShip = this.getMass();
-		double acceleration = this.THRUSTERFORCE / massShip;
-		
-		double newXVelocity = velocityX + acceleration * Math.cos(orientation) * dt;
-		double newYVelocity = velocityY + acceleration * Math.sin(orientation) * dt;
-		
-		this.setVelocity(newXVelocity, newYVelocity);
 	}
 	
 	/**

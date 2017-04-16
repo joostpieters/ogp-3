@@ -350,12 +350,10 @@ public class World {
 				}
 				collisionListener.objectCollision(firstCollidingObjects[0], firstCollidingObjects[1], positionFirstCollision[0], positionFirstCollision[1]);
 			}
-			// System.out.println(deltaT);
-			// System.out.println(tC);
+
 			deltaT = deltaT - tC;
 			tC = this.getTimeNextCollision();
-			// System.out.println(deltaT);
-			// System.out.println(tC);
+
 			positionFirstCollision = this.getPositionNextCollision();
 			firstCollidingObjects = this.getNextCollidingObjects();
 		}

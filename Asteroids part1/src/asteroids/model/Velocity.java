@@ -151,6 +151,6 @@ public class Velocity {
 		double[] velocityThisShip = this.getVelocityArray();
 		double[] velocityShip2 = otherVelocity.getVelocityArray();
 		
-		return new double[] {velocityThisShip[0] - velocityShip2[0], velocityThisShip[1] - velocityShip2[1]};
+		return new double[] {velocityShip2[0]-velocityThisShip[0], velocityShip2[1]-velocityThisShip[1]};
 	}
 }
