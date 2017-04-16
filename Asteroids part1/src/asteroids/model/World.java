@@ -257,7 +257,7 @@ public class World {
 			// if so we change the shortest time variable
 			for (CircularObject object2 : this.getAllCircularObjectsInWorld()) {
 				if (object1 != object2) {
-					if (object1.apparantlyCollidesWith(object2)) return 0; // if 2 objects apparently collide with each other, this means that there is a collision so 0 is returned
+					// if (object1.apparantlyCollidesWith(object2)) return 0; // if 2 objects apparently collide with each other, this means that there is a collision so 0 is returned
 					timeNextCollision = Math.min(timeNextCollision, object1.getTimeToCollision(object2));
 				}
 			}
@@ -327,51 +327,38 @@ public class World {
 		double[] positionFirstCollision = this.getPositionNextCollision();
 		while (tC <= deltaT) {
 			for (CircularObject object1 : this.getAllCircularObjectsInWorld()) object1.move(tC);
-			//for (Ship ship : this.getAllShipsInWorld()) {
-				//if (ship.checkThrusterStatus()) ship.updateVelocity(tC);
-			//}
-			
 			if (firstCollidingObjects[1] == null) {
 				if (firstCollidingObjects[0] instanceof Ship) {
 					Ship ship = (Ship)firstCollidingObjects[0];
 					ship.collideWithBoundary();
-					collisionListener.boundaryCollision(ship, positionFirstCollision[0], positionFirstCollision[1]);
 				}
 				if (firstCollidingObjects[0] instanceof Bullet) {
 					Bullet bullet = (Bullet)firstCollidingObjects[0];
 					bullet.collideWithBoundary();
-					collisionListener.boundaryCollision(bullet, positionFirstCollision[0], positionFirstCollision[1]);
 				}
+				collisionListener.boundaryCollision(firstCollidingObjects[0], positionFirstCollision[0], positionFirstCollision[1]);
 			}
 			else {
 				if (firstCollidingObjects[0] instanceof Ship) {
 					Ship ship = (Ship) firstCollidingObjects[0];
 					ship.collisionCircularObject(firstCollidingObjects[1]);
-					//if (collisionListener == null) System.out.println("collision listener null");
-					//if (firstCollidingObjects[0] == null) System.out.println("firstCollidingObjects[0] null");
-					//if (firstCollidingObjects[1] == null) System.out.println("firstCollidingObjects[1] null");
-					// System.out.println(positionFirstCollision[0]);
-					// System.out.println(positionFirstCollision[1]);
-					collisionListener.objectCollision(firstCollidingObjects[0], firstCollidingObjects[1], positionFirstCollision[0], positionFirstCollision[1]);
 				}
 				
 				if (firstCollidingObjects[0] instanceof Bullet) {
 					Bullet bullet = (Bullet)firstCollidingObjects[0];
 					bullet.collisionCircularObject(firstCollidingObjects[1]);
-					collisionListener.objectCollision(firstCollidingObjects[0], firstCollidingObjects[1], positionFirstCollision[0], positionFirstCollision[1]);
 				}
+				collisionListener.objectCollision(firstCollidingObjects[0], firstCollidingObjects[1], positionFirstCollision[0], positionFirstCollision[1]);
 			}
+			// System.out.println(deltaT);
+			// System.out.println(tC);
 			deltaT = deltaT - tC;
 			tC = this.getTimeNextCollision();
+			// System.out.println(deltaT);
+			// System.out.println(tC);
 			positionFirstCollision = this.getPositionNextCollision();
 			firstCollidingObjects = this.getNextCollidingObjects();
 		}
 		for (CircularObject object : this.getAllCircularObjectsInWorld()) object.move(dt);
-		//for (Ship ship : this.getAllShipsInWorld()) {
-			//if (ship.checkThrusterStatus()) {
-				//ship.updateVelocity(dt);
-			//}
-		//}
-		
 	}
 }

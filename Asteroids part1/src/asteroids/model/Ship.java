@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+
 import be.kuleuven.cs.som.annotate.*;
 
 public class Ship extends CircularObject{
@@ -28,17 +29,6 @@ public class Ship extends CircularObject{
  * @author Kevin Van der Schueren en Steven Zegers
  * @version Part 1
  */
-	/**
-	 * Variable representing the position of the ship
-	 */
-	public Position position = new Position(0,0);
-
-	/**
-	*	Variable representing the velocity of the ship
-	*/
-	public Velocity velocity = new Velocity(0,0);
-	
-
 	/**
 	*	Variable representing the direction of the ship
 	*/
@@ -119,9 +109,9 @@ public class Ship extends CircularObject{
 	*/
 	
 	public Ship(double xCoordinate, double yCoordinate, double xVelocity, double yVelocity, double radius, double direction, double mass) 
-			throws IllegalArgumentException{
-				super(xCoordinate, yCoordinate, xVelocity, yVelocity, radius);
-				
+			throws IllegalArgumentException {
+			
+		super(xCoordinate, yCoordinate, xVelocity, yVelocity, radius);
 		this.setDirection(direction);
 		this.setMass(mass);
 	}
@@ -179,7 +169,7 @@ public class Ship extends CircularObject{
 	 * 		the mass which will be assigned to the ship
 	 */
 	public void setMass(double mass){
-		double masswithformula = (4/3)*Math.pow(this.getRadius(),3)*DENSITY;
+		double masswithformula = (4/3)*Math.PI*Math.pow(this.getRadius(),3)*DENSITY;
 		if (mass >= masswithformula){
 			this.mass = mass;
 		}
@@ -443,8 +433,10 @@ public class Ship extends CircularObject{
 			
 			double J = 2 * this.getMass() * object2.getMass() * (deltaV.dotProductVectors(deltaR))
 					/(sumOfRadiusses*sumOfMasses);
+			
 			double jX = J * this.position.getDifferenceInPositions(object2.position)[0]
 					/ sumOfRadiusses;
+			
 			double jY = J * this.position.getDifferenceInPositions(object2.position)[1]
 					/ sumOfRadiusses;
 			
@@ -452,6 +444,30 @@ public class Ship extends CircularObject{
 			double newYVelocityThisObject = this.getVelocityArray()[1] + jY/this.getMass();
 			double newXVelocityObject2 = object2.getVelocityArray()[0] - jX/object2.getMass();
 			double newYVelocityObject2 = object2.getVelocityArray()[1] - jY/object2.getMass();
+			
+			
+			System.out.println(this.getRadius());
+			System.out.println(object2.getRadius());
+			System.out.println(this.getMass());
+			System.out.println(object2.getMass());
+			System.out.println(this.getPositionArray()[0]);
+			System.out.println(object2.getPositionArray()[0]);
+			System.out.println(this.position.getDifferenceInPositions(object2.position)[0]);
+			System.out.println(this.getPositionArray()[1]);
+			System.out.println(object2.getPositionArray()[1]);
+			System.out.println(this.position.getDifferenceInPositions(object2.position)[1]);
+			System.out.println(deltaV.dotProductVectors(deltaR));
+			
+			
+			System.out.println(this.getVelocityArray()[0]);
+			System.out.println(newXVelocityThisObject);
+			System.out.println(this.getVelocityArray()[1]);
+			System.out.println(newYVelocityThisObject);
+			
+			System.out.println(object2.getVelocityArray()[0]);
+			System.out.println(newXVelocityObject2);
+			System.out.println(object2.getVelocityArray()[1]);
+			System.out.println(newYVelocityObject2);
 			
 			this.setVelocity(newXVelocityThisObject, newYVelocityThisObject);
 			object2.setVelocity(newXVelocityObject2, newYVelocityObject2);
@@ -496,13 +512,11 @@ public class Ship extends CircularObject{
 	 * 			|new.velocity.getYVelocity == -currentYVel
 	 */
 	public void collideWithBoundary() {
-		if (((this.getPositionArray()[0] - this.getRadius()) <= 0) || ((this.getPositionArray()[0] + this.getRadius()) >= this.getWorld().getWorldDimensionArray()[0])) {
-		//if (!(this.apparantlyWithinBoundaryX())) {
+		if (!(this.apparantlyWithinBoundaryX())) {
 			double currentXVel = this.getVelocityArray()[0];
 			this.setVelocity(-currentXVel, this.getVelocityArray()[1]);
 		}
-		if (((this.getPositionArray()[1] - this.getRadius()) <= 0) || ((this.getPositionArray()[1] + this.getRadius()) >= this.getWorld().getWorldDimensionArray()[1])) {
-		//if (!(this.apparantlyWithinBoundaryY())) {
+		if (!(this.apparantlyWithinBoundaryY())) {
 			double currentYVel = this.getVelocityArray()[1];
 			this.setVelocity(this.getVelocityArray()[0], -currentYVel);
 		}

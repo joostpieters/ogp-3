@@ -154,7 +154,11 @@ public class Position {
 		double[] positionThisShip = this.getPositionArray();
 		double[] positionShip2 = otherPosition.getPositionArray();
 		
-		return new double[] {positionThisShip[0] - positionShip2[0], positionThisShip[1] - positionShip2[1]};
+		double xPos = positionThisShip[0] - positionShip2[0];
+		double yPos = positionThisShip[1] - positionShip2[1];
+		double[] differencePosArray = {xPos, yPos};
+		
+		return differencePosArray;
 	}
 
 }

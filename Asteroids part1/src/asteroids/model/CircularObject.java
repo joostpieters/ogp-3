@@ -262,15 +262,15 @@ public abstract class CircularObject {
 	
 	//TODO
 	public boolean apparantlyWithinBoundaryX() {
-		if (this.getPositionArray()[0] <= 0.99 * this.getRadius()) return false;
-		if (this.getWorld().getWorldDimensionArray()[0] - this.getPositionArray()[0] <= 0.99 * this.getRadius()) return false;
+		if (this.getPositionArray()[0] <= 1.01 * this.getRadius()) return false;
+		if (this.getWorld().getWorldDimensionArray()[0] - this.getPositionArray()[0] <= 1.01 * this.getRadius()) return false;
 		return true;
 	}
 	
 	//TODO
 	public boolean apparantlyWithinBoundaryY() {
-		if (this.getPositionArray()[1] <= 0.99 * this.getRadius()) return false;
-		if (this.getWorld().getWorldDimensionArray()[1] - this.getPositionArray()[1] <= 0.99 * this.getRadius()) return false;
+		if (this.getPositionArray()[1] <= 1.01 * this.getRadius()) return false;
+		if (this.getWorld().getWorldDimensionArray()[1] - this.getPositionArray()[1] <= 1.01 * this.getRadius()) return false;
 		return true;
 	}
 	

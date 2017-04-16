@@ -23,15 +23,6 @@ public class Bullet extends CircularObject{
 	 * Variable representing the current number of border collisions
 	 */
 	public double boundaryCollisions = 0;
-	/**
-	 * The position of the bullet
-	 */
-	private Position position = new Position(0,0);
-	
-	/**
-	 * The velocity of the bullet
-	 */
-	private Velocity velocity = new Velocity(0,0);
 	
 	/**
 	 * Boolean variable representing whether or not the bullet is terminated
