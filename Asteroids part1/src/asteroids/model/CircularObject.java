@@ -45,6 +45,10 @@ public abstract class CircularObject {
 	 * The world the object lives in
 	 */
 	protected World world;
+	/**
+	 * Variable that indicates whether or not the circular object is terminated
+	 */
+	private boolean isTerminated = false;
 	
 	
 	/**
@@ -125,11 +129,10 @@ public abstract class CircularObject {
 	 * 			|this.world != null
 	 */
 	public void setWorld(World world) throws IllegalArgumentException {
-		if (this.world != null && this.world != this.getWorld()) throw new IllegalArgumentException("This circular object is already part of a world.");
+		if (this.world != null && world != this.getWorld() && world != null) throw new IllegalArgumentException("This circular object is already part of a world.");
 		this.world = world;
 	}
-	
-	
+
 	///
 	///RADIUS
 	///
@@ -294,7 +297,7 @@ public abstract class CircularObject {
 	 */
 	public double getTimeToCollision(CircularObject object2) throws IllegalArgumentException{
 		if (object2 == null) throw new IllegalArgumentException("getTimeToCollision called with a non-existing circular object!");
-		if (this.overlap(object2)) throw new IllegalArgumentException("These two circular objects overlap!");
+		//if (this.overlap(object2)) throw new IllegalArgumentException("These two circular objects overlap!");
 		if (this == object2) {
 			return Double.POSITIVE_INFINITY;
 		}
@@ -420,5 +423,13 @@ public abstract class CircularObject {
 			yPosB = yPosB + this.getRadius();
 		}
 		return new double[] {xPosB, yPosB};
+	}
+
+	public boolean isTerminated() {
+		return isTerminated;
+	}
+
+	public void terminate() {
+		this.isTerminated = true;
 	}
 }

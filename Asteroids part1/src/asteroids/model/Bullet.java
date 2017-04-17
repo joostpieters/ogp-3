@@ -66,7 +66,7 @@ public class Bullet extends CircularObject{
 	 * @return returns the ship where the bullet belongs to.
 	 * 		|result == this.ship
 	 */
-	public Ship getSourceShip(){
+	public Ship getSourceShip() {
 		return this.ship;
 	}
 	
@@ -123,9 +123,11 @@ public class Bullet extends CircularObject{
 	 * 			|new.getWorld == null
 	 * 			|isTerminated == true
 	 */
-	public void terminateBullet() {
-		this.getWorld().removeBullet(this);
-		this.isTerminated = true;
+	@Override
+	public void terminate() {
+		super.terminate();
+		if (this.getWorld()!= null) this.getWorld().removeBullet(this);
+		
 	}
 	
 	
@@ -147,7 +149,7 @@ public class Bullet extends CircularObject{
 		double xBoundaryWorld = this.world.getWorldDimensionArray()[0];
 		double yBoundaryWorld = this.world.getWorldDimensionArray()[1];
 		if (this.boundaryCollisions >= 2) {
-			this.terminateBullet();
+			this.terminate();
 		}
 		if ((this.getPositionArray()[0] - this.getRadius() <= 0 || this.getPositionArray()[0] + this.getRadius() >= xBoundaryWorld) && this.boundaryCollisions < 3) {
 			double currentXVel = this.getVelocityArray()[0];
@@ -176,14 +178,14 @@ public class Bullet extends CircularObject{
 			Ship ship = (Ship)object2;
 			if (this.getSourceShip() == ship) ship.loadBullet(this);
 			else {
-				ship.terminateShip();
-				this.terminateBullet();
+				ship.terminate();
+				this.terminate();
 			}
 		}
 		else {
 			Bullet bullet = (Bullet)object2;
-			this.terminateBullet();
-			bullet.terminateBullet();
+			this.terminate();
+			bullet.terminate();
 		}
 	}
 }

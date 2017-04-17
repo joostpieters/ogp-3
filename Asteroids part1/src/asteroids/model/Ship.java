@@ -71,11 +71,6 @@ public class Ship extends CircularObject{
 	 * The collection of bullets a ship has
 	 */
 	private Set<Bullet> bulletsCollection = new HashSet<Bullet>();
-	/**
-	 * Boolean variable that checks if a world is terminated or not
-	 */
-	private boolean isTerminated = false;
-
 	
 	
 	/**
@@ -235,9 +230,10 @@ public class Ship extends CircularObject{
 	 */
 	public boolean canAddToShip(Bullet bullet) {
 		if (bullet == null) return false;
-		if (bullet.getSourceShip() == this) return false;
+		if (bullet.getSourceShip() != null && bullet.getSourceShip() != this) return false;
+		if (bullet.isTerminated()) return false;
 		if (bullet.getWorld() != null && bullet.getWorld() != this.getWorld()) return false;
-		return true;
+		return (this.getDistanceBetween(bullet) < 0.99 * (this.getRadius() - bullet.getRadius()));
 	}
 	
 	/**
@@ -383,7 +379,7 @@ public class Ship extends CircularObject{
 		double bulletYPosition = shipPosition[1] + (this.getRadius() + 2*bulletradius)*Math.sin(bulletdirection);
 		
 		firedbullet.setSourceShip(this);
-		this.removeBullet(firedbullet);
+		this.bulletsCollection.remove(firedbullet);
 		firedbullet.setVelocity(bulletXVelocity, bulletYVelocity);
 		firedbullet.setPosition(bulletXPosition, bulletYPosition);
 		try{
@@ -393,27 +389,22 @@ public class Ship extends CircularObject{
 			for (CircularObject obj: this.getWorld().getAllCircularObjectsInWorld()){
 				if (obj.overlap(firedbullet)) {
 					firedbullet.collisionCircularObject(obj);
-			
 			}
 			}
 		}
-		
-	}
-	/**
-	 * Method to terminate the ship
-	 * @post this.isShipTerminated = true;
-	 */
-	public void terminateShip() {
-		this.getWorld().removeShip(this);
-		this.isTerminated = true;
 	}
 	
 	/**
-	 * Method that returns whether or not the ship is terminated
-	 * @return
+	 * Method to terminate the ship
+	 * @post Ship is terminated and removed from this world
+	 * 			|this.getWorld() == null
+	 * 			|this.isTerminated == true
 	 */
-	public boolean isShipTerminated() {
-		return this.isTerminated;
+	@Override
+	public void terminate() throws IllegalArgumentException {
+		super.terminate();
+		if (this.getWorld() != null) this.getWorld().removeShip(this);
+		
 	}
 	
 	/**
@@ -451,11 +442,13 @@ public class Ship extends CircularObject{
 		if (object2 instanceof Bullet) {
 			Bullet bullet = (Bullet) object2;
 			if (bullet.getSourceShip() == this) {
+				System.out.println("Hier moet de bullet geladen worden");
 				this.loadBullet(bullet);
 			}
 			else {
-				this.terminateShip();
-				bullet.terminateBullet();
+				System.out.println("Loop collisionCircularObject ship");
+				this.terminate();
+				bullet.terminate();
 			}
 		}
 	}

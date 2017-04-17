@@ -101,7 +101,8 @@ public class World {
 	 * @Return The collection of all ships
 	 * 			|result == shipsInWorld
 	 */
-	public Set<CircularObject> getAllCircularObjectsInWorld(){
+	public Set<CircularObject> getAllCircularObjectsInWorld() {
+		//TODO: start from empty set, then add all new objects to update set after collisions and termination of bullets and ships
 		circularObjectsInWorld.addAll(bulletsInWorld);
 		circularObjectsInWorld.addAll(shipsInWorld);
 		return circularObjectsInWorld;
@@ -180,6 +181,7 @@ public class World {
 		if (!validBullet(bullet) || bulletOutOfBound(bullet)) throw new IllegalArgumentException("This bullet cannot be added to the world.");
 		bullet.setWorld(this);
 		bulletsInWorld.add(bullet);
+		circularObjectsInWorld.add(bullet);
 	}
 	
 	/**
@@ -191,8 +193,10 @@ public class World {
 	 */
 	public void removeBullet(Bullet bullet) throws IllegalArgumentException {
 		if (bullet.getWorld() != this) throw new IllegalArgumentException("This bullet does not belong to this world. ");
-		bullet.setWorld(null);
 		this.bulletsInWorld.remove(bullet);
+		this.circularObjectsInWorld.remove(bullet);
+		bullet.setWorld(null);
+		
 	}
 	
 	/**
@@ -204,8 +208,9 @@ public class World {
 	 */
 	public void removeShip(Ship ship) throws IllegalArgumentException{
 		if(ship.getWorld() != this) throw new IllegalArgumentException("The ship does not belong to a world");
+		shipsInWorld.remove(ship);
+		this.circularObjectsInWorld.remove(ship);
 		ship.setWorld(null);
-		this.shipsInWorld.remove(ship);
 	}
 	
 	/**
@@ -257,7 +262,7 @@ public class World {
 			// if so we change the shortest time variable
 			for (CircularObject object2 : this.getAllCircularObjectsInWorld()) {
 				if (object1 != object2) {
-					// if (object1.apparantlyCollidesWith(object2)) return 0; // if 2 objects apparently collide with each other, this means that there is a collision so 0 is returned
+					//if (object1.apparantlyCollidesWith(object2)) return 0; // if 2 objects apparently collide with each other, this means that there is a collision so 0 is returned
 					timeNextCollision = Math.min(timeNextCollision, object1.getTimeToCollision(object2));
 				}
 			}
