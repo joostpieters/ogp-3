@@ -369,6 +369,7 @@ public class Ship extends CircularObject{
 		if(this.getAmountOfBullets() < 0) return;
 		if(this.getWorld() == null) return;
 		Bullet firedbullet = this.getBulletsOfShip().iterator().next();
+		firedbullet.boundaryCollisions = 0;
 		double bulletdirection = this.getDirection();
 		double bulletradius = firedbullet.getRadius();
 		double[] shipPosition = this.getPositionArray();
