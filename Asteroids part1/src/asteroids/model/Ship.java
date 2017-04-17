@@ -251,7 +251,7 @@ public class Ship extends CircularObject{
 	public void loadBullet(Bullet bullet) throws IllegalArgumentException {
 		if (!canAddToShip(bullet)) throw new IllegalArgumentException("This bullet can not be loaded onto the ship.");
 		bullet.setPosition(this.getPositionArray()[0], this.getPositionArray()[1]);
-		bullet.setWorld(null);
+		if (bullet.getWorld() != null) this.getWorld().removeBullet(bullet);
 		bullet.setSourceShip(this);
 		this.bulletsCollection.add(bullet);
 	}
@@ -468,11 +468,9 @@ public class Ship extends CircularObject{
 		if (object2 instanceof Bullet) {
 			Bullet bullet = (Bullet) object2;
 			if (bullet.getSourceShip() == this) {
-				System.out.println("Hier moet de bullet geladen worden");
 				this.loadBullet(bullet);
 			}
 			else {
-				System.out.println("Loop collisionCircularObject ship");
 				this.terminate();
 				bullet.terminate();
 			}

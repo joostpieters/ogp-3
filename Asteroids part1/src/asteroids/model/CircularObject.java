@@ -232,7 +232,7 @@ public abstract class CircularObject {
 		if (object2 == null) throw new IllegalArgumentException("apparantlyCollidesWith called with non-existent circular object.");
 		double sumOfRadius = this.getRadius() + object2.getRadius();
 		double distanceBetweenCenters = this.getDistanceBetween(object2) + sumOfRadius;
-		if (0.99 * sumOfRadius < distanceBetweenCenters && distanceBetweenCenters < 1.01 * sumOfRadius) return true;
+		if (0.99 * sumOfRadius <= distanceBetweenCenters && distanceBetweenCenters <= 1.01 * sumOfRadius) return true;
 		return false;
 	}
 	
@@ -256,7 +256,7 @@ public abstract class CircularObject {
 	public boolean overlap(CircularObject object2) throws IllegalArgumentException {
 		if (object2 == null) throw new IllegalArgumentException("Overlap called with a non-existing circular object!");
 		if (this == object2) return true;
-		else return (this.getDistanceBetween(object2) + this.getRadius() + object2.getRadius()) <= (0.99 * (this.getRadius() + object2.getRadius()));
+		else return (this.getDistanceBetween(object2) + this.getRadius() + object2.getRadius()) < (0.99 * (this.getRadius() + object2.getRadius()));
 	}
 	//TODO
 	public boolean apparantlyWithinBoundary() {
@@ -297,7 +297,7 @@ public abstract class CircularObject {
 	 */
 	public double getTimeToCollision(CircularObject object2) throws IllegalArgumentException{
 		if (object2 == null) throw new IllegalArgumentException("getTimeToCollision called with a non-existing circular object!");
-		//if (this.overlap(object2)) throw new IllegalArgumentException("These two circular objects overlap!");
+		if (this.overlap(object2)) throw new IllegalArgumentException("These two circular objects overlap!");
 		if (this == object2) {
 			return Double.POSITIVE_INFINITY;
 		}

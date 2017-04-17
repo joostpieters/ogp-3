@@ -253,7 +253,7 @@ public class test{
 		Bullet bullet = facade.createBullet(40,20,0,0,5);
 		facade.addBulletToWorld(world, bullet);
 		facade.terminateBullet(bullet);
-		assert (facade.isTerminatedBullet(bullet));
+		assert(facade.isTerminatedBullet(bullet));
 	}
 	
 	//Check if bullet is not terminated
@@ -347,7 +347,7 @@ public class test{
 	@Test
 	public void testFirebullet() throws ModelException{
 		World world1 = facade.createWorld(5000, 3000);
-		Bullet bullet = facade.createBullet(10, 10, 5, 5, 2);
+		Bullet bullet = facade.createBullet(100, 100, 5, 5, 2);
 		Ship ship = facade.createShip(100, 120, 10, 5, 50, 0, 1.0E20);
 		facade.addShipToWorld(world1, ship);
 		facade.loadBulletOnShip(ship, bullet);

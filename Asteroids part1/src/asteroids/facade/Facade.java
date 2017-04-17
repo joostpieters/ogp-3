@@ -240,7 +240,7 @@ public class Facade implements IFacade {
 
 	@Override
 	public boolean isTerminatedBullet(Bullet bullet) throws ModelException {
-		return bullet.isBulletTerminated();
+		return bullet.isTerminated();
 	}
 
 
