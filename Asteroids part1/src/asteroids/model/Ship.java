@@ -191,8 +191,8 @@ public class Ship extends CircularObject{
 	
 	
 	/**
-	 * Get a list of bullets of the ship
-	 * @return the list of bullets
+	 * Get a set of bullets of the ship
+	 * @return the set of bullets
 	 * 			|result == bulletsCollection
 	 */
 	public Set<Bullet> getBulletsOfShip(){
@@ -225,7 +225,7 @@ public class Ship extends CircularObject{
 	 * the bullet cannot be loaded onto another ship and the bullet cannot be loaded if its part of a different world
 	 * @param bullet
 	 * @return
-	 * 			|if (bullet == null) return false || if (bullet.getSourceShip() != this) return false 
+	 * 			|if (bullet == null) return false || (if (bullet.getSourceShip() != this && bullet.getSourceShip() != this)) return false 
 	 * 			|if (bullet.getWorld() != null && bullet.getWorld() != this.getWorld()) return false
 	 */
 	public boolean canAddToShip(Bullet bullet) {
@@ -239,6 +239,12 @@ public class Ship extends CircularObject{
 	/**
 	 * Method to load a bullet onto a ship
 	 * @param bullet
+	 * @post position, world and sourceShip is assigned to the bullet
+	 * 		|bullet.setPosition(this.getPositionArray()[0], this.getPositionArray()[1]);
+	 *		|bullet.setWorld(null);
+	 *		|bullet.setSourceShip(this);
+	 * @post The bullet is added to the collection of bullets
+	 * 		|this.bulletsCollection.add(bullet);
 	 * @throws IllegalArgumentException
 	 * 			|!canAddToShip(bullet)
 	 */
@@ -253,7 +259,7 @@ public class Ship extends CircularObject{
 	/**
 	 * Method to load multiple bullets on the ship.
 	 * @param bullets
-	 * 
+	 * @post see previous method
 	 */
 	public void loadMultipleBullets(Collection<Bullet> bullets){
 		for (Bullet bullet : bullets) loadBullet(bullet);
@@ -264,6 +270,8 @@ public class Ship extends CircularObject{
 	 * @param bullet
 	 * @throws IllegalArgumentException
 	 * 			|bullet.getSourceShip() != this
+	 * @post the bullet is removed from the collection of bullets.
+	 * 		|this.bulletsCollection.remove(bullet)
 	 */
 	public void removeBullet(Bullet bullet) throws IllegalArgumentException {
 		if (bullet.getSourceShip() != this) throw new IllegalArgumentException("This bullet is not part of the ship");
@@ -286,6 +294,8 @@ public class Ship extends CircularObject{
 	}
 	/**
 	 * Enable the thruster
+	 * @post the thruster is set to active
+	 * 		|thruster == true
 	 */
 	public void thrustOn(){
 		thruster = true;
@@ -294,11 +304,18 @@ public class Ship extends CircularObject{
 	
 	/**
 	 * Disable the thruster
+	 * @post the thruster is set to non active
+	 * 		|thruster == false
 	 */
 	public void thrustOff(){
 		thruster = false;
 	}
 	
+	/**
+	 * Get the status of the thruster
+	 * @return the status of the thruster
+	 * 			|result == thruster
+	 */
 	public boolean checkThrusterStatus(){
 		return thruster;
 	}
@@ -306,7 +323,8 @@ public class Ship extends CircularObject{
 	/**
 	 * Calculate the acceleration
 	 * @Pre only if the thruster is enabled, there is an acceleration
-	 * @return the amount of acceleration
+	 * @return the amount of acceleration if possible
+	 * 			|acceleration = THRUSTERFORCE/getMass();
 	 */
 	public double getAcceleration(){
 		double acceleration = 0;
@@ -324,7 +342,7 @@ public class Ship extends CircularObject{
 	/**
 	 * Move the ship for a certain amount of time with its calculated acceleration
 	 * @param time
-	 * @post The ship moves and accelerates if necessary for the given time
+	 * @post The ship moves and accelerates if necessary for the given time.
 	 * 		
 	 */
 	public void move(double time){
@@ -361,8 +379,15 @@ public class Ship extends CircularObject{
 	/**
 	 * Fire a bullet from the ship.
 	 * @Pre The ship still needs to have available bullets and the ship itself should be located in this world.
+	 * 		|if(this.getAmountOfBullets() < 0) return;
+	 *	|if(this.getWorld() == null) return;
 	 * @post After being fired, the bullet is removed from the collection of bullets of the ship.
-	 * @post If allowed by addBulletToWorld, the bullet is added to the space.
+	 * @post The velocity and position is modified.
+	 * @post If allowed by addBulletToWorld, the bullet is added to the space, i.e. there is not overlapping.
+	 * 		|firedbullet.setSourceShip(this);
+		 	|this.bulletsCollection.remove(firedbullet);
+			|firedbullet.setVelocity(bulletXVelocity, bulletYVelocity);
+			|firedbullet.setPosition(bulletXPosition, bulletYPosition);
 	 */
 	
 	public void fire() {
@@ -398,7 +423,7 @@ public class Ship extends CircularObject{
 	/**
 	 * Method to terminate the ship
 	 * @post Ship is terminated and removed from this world
-	 * 			|this.getWorld() == null
+	 * 			|this.getWorld() != null
 	 * 			|this.isTerminated == true
 	 */
 	@Override

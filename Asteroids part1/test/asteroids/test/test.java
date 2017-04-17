@@ -389,7 +389,6 @@ public class test{
 	}
 	
 	
-	//DEZE TEST WERKT NIET
 	@Test
 	public void testEvolveShipWithActiveThruster() throws ModelException {
 		World world = facade.createWorld(5000, 5000);
@@ -402,7 +401,8 @@ public class test{
 		assertEquals(-990, facade.getShipVelocity(ship)[0], EPSILON);
 		assertEquals(0, facade.getShipVelocity(ship)[1], EPSILON);
 	}
-
+	
+	
 	
 }	
 	

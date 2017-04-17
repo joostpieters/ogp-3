@@ -113,6 +113,8 @@ public class Bullet extends CircularObject{
 	}
 	/**
 	 * Method that increments the amount of times the bullet has collided with a boundary
+	 * @post boundaryCollisions is incremented
+	 * 		|this.boundaryCollisions ++;
 	 */
 	public void incrementBoundaryCollision() {
 		this.boundaryCollisions ++;
@@ -120,7 +122,7 @@ public class Bullet extends CircularObject{
 	/**
 	 * Method to terminate a bullet
 	 * @post
-	 * 			|new.getWorld == null
+	 * 			|new.getWorld != null
 	 * 			|isTerminated == true
 	 */
 	@Override
@@ -130,7 +132,11 @@ public class Bullet extends CircularObject{
 		
 	}
 	
-	
+	/**
+	 * Check if the bullet is terminated
+	 * @return If the bullet is terminated or not
+	 * 			|result == isTerminated
+	 */
 	public boolean isBulletTerminated(){
 		return isTerminated;
 	}
@@ -142,7 +148,7 @@ public class Bullet extends CircularObject{
 	 * 			when a bullet collides with a boundary for the 3rd time, the bullet is terminated
 	 * 			|if ((this.position.getPositionX() - this.getRadius() <= 0 || this.position.getPositionX() + this.getRadius() >= xBoundaryWorld) && this.boundaryCollisions < 3) 
 	 * 				new.velocity.getXVelocity = -currentXVel && new.velocity.getYVelocity = -currentYVel
-	 * 			|if (this.boundaryCollisions == 3) terminateBullet
+	 * 			
 	 * 
 	 */
 	public void collideWithBoundary() {

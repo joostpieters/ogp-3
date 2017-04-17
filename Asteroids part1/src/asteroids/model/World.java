@@ -187,9 +187,12 @@ public class World {
 	/**
 	 * Method to remove a bullet from this world
 	 * @param bullet
+	 * @post The bullet is removed from the world
+	 * 		|this.circularObjectsInWorld.remove(bullet);
+	 *		|bullet.setWorld(null);
 	 * @throws IllegalArgumentException
 	 * 			The bullet doesn't belong to this world
-	 * 			|bullet.getWorld() == null || bullet.getWorld() != this
+	 * 			|bullet.getWorld() != this
 	 */
 	public void removeBullet(Bullet bullet) throws IllegalArgumentException {
 		if (bullet.getWorld() != this) throw new IllegalArgumentException("This bullet does not belong to this world. ");
@@ -202,9 +205,12 @@ public class World {
 	/**
 	 * Method to remove a ship from this world
 	 * @param ship
+	 * @post The ship is removed from the world
+	 * 		|shipsInWorld.remove(ship);
+	 *		|this.circularObjectsInWorld.remove(ship);
 	 * @throws IllegalArgumentException
 	 * 			The ship does not belong to this world
-	 * 			|ship.getWorld() == null || ship.getWorld() != this
+	 * 			|ship.getWorld() != this
 	 */
 	public void removeShip(Ship ship) throws IllegalArgumentException{
 		if(ship.getWorld() != this) throw new IllegalArgumentException("The ship does not belong to a world");
@@ -215,8 +221,9 @@ public class World {
 	
 	/**
 	 * Method that removes all ships and bullets from the world
-	 * @post
-	 * 			|shipsInWorld.isEmpty() && bulletsInWorld.isEmpty()
+	 * @post	Ships and bullets are removed.
+	 * 			|this.removeShip(ship)
+	 * 			|this.removeBullet(bullet)
 	 */
 	public void terminateWorld() {
 		for (Ship ship : shipsInWorld) {
@@ -271,7 +278,7 @@ public class World {
 	}
 	/**
 	 * Method that returns the position of the next collision
-	 * @return
+	 * @return	the position of the next collision
 	 * 			|collidingObjects[0].getCollisionPosition(collidingObjects[1])
 	 */
 	public double[] getPositionNextCollision() {
