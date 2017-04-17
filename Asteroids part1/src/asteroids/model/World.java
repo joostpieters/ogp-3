@@ -268,12 +268,10 @@ public class World {
 			// if so we change the shortest time variable
 			for (CircularObject object2 : this.getAllCircularObjectsInWorld()) {
 				if (object1 != object2) {
-					// if (object1.apparantlyCollidesWith(object2)) return 0; // if 2 objects apparently collide with each other, this means that there is a collision so 0 is returned
 					timeNextCollision = Math.min(timeNextCollision, object1.getTimeToCollision(object2));
 				}
 			}
 		}
-		//return Math.max(0, timeNextCollision);
 		return timeNextCollision;
 	}
 	/**
@@ -308,7 +306,6 @@ public class World {
 			}
 			for (CircularObject object2 : this.getAllCircularObjectsInWorld()) {
 				if (object1 != object2) {
-					//if (object1.apparantlyCollidesWith(object2)) return new CircularObject[] {object1, object2};
 					T = object1.getTimeToCollision(object2);
 					if (T < timeNextCollision) {
 						collidingObjects = new CircularObject[] {object1, object2};
