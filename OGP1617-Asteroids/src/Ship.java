@@ -390,19 +390,24 @@ public class Ship{
 	/**
 	 * If 2 ships will ever collide, returns the amount of seconds until that collision. If 2 ships
 	 * will never collide with each other, Double.POSITIVE_INFINITY is returned. Additionally, a ship
-	 * can never collide with itself.
+	 * can never collide with itself. As this method does not apply to overlapping ships, an exception
+	 * is thrown if the ships overlap.
+	 * 
 	 * @param ship2 A ship named ship2.
 	 * @return If this ship and ship2 are the same, Double.POSITIVE_INFINITY is returned
-	 * @return If 
+	 * @return If the 2 ships never collide, Double.POSITIVE_INFINITY is returned
+	 * 			|if (inproductVandV == 0)|if (inproductVandR >= 0)|if (d <= 0)
+	 * @return 
+	 * 			If there is in fact a point and time for which the 2 ships collide, the amount of time until that moment is returned
+	 * 			|return -(inproductVandR + Math.sqrt(d)) / inproductVandV
 	 * @throws IllegalArgumentException
-	 *		  ship2 is not created
-	 * 		  |ship2 == null
+	 *			ship2 is not created or this ship and ship2 overlap
+	 *			|ship2 == null || this.overlap(ship2)
 	 */
 	public double getTimeToCollision(Ship ship2) throws IllegalArgumentException{
-		if (ship2 == null) throw new IllegalArgumentException("Ship2 does not exist!");
-		
+		if (ship2 == null) throw new IllegalArgumentException("getTimeToCollision called with a non-existing ship!");
+		if (this.overlap(ship2)) throw new IllegalArgumentException("These two ships overlap!");
 		if (this == ship2) {
-			
 			return Double.POSITIVE_INFINITY;
 		}
 		
@@ -423,41 +428,47 @@ public class Ship{
 		double inproductVandV = Math.pow(deltaVx, 2) + Math.pow(deltaVy, 2);
 		double inproductVandR = deltaVx * deltaX + deltaVy * deltaY;
 		
-		double d = Math.pow(inproductVandR, 2) - (inproductVandV) * (inproductRandR - Math.pow(sumOfRadiusses, 2));
+		double d = Math.pow(inproductVandR, 2) - inproductVandV * (inproductRandR - Math.pow(sumOfRadiusses, 2));
 		
-		if (inproductVandR >= 0) {
+		if (inproductVandV == 0) {
 			return Double.POSITIVE_INFINITY;
-		}else if (d <= 0) {
+		} else if (inproductVandR >= 0) {
 			return Double.POSITIVE_INFINITY;
-		}else{
-			double deltaT = - (inproductVandR + Math.sqrt(d)) / inproductVandV;
-			return deltaT;
+		} else if (d <= 0) {
+			return Double.POSITIVE_INFINITY;
+		} else{
+			return - (inproductVandR + Math.sqrt(d)) / inproductVandV;
 		}
 	}
+	
 	/**
-	 * This function calculates the position at which 2 ships will collide, if ever they will collide.
+	 * This function calculates the position at which 2 ships will collide, if ever they will collide. This function does not apply to overlapping ships.
 	 * @param ship2 A ship named ship2
 	 * @return If the 2 ships never collide, null will be returned
 	 * @return If the 2 ships will collide, an array containing the x and y coordinate of the collision is returned
-	 * 		  |return new double[] {xPositionCollision, yPositionCollision}
 	 * @throws IllegalArgumentException
-	 *		  ship2 is not created
-	 * 		  |ship2 == null
+	 *			This ship and ship2 overlap or ship2 does not exist.
+	 *			|this.overlap(ship2) || ship2 == null
 	 */
-	public double[] getCollisionPosition(Ship ship2) throws IllegalArgumentException{
-			if (ship2 == null) throw new IllegalArgumentException("Ship2 does not exist!");
+	public double[] getCollisionPosition(Ship ship2) throws IllegalArgumentException {	
+		if (ship2 == null) throw new IllegalArgumentException("getCollisionPosition called with a non-existing ship!");
+		if (this.overlap(ship2)) throw new IllegalArgumentException("These two ships overlap!");
+		double timeToCollision = getTimeToCollision(ship2);
 			
-			double timeToCollision = getTimeToCollision(ship2);
+		if (timeToCollision == Double.POSITIVE_INFINITY) return null;
+
+		double[] positionThisShip = this.getPosition();
+		double[] velocityThisShip = this.getVelocity();
+		double[] positionShip2 = ship2.getPosition();
+		double[] velicityShip2 = ship2.getVelocity();
+		
+		double slope = Math.atan2(positionShip2[1]-positionThisShip[1], positionShip2[0] - positionThisShip[0]);
+		
 			
-			if (timeToCollision == Double.POSITIVE_INFINITY) return null;
+		double xPositionCollision = positionThisShip[0] + velocityThisShip[0] * timeToCollision + Math.cos(slope) * this.getRadius();
+		double yPositionCollision = positionThisShip[1] + velocityThisShip[1] * timeToCollision + Math.sin(slope) * this.getRadius();
 			
-			double[] positionThisShip = this.getPosition();
-			double[] velocityThisShip = this.getVelocity();
-			
-			double xPositionCollision = positionThisShip[0] + velocityThisShip[0] * velocityThisShip[0];
-			double yPositionCollision = positionThisShip[1] + velocityThisShip[1] * velocityThisShip[1];
-			
-			return new double[] {xPositionCollision, yPositionCollision};
+		return new double[] {xPositionCollision, yPositionCollision};
 		
 	}
 }
