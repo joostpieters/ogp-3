@@ -11,10 +11,24 @@ public class Planetoid extends MinorPlanet {
 		setDistanceTraveled(distanceTraveled);
 	}
 	
+	public double getDistanceTraveled(){
+		return this.distanceTraveled;
+	}
+	
 	private void setDistanceTraveled(double distance){
 		this.distanceTraveled = distance;
 	}
 
+	public double getRadius(){
+		return super.getRadius() - (0.000001 * distanceTraveled);
+	}
+	
+	@Override
+	public double getDensity(){
+		return DENSITY;
+	}
+	
+	
 	@Override
 	public double getMass() {
 		// TODO Auto-generated method stub

@@ -2,24 +2,35 @@ package asteroids.model;
 
 public class MinorPlanet extends CircularObject{
 
-	private final double minimumRadius = 5;
 	
+	/**
+	 * Constant representing the minimal radius of a minor planet
+	 */
+	private final double MINIMUMMINORPLANETRADIUS = 1; 
+	
+
+	
+	
+	//Constructor using superclass CircularObject
 	public MinorPlanet(double x, double y, double xVelocity,
 			double yVelocity, double radius) throws IllegalArgumentException {
 		super(x, y, xVelocity, yVelocity, radius);
 	}
 
-	@Override
+
 	public double getMass() {
-		// TODO Auto-generated method stub
-		return 0;
+		double minorPlanetRadius= getRadius();
+		return( 3/4 * Math.PI * Math.pow(minorPlanetRadius, 3) * getDensity());
 	}
 
-	@Override
-	public double getMinimalRadius() {
-		// TODO Auto-generated method stub
-		return 0;
+	
+	
+
+
+	public double getMinimalRadius(){
+		return MINIMUMMINORPLANETRADIUS;
 	}
+
 	
 	
 
