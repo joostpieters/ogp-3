@@ -98,7 +98,10 @@ public class Bullet extends CircularObject{
 		return this.boundaryCollisions;
 	}
 	
-	
+	@Override
+	public double getDensity() {
+		return DENSITY;
+	}
 	
 	/**
 	 * Set the ship where the bullet belongs to.
@@ -194,4 +197,6 @@ public class Bullet extends CircularObject{
 			bullet.terminate();
 		}
 	}
+
+	
 }

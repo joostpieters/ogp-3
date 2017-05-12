@@ -36,6 +36,13 @@ public abstract class CircularObject {
 	 */
 	public abstract double getMinimalRadius();
 	
+	
+	/**
+	 * The density of the object
+	 */
+	public abstract double getDensity();
+	
+	
 	/**
 	 * Constant representing the speed of the light
 	 */
@@ -186,6 +193,18 @@ public abstract class CircularObject {
 			double newPosX = currentPos[0] + (currentVel[0] * duration);
 			double newPosY = currentPos[1] + (currentVel[1] * duration);
 			this.setPosition(newPosX, newPosY);
+	}
+	
+	
+	
+	/**
+	* Get the complete speed of the object.
+	* @post |new.getSpeed == speed
+	*/
+	public double getSpeed() {
+		double speed = Math.sqrt((this.velocity.getXVelocity()* this.velocity.getXVelocity())+(this.velocity.getYVelocity()*this.velocity.getYVelocity()));
+		assert speed <= SPEEDOFLIGHT;
+		return speed;
 	}
 	
 	/**

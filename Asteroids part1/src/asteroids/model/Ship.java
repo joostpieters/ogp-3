@@ -112,6 +112,13 @@ public class Ship extends CircularObject{
 	}
 	
 	
+	
+	@Override
+	public double getDensity() {
+		return DENSITY;
+	}
+	
+	
 	/** 
 	 * Return the direction of the ship.
 	 * @return The direction of the ship is returned
@@ -493,5 +500,8 @@ public class Ship extends CircularObject{
 			this.setVelocity(this.getVelocityArray()[0], -currentYVel);
 		}
 	}
+
+
+	
 	
 }
