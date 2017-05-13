@@ -145,32 +145,15 @@ public class Bullet extends CircularObject{
 	}
 	
 	/**
-	 * Method to resolve collision between a bullet and the boundary of a world, if a bullet collides with a boundary of a world for
-	 * the third time, the bullet is terminated
-	 * @post If the bullet collides with a boundary and hasn't collided with a boundary 3 times, then the boundaryCollisions variable is incremented and the velocities get negates,
-	 * 			when a bullet collides with a boundary for the 3rd time, the bullet is terminated
-	 * 			|if ((this.position.getPositionX() - this.getRadius() <= 0 || this.position.getPositionX() + this.getRadius() >= xBoundaryWorld) && this.boundaryCollisions < 3) 
-	 * 				new.velocity.getXVelocity = -currentXVel && new.velocity.getYVelocity = -currentYVel
-	 * 			
-	 * 
+	 * Method to resolve collision between a bullet and the boundary of a world
+	 * @effect If the bullet collides with a boundary for the third time it is terminated			
+	 * 			|if (this.boundaryCollisions >= 3) this.terminate()
 	 */
 	public void collideWithBoundary() {
-		double xBoundaryWorld = this.world.getWorldDimensionArray()[0];
-		double yBoundaryWorld = this.world.getWorldDimensionArray()[1];
-		if (this.boundaryCollisions >= 2) {
+		super.collideWithBoundary();
+		this.incrementBoundaryCollision();
+		if (this.boundaryCollisions >= 3) {
 			this.terminate();
-		}
-		if ((this.getPositionArray()[0] - this.getRadius() <= 0 || this.getPositionArray()[0] + this.getRadius() >= xBoundaryWorld) && this.boundaryCollisions < 3) {
-			double currentXVel = this.getVelocityArray()[0];
-			double currentYVel = this.getVelocityArray()[1];
-			this.setVelocity(-currentXVel, currentYVel);
-			this.incrementBoundaryCollision();
-		}
-		if ((this.getPositionArray()[1] - this.getRadius() <= 0 || this.getPositionArray()[1] + this.getRadius() >= yBoundaryWorld) && this.boundaryCollisions < 3) {
-			double currentXVel = this.getVelocityArray()[0];
-			double currentYVel = this.getVelocityArray()[1];
-			this.setVelocity(currentXVel, -currentYVel);
-			this.incrementBoundaryCollision();
 		}
 	}
 	
@@ -182,6 +165,7 @@ public class Bullet extends CircularObject{
 	 * @post If it collides with a different ship then both are terminated
 	 * 			|ship.terminateShip() && this.terminateBullet() 		
 	 */
+	@Override
 	public void collisionCircularObject(CircularObject object2) {
 		if (object2 instanceof Ship) {
 			Ship ship = (Ship)object2;

@@ -451,4 +451,26 @@ public abstract class CircularObject {
 	public void terminate() {
 		this.isTerminated = true;
 	}
+	
+	/**
+	 * Method that resolves collisions of a ship with a boundary
+	 * @post
+	 * 			|if (!(this.apparantlyWithinBoundaryX()))
+	 * 			|new.velocity.getXVelocity == -currentXVel
+	 * @post
+	 * 			if (!(this.apparantlyWithinBoundaryY()))
+	 * 			|new.velocity.getYVelocity == -currentYVel
+	 */
+	public void collideWithBoundary() {
+		if (!(this.apparantlyWithinBoundaryX())) {
+			double currentXVel = this.getVelocityArray()[0];
+			this.setVelocity(-currentXVel, this.getVelocityArray()[1]);
+		}
+		if (!(this.apparantlyWithinBoundaryY())) {
+			double currentYVel = this.getVelocityArray()[1];
+			this.setVelocity(this.getVelocityArray()[0], -currentYVel);
+		}
+	}
+
+	public abstract void collisionCircularObject(CircularObject object);
 }

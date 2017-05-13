@@ -447,6 +447,7 @@ public class Ship extends CircularObject{
 	 * 		|if (object2 instanceof Ship) this.velocity.getVelocity() = new Velocity(newXVelocityThisObject, newYVelocityThisObject)
 	 * 		&& object.velocity.getVelocity() = new Velocity(newXVelocityObject2, newYVelocityObject2);
 	 */
+	@Override
 	public void collisionCircularObject(CircularObject object2) {
 		if (object2 instanceof Ship) {
 			double sumOfRadiusses = this.getRadius() + object2.getRadius();
@@ -482,26 +483,5 @@ public class Ship extends CircularObject{
 				bullet.terminate();
 			}
 		}
-	}
-	
-	/**
-	 * Method that resolves collisions of a ship with a boundary
-	 * @post
-	 * 			|new.velocity.getXVelocity == -currentXVel
-	 * 			|new.velocity.getYVelocity == -currentYVel
-	 */
-	public void collideWithBoundary() {
-		if (!(this.apparantlyWithinBoundaryX())) {
-			double currentXVel = this.getVelocityArray()[0];
-			this.setVelocity(-currentXVel, this.getVelocityArray()[1]);
-		}
-		if (!(this.apparantlyWithinBoundaryY())) {
-			double currentYVel = this.getVelocityArray()[1];
-			this.setVelocity(this.getVelocityArray()[0], -currentYVel);
-		}
-	}
-
-
-	
-	
+	}	
 }

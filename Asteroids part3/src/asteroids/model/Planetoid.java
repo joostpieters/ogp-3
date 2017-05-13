@@ -69,6 +69,12 @@ public class Planetoid extends MinorPlanet {
 		super.move(duration);
 		setDistanceTraveled(getDistanceTraveled() + getSpeed()*duration);
 	}
+
+	@Override
+	public void collisionCircularObject(CircularObject object) {
+		
+		
+	}
 	
 
 	
