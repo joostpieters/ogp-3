@@ -69,10 +69,39 @@ public class Planetoid extends MinorPlanet {
 		super.move(duration);
 		setDistanceTraveled(getDistanceTraveled() + getSpeed()*duration);
 	}
-
+	
+	public void terminate() {
+		super.terminate();
+		World world = this.getWorld();
+		if (world != null) world.removePlanetoid();
+		double radius = this.getRadius();
+		if (radius >= 30) {
+		}	
+	}
+	
 	@Override
 	public void collisionCircularObject(CircularObject object) {
-		
+		if(object instanceof Ship) {
+			Ship ship = (Ship) object;
+			double radius = ship.getRadius();
+			double worldX = ship.getWorld().getWorldDimensionArray()[0];
+			double worldY = ship.getWorld().getWorldDimensionArray()[1];
+			double newX = Math.random() * worldX;
+			double newY = Math.random() * worldY;
+			
+			if (newX - radius < 0) newX = radius;
+			if (newX + radius >= worldX) newX = worldX - radius;
+			if (newY - radius > 0) newY = radius;
+			if (newY + radius >= worldY) newY = worldY - radius;
+			
+			for (CircularObject otherObject : this.getWorld().getAllCircularObjectsInWorld()) {
+				if (ship != otherObject && otherObject.overlap(ship)) {
+					ship.terminate();
+				}
+			}
+		} else {
+			super.collide(object);
+		}
 		
 	}
 	

@@ -41,6 +41,22 @@ public class World {
 	private Set<CircularObject> circularObjectsInWorld = new HashSet<CircularObject>();
 	
 	/**
+	 * Collection of planetoids currently in the world
+	 */
+	private Set<Planetoid> planetoidsInWorld = new HashSet<Planetoid>();
+	
+	/**
+	 * Collection of asteroids currently in the world
+	 */
+	private Set<Asteroid> asteroidsInWorld = new HashSet<Asteroid>();
+	
+	/**
+	 * Collection of minor planets currently in the world
+	 */
+	private Set<MinorPlanet> minorPlanetsInWorld = new HashSet<MinorPlanet>();
+	
+	
+	/**
 	 * Boolean variable that indicates whether or not the world is terminated
 	 */
 	private boolean isTerminated = false;
@@ -95,6 +111,33 @@ public class World {
 		return bulletsInWorld;
 	}
 	
+	/**
+	 * Return a set of all planetoids in the given world
+	 * @Return The collection of all planetoids
+	 * 			|result == planetoidsInWorld
+	 */
+	public Set<Planetoid> getAllPlanetoidsInWorld() {
+		return planetoidsInWorld;
+	}
+	/**
+	 * Return a set of all asteroids in the given world
+	 * @Return The collection of all asteroids
+	 * 			|result == asteroidsInWorld
+	 */
+	public Set<Asteroid> getAllAsteroidsInWorld() {
+		return asteroidsInWorld;
+	}
+	/**
+	 * Return a set of all minor planets in the given world
+	 * @Return The collection of all minor planets
+	 * 			|result == minorPlanetsInWorld
+	 */
+	public Set<MinorPlanet> getAllMinorPlanetsInWorld() {
+		
+		return minorPlanetsInWorld;
+	}
+	
+
 	
 	/**
 	 * Return a set of all Ships in the given world
@@ -105,6 +148,9 @@ public class World {
 		//TODO: start from empty set, then add all new objects to update set after collisions and termination of bullets and ships
 		circularObjectsInWorld.addAll(bulletsInWorld);
 		circularObjectsInWorld.addAll(shipsInWorld);
+		circularObjectsInWorld.addAll(planetoidsInWorld);
+		circularObjectsInWorld.addAll(asteroidsInWorld);
+		circularObjectsInWorld.addAll(minorPlanetsInWorld);
 		return circularObjectsInWorld;
 	}
 	
@@ -113,47 +159,31 @@ public class World {
 	///
 	
 	/**
-	 * Boolean method that indicates whether or not the ship in question can be part of this world
-	 * @param ship
+	 * Boolean method that indicates whether or not the circular object in question can be part of this world
+	 * @param object
 	 * @see implementation
 	 */
-	private boolean validShip(Ship ship) {
-		if (ship.getWorld() != this && ship.getWorld() != null) return false;
-		for (CircularObject object : this.getAllCircularObjectsInWorld()) {
-			if (ship.overlap(object)) return false;
+	private boolean validCircularObject(CircularObject object) {
+		if (object.getWorld() != this && object.getWorld() != null) return false;
+		if (object instanceof Bullet) {
+			Bullet bullet = (Bullet) object;
+			if (bullet.getSourceShip() != null) return false;
+		}
+		if(object.isTerminated() || this.isTerminated) return false;
+		for (CircularObject object2 : this.getAllCircularObjectsInWorld()) {
+			if (object.overlap(object2)) return false;
 		}
 		return true;
 	}
+
 	/**
-	 * Boolean method that indicates whether or not the bullet in question can be part of this world
-	 * @param bullet
+	 * checks if the circular object is within boundaries of the world
+	 * @param object
 	 * @see implementation
 	 */
-	private boolean validBullet(Bullet bullet) {
-		if (bullet.getWorld() != this && bullet.getWorld() != null) return false;
-		for (CircularObject object: this.getAllCircularObjectsInWorld()) {
-			if (bullet.overlap(object)) return false;
-		}
-		return true;
-	}
-	/**
-	 * checks if the ship is within boundaries of the world
-	 * @param ship
-	 * @see implementation
-	 */
-	private boolean shipOutOfBound(Ship ship) {
-		if (ship.getPositionArray()[0] - ship.getRadius() <= 0 || ship.getPositionArray()[0] + ship.getRadius() >= this.getWorldDimensionArray()[0]) return true;
-		if (ship.getPositionArray()[1] - ship.getRadius() <= 0 || ship.getPositionArray()[1] + ship.getRadius() >= this.getWorldDimensionArray()[1]) return true;
-		return false;
-	}
-	/**
-	 * checks if the bullet is within boundaries of this world
-	 * @param bullet
-	 * @see implementation
-	 */
-	private boolean bulletOutOfBound(Bullet bullet) {
-		if (bullet.getPositionArray()[0] - bullet.getRadius() <= 0 || bullet.getPositionArray()[0] + bullet.getRadius() >= this.getWorldDimensionArray()[0]) return true;
-		if (bullet.getPositionArray()[1] - bullet.getRadius() <= 0 || bullet.getPositionArray()[1] + bullet.getRadius() >= this.getWorldDimensionArray()[1]) return true;
+	private boolean circularObjectOutOfBound(CircularObject object) {
+		if (object.getPositionArray()[0] - object.getRadius() <= 0 || object.getPositionArray()[0] + object.getRadius() >= this.getWorldDimensionArray()[0]) return true;
+		if (object.getPositionArray()[1] - object.getRadius() <= 0 || object.getPositionArray()[1] + object.getRadius() >= this.getWorldDimensionArray()[1]) return true;
 		return false;
 	}
 	
@@ -165,10 +195,24 @@ public class World {
 	 * @post The ship is added to the world
 	 */
 	public void addShipToWorld(Ship ship){
-		if (!validShip(ship) || shipOutOfBound(ship)) throw new IllegalArgumentException("This ship can not be added to the world.");
+		if (!validCircularObject(ship) || circularObjectOutOfBound(ship)) throw new IllegalArgumentException("This ship can not be added to the world.");
 		ship.setWorld(this);
 		shipsInWorld.add(ship);
 	}
+	
+	public void addPlanetoidToWorld(Planetoid planetoid) {
+		if (!validCircularObject(planetoid) || circularObjectOutOfBound(planetoid)) throw new IllegalArgumentException("This planetoid cannot be added to the world.");
+		planetoid.setWorld(this);
+		planetoidsInWorld.add(planetoid);
+	}
+	
+	
+	public void addAsteroidToWorld(Asteroid asteroid) {
+		if (!validCircularObject(asteroid) || circularObjectOutOfBound(asteroid)) throw new IllegalArgumentException("This planetoid cannot be added to the world.");
+		asteroid.setWorld(this);
+		asteroidsInWorld.add(asteroid);
+	}
+
 	
 	/**
 	 * Add a ship to the given world
@@ -178,10 +222,9 @@ public class World {
 	 * @post The ship is added to the world
 	 */
 	public void addBulletToWorld(Bullet bullet) throws IllegalArgumentException {
-		if (!validBullet(bullet) || bulletOutOfBound(bullet)) throw new IllegalArgumentException("This bullet cannot be added to the world.");
+		if (!validCircularObject(bullet) || circularObjectOutOfBound(bullet)) throw new IllegalArgumentException("This bullet cannot be added to the world.");
 		bullet.setWorld(this);
 		bulletsInWorld.add(bullet);
-		circularObjectsInWorld.add(bullet);
 	}
 	
 	/**
@@ -216,6 +259,20 @@ public class World {
 		shipsInWorld.remove(ship);
 		this.circularObjectsInWorld.remove(ship);
 		ship.setWorld(null);
+	}
+	
+
+	public void removePlanetoid() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void removeAsteroid() {
+		
+	}
+	
+	public void removeMinorPlanet() {
+		
 	}
 	
 	/**
@@ -368,4 +425,7 @@ public class World {
 		}
 		for (CircularObject object : this.getAllCircularObjectsInWorld()) object.move(deltaT);
 	}
+
+
+
 }
