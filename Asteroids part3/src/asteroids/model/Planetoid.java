@@ -63,7 +63,7 @@ public class Planetoid extends MinorPlanet {
 	
 	/**
 	 * Move the planetoid. The distance traveled will change
-	 * see implementation.
+	 *@see implementation.
 	 */
 	public void move(double duration) {
 		super.move(duration);
@@ -73,9 +73,14 @@ public class Planetoid extends MinorPlanet {
 	public void terminate() {
 		super.terminate();
 		World world = this.getWorld();
-		if (world != null) world.removePlanetoid();
+		if (world != null) world.removePlanetoid(this);
 		double radius = this.getRadius();
 		if (radius >= 30) {
+			double childRadius = radius/2;
+			double directionChild1 = Math.random() * 2 * Math.PI; 
+			double directionChild2 = - directionChild1;
+			double newXChild1 = this.getPositionArray()[0] - childRadius;
+			double newXChild2 = this.getPositionArray()[0] + childRadius;
 		}	
 	}
 	

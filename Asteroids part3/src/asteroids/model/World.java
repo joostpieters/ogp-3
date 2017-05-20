@@ -133,7 +133,8 @@ public class World {
 	 * 			|result == minorPlanetsInWorld
 	 */
 	public Set<MinorPlanet> getAllMinorPlanetsInWorld() {
-		
+		minorPlanetsInWorld.addAll(planetoidsInWorld); 
+		minorPlanetsInWorld.addAll(asteroidsInWorld);
 		return minorPlanetsInWorld;
 	}
 	
@@ -255,26 +256,28 @@ public class World {
 	 * 			|ship.getWorld() != this
 	 */
 	public void removeShip(Ship ship) throws IllegalArgumentException{
-		if(ship.getWorld() != this) throw new IllegalArgumentException("The ship does not belong to a world");
+		if(ship.getWorld() != this) throw new IllegalArgumentException("The ship does not belong to this world");
 		shipsInWorld.remove(ship);
 		this.circularObjectsInWorld.remove(ship);
 		ship.setWorld(null);
 	}
 	
-
-	public void removePlanetoid() {
-		// TODO Auto-generated method stub
+	//TODO
+	public void removePlanetoid(Planetoid planetoid) {
+		if(planetoid.getWorld() != this) throw new IllegalArgumentException("The planetoid does not belong to this world");
+		planetoidsInWorld.remove(planetoid);
+		circularObjectsInWorld.remove(planetoid);
+		planetoid.setWorld(null);
 		
 	}
-	
-	public void removeAsteroid() {
-		
+	//TODO
+	public void removeAsteroid(Asteroid asteroid) {
+		if(asteroid.getWorld() != this) throw new IllegalArgumentException("The asteroid does not belong to a world");
+		asteroidsInWorld.remove(asteroid);
+		circularObjectsInWorld.remove(asteroid);
+		asteroid.setWorld(null);
 	}
-	
-	public void removeMinorPlanet() {
 		
-	}
-	
 	/**
 	 * Method that removes all ships and bullets from the world
 	 * @post	Ships and bullets are removed.
@@ -287,6 +290,13 @@ public class World {
 		}
 		for (Bullet bullet : bulletsInWorld) {
 			this.removeBullet(bullet);
+		}
+		for (Planetoid planetoid : planetoidsInWorld) {
+			this.removePlanetoid(planetoid);
+		}
+		
+		for (Asteroid asteroid : asteroidsInWorld) {
+			this.removeAsteroid(asteroid);
 		}
 		this.isTerminated = true;
 	}
