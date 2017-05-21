@@ -473,15 +473,8 @@ public class Ship extends CircularObject{
 			object2.setVelocity(newXVelocityObject2, newYVelocityObject2);
 		}
 		
-		if (object2 instanceof Bullet) {
-			Bullet bullet = (Bullet) object2;
-			if (bullet.getSourceShip() == this) {
-				this.loadBullet(bullet);
-			}
-			else {
-				this.terminate();
-				bullet.terminate();
-			}
+		else{
+			object2.collisionCircularObject(this);
 		}
 	}	
 }

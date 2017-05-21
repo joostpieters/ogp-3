@@ -58,7 +58,7 @@ public class test{
 	
 	@Test
 	public void testGetVelocity()  throws ModelException {
-		Ship ship = facade.createShip(100, 100, 30, -15, 20, 0,10);
+		Ship ship = facade.createShip(100, 100, 30, -15, 20, 0, 10);
 		double[] vel = facade.getShipVelocity(ship);
 		assertEquals(30, vel[0], EPSILON);
 		assertEquals(-15, vel[1], EPSILON);

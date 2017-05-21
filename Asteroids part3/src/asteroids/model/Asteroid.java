@@ -34,9 +34,15 @@ public class Asteroid extends MinorPlanet {
 	public double getDensity() {
 		return DENSITY;
 	}
+	
 	@Override
 	public void collisionCircularObject(CircularObject object) {
-		// TODO Auto-generated method stub
+		if (object instanceof Ship) {
+			Ship ship = (Ship) object;
+			ship.terminate();
+		} else {
+			super.collisionCircularObject(object);
+		}
 		
 	}
 	

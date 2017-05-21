@@ -48,7 +48,23 @@ public abstract class MinorPlanet extends CircularObject{
 		return 4/3.*Math.PI*Math.pow(getRadius(), 3)*getDensity();
 	}
 	
-	public void collide(CircularObject object2) {
+	@Override
+	public void terminate() {
+		super.terminate();
+		World world = this.getWorld();
+		if (world != null) {
+			if (this instanceof Asteroid) {
+				Asteroid asteroid = (Asteroid) this;
+				world.removeAsteroid(asteroid);
+			} else {
+				Planetoid planetoid = (Planetoid) this;
+				world.removePlanetoid(planetoid);
+			}
+		}
+	}
+	
+	@Override
+	public void collisionCircularObject(CircularObject object2) {
 		if (object2 instanceof MinorPlanet) {
 			double sumOfRadiusses = this.getRadius() + object2.getRadius();
 			double sumOfMasses = this.getMass() + object2.getMass();
@@ -73,9 +89,7 @@ public abstract class MinorPlanet extends CircularObject{
 			object2.setVelocity(newXVelocityObject2, newYVelocityObject2);
 		}
 		if (object2 instanceof Bullet) {
-			Bullet bullet = (Bullet) object2;
-			this.terminate();
-			bullet.terminate();
+			object2.collisionCircularObject(this);
 		}
 	}
 	

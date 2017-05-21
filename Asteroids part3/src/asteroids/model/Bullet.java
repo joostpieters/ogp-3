@@ -150,11 +150,14 @@ public class Bullet extends CircularObject{
 	 * 			|if (this.boundaryCollisions >= 3) this.terminate()
 	 */
 	public void collideWithBoundary() {
-		super.collideWithBoundary();
-		this.incrementBoundaryCollision();
-		if (this.boundaryCollisions >= 3) {
+		if (this.boundaryCollisions >= 2) {
 			this.terminate();
 		}
+		else {
+			super.collideWithBoundary();
+			this.incrementBoundaryCollision();
+		}
+		
 	}
 	
 	/**
