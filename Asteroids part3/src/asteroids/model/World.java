@@ -196,7 +196,7 @@ public class World {
 	 * @post The ship is added to the world
 	 */
 	public void addShipToWorld(Ship ship){
-		if (!validCircularObject(ship) || circularObjectOutOfBound(ship)) throw new IllegalArgumentException("This ship can not be added to the world.");
+		if (!validCircularObject(ship) || circularObjectOutOfBound(ship) || ship == null) throw new IllegalArgumentException("This ship can not be added to the world.");
 		ship.setWorld(this);
 		shipsInWorld.add(ship);
 	}
@@ -389,7 +389,7 @@ public class World {
 	 */
 	public void evolve(double dt, CollisionListener collisionListener) throws IllegalArgumentException {
 		if (dt < 0 || Double.isNaN(dt)) throw new IllegalArgumentException("Given time is not valid.");
-		if (collisionListener == null) throw new IllegalArgumentException("Method evolve called with collisionListener that equals null.");
+		
 		double deltaT = dt;
 		double tC = this.getTimeNextCollision();
 		CircularObject[] firstCollidingObjects = this.getNextCollidingObjects();

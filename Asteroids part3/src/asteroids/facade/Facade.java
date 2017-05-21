@@ -472,7 +472,8 @@ public class Facade implements IFacade {
 
 	@Override
 	public void evolve(World world, double dt, CollisionListener collisionListener) throws ModelException {
-		world.evolve(dt,collisionListener);
+		if (dt < 0) throw new ModelException("Method evolve called with negative dt");
+		else world.evolve(dt,collisionListener);
 	
 		
 	}
