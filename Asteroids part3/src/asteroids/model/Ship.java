@@ -4,6 +4,7 @@ package asteroids.model;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -72,6 +73,11 @@ public class Ship extends CircularObject{
 	 */
 	private Set<Bullet> bulletsCollection = new HashSet<Bullet>();
 	
+	
+	/**
+	 * The program that is/can be loaded on the ship
+	 */
+	private Program shipProgram;
 	
 	/**
 	*	Initialization of a new ship with given position in x and y coordinates, horizontal and vertical velocity, the direction and radius.
@@ -477,4 +483,23 @@ public class Ship extends CircularObject{
 			object2.collisionCircularObject(this);
 		}
 	}	
+	
+	
+	public Program getProgram(){
+		return this.shipProgram;
+	}
+	
+	public void loadProgram(Program program){
+		this.shipProgram = program;
+		if (program != null) program.setShip(this);
+	}
+	
+	public List<Object> runProgram(double dt){
+		return shipProgram.run(dt);
+	}
+	
+	
+	
+	
+	
 }

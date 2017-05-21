@@ -4,15 +4,21 @@ package asteroids.facade;
 import asteroids.model.Ship;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
+import asteroids.model.Asteroid;
 import asteroids.model.Bullet;
 import asteroids.model.CircularObject;
+import asteroids.model.Planetoid;
 import asteroids.model.Velocity;
 import asteroids.model.World;
+import asteroids.model.programs.ProgramFactory;
 import asteroids.model.Position;
+import asteroids.model.Program;
 import asteroids.part2.CollisionListener;
-import asteroids.part2.facade.IFacade;
+import asteroids.part3.facade.IFacade;
+import asteroids.part3.programs.IProgramFactory;
 import asteroids.util.ModelException;
 
 
@@ -481,6 +487,194 @@ public class Facade implements IFacade {
 	@Override
 	public Set<? extends Object> getEntities(World world) throws ModelException {
 		return world.getAllCircularObjectsInWorld();
+	}
+
+
+	@Override
+	public int getNbStudentsInTeam() {
+		return 2;
+	}
+
+
+	@Override
+	public Set<? extends Asteroid> getWorldAsteroids(World world) throws ModelException {
+	
+	return world.getAllAsteroidsInWorld();
+	}
+
+
+	@Override
+	public void addAsteroidToWorld(World world, Asteroid asteroid) throws ModelException {
+		world.addAsteroidToWorld(asteroid);
+	}
+
+
+	@Override
+	public void removeAsteroidFromWorld(World world, Asteroid asteroid) throws ModelException {
+		world.removeAsteroid(asteroid);
+		
+	}
+
+
+	@Override
+	public Set<? extends Planetoid> getWorldPlanetoids(World world) throws ModelException {
+		return world.getAllPlanetoidsInWorld();
+	}
+
+
+	@Override
+	public void addPlanetoidToWorld(World world, Planetoid planetoid) throws ModelException {
+		world.addPlanetoidToWorld(planetoid);
+		
+	}
+
+
+	@Override
+	public void removePlanetoidFromWorld(World world, Planetoid planetoid) throws ModelException {
+		world.removePlanetoid(planetoid);
+		
+	}
+
+
+	@Override
+	public Asteroid createAsteroid(double x, double y, double xVelocity, double yVelocity, double radius)
+			throws ModelException {
+		return new Asteroid(x,y,xVelocity,yVelocity,radius);
+	}
+
+
+	@Override
+	public void terminateAsteroid(Asteroid asteroid) throws ModelException {
+		asteroid.terminate();
+		
+	}
+
+
+	@Override
+	public boolean isTerminatedAsteroid(Asteroid asteroid) throws ModelException {
+		return asteroid.isTerminated();
+	}
+
+
+	@Override
+	public double[] getAsteroidPosition(Asteroid asteroid) throws ModelException {
+		return asteroid.getPositionArray();
+	}
+
+
+	@Override
+	public double[] getAsteroidVelocity(Asteroid asteroid) throws ModelException {
+		return asteroid.getVelocityArray();
+	}
+
+
+	@Override
+	public double getAsteroidRadius(Asteroid asteroid) throws ModelException {
+		return asteroid.getRadius();
+	}
+
+
+	@Override
+	public double getAsteroidMass(Asteroid asteroid) throws ModelException {
+		return asteroid.getMass();
+	}
+
+
+	@Override
+	public World getAsteroidWorld(Asteroid asteroid) throws ModelException {
+		return asteroid.getWorld();
+	}
+
+
+	@Override
+	public Planetoid createPlanetoid(double x, double y, double xVelocity, double yVelocity, double radius,
+			double totalTraveledDistance) throws ModelException {
+		return new Planetoid(x, y, xVelocity, yVelocity, radius, totalTraveledDistance);
+	}
+
+
+	@Override
+	public void terminatePlanetoid(Planetoid planetoid) throws ModelException {
+		planetoid.terminate();
+		
+	}
+
+
+	@Override
+	public boolean isTerminatedPlanetoid(Planetoid planetoid) throws ModelException {
+		return planetoid.isTerminated();
+	}
+
+
+	@Override
+	public double[] getPlanetoidPosition(Planetoid planetoid) throws ModelException {
+		return planetoid.getPositionArray();
+	}
+
+
+	@Override
+	public double[] getPlanetoidVelocity(Planetoid planetoid) throws ModelException {
+		return planetoid.getVelocityArray();
+	}
+
+
+	@Override
+	public double getPlanetoidRadius(Planetoid planetoid) throws ModelException {
+		return planetoid.getRadius();
+	}
+
+
+	@Override
+	public double getPlanetoidMass(Planetoid planetoid) throws ModelException {
+		return planetoid.getMass();
+	}
+
+
+	@Override
+	public double getPlanetoidTotalTraveledDistance(Planetoid planetoid) throws ModelException {
+		return planetoid.getDistanceTraveled();
+	}
+
+
+	@Override
+	public World getPlanetoidWorld(Planetoid planetoid) throws ModelException {
+		return planetoid.getWorld();
+	}
+
+
+	@Override
+	public Program getShipProgram(Ship ship) throws ModelException {
+		return ship.getProgram();
+	}
+
+
+	@Override
+	public void loadProgramOnShip(Ship ship, Program program) throws ModelException {
+		ship.loadProgram(program);
+		
+	}
+
+
+	@Override
+	public List<Object> executeProgram(Ship ship, double dt) throws ModelException {
+	
+			try{
+				return ship.runProgram(dt);
+			} catch (Exception exc) {
+				throw new ModelException(exc);
+			} catch (AssertionError exp1){
+				throw new ModelException(exp1);
+			}
+	}
+
+
+	@Override
+	public IProgramFactory<?, ?, ?, ? extends Program> createProgramFactory() throws ModelException {
+		try{
+			return new ProgramFactory();
+		} catch (ClassCastException excep){
+			throw new ModelException(excep);
+		}
 	}
 
 
