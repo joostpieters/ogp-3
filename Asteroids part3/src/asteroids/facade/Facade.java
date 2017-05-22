@@ -378,7 +378,7 @@ public class Facade implements IFacade {
 		try {	
 			world.removeBullet(bullet);
 		} 
-		catch(IllegalArgumentException excep){
+		catch(Exception excep){
 			ModelException mod = new ModelException(excep);
 			throw mod;
 		}
@@ -472,8 +472,12 @@ public class Facade implements IFacade {
 
 	@Override
 	public void evolve(World world, double dt, CollisionListener collisionListener) throws ModelException {
-		if (dt < 0) throw new ModelException("Method evolve called with negative dt");
-		else world.evolve(dt,collisionListener);
+		try {
+			world.evolve(dt, collisionListener);
+		}
+		catch (Exception exc) {
+			throw new ModelException(exc);
+		}
 	
 		
 	}

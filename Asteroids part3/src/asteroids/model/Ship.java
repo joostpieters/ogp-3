@@ -416,19 +416,19 @@ public class Ship extends CircularObject{
 		double bulletYVelocity = 250*Math.sin(bulletdirection);
 		double bulletXPosition = shipPosition[0] + (this.getRadius() + 2*bulletradius)*Math.cos(bulletdirection);
 		double bulletYPosition = shipPosition[1] + (this.getRadius() + 2*bulletradius)*Math.sin(bulletdirection);
-		
-		firedbullet.setSourceShip(this);
 		this.bulletsCollection.remove(firedbullet);
 		firedbullet.setVelocity(bulletXVelocity, bulletYVelocity);
 		firedbullet.setPosition(bulletXPosition, bulletYPosition);
+
 		try{
 			this.getWorld().addBulletToWorld(firedbullet);
+			firedbullet.setSourceShip(this);
 		}
 		catch (IllegalArgumentException exception){ 
 			for (CircularObject obj: this.getWorld().getAllCircularObjectsInWorld()){
 				if (obj.overlap(firedbullet)) {
 					firedbullet.collisionCircularObject(obj);
-			}
+				}
 			}
 		}
 	}
@@ -480,6 +480,7 @@ public class Ship extends CircularObject{
 		}
 		
 		else{
+			System.out.println("");
 			object2.collisionCircularObject(this);
 		}
 	}	

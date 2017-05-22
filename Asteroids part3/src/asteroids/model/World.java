@@ -74,11 +74,27 @@ public class World {
 	 * 		| this.height = height
 	 */
 	public World(double width, double height){
+		if (height < 0) {
+			height = Math.abs(height);
+		}
+		if (width < 0) {
+			width = Math.abs(width);
+		}
+		
+		if (!validSize(height)) {
+			height = Double.MAX_VALUE;
+		}
+		if (!validSize(width)) {
+			width = Double.MAX_VALUE;
+		}
 		this.width = width;
 		this.height = height;
 	}
 	
-	
+	public boolean validSize(double size) {
+		if (size > 0 && Double.isFinite(size)) return true;
+		else return false;
+	}
 	
 	/**
 	 * Get an array with both width and height
@@ -405,8 +421,11 @@ public class World {
 					//Bullet bullet = (Bullet)firstCollidingObjects[0];
 					//bullet.collideWithBoundary();
 				//}
+				
+				//if (collisionListener != null) {
+					collisionListener.boundaryCollision(firstCollidingObjects[0], positionFirstCollision[0], positionFirstCollision[1]);
+				//}
 				firstCollidingObjects[0].collideWithBoundary();
-				collisionListener.boundaryCollision(firstCollidingObjects[0], positionFirstCollision[0], positionFirstCollision[1]);
 			}
 			else {
 				//if (firstCollidingObjects[0] instanceof Ship) {
@@ -418,8 +437,10 @@ public class World {
 					//Bullet bullet = (Bullet)firstCollidingObjects[0];
 					//bullet.collisionCircularObject(firstCollidingObjects[1]);
 				//}
-				firstCollidingObjects[0].collisionCircularObject(firstCollidingObjects[1].getClass().cast(firstCollidingObjects[1]));
-				collisionListener.objectCollision(firstCollidingObjects[0], firstCollidingObjects[1], positionFirstCollision[0], positionFirstCollision[1]);
+				//if (collisionListener != null) {
+					collisionListener.objectCollision(firstCollidingObjects[0], firstCollidingObjects[1], positionFirstCollision[0], positionFirstCollision[1]);
+				//}
+				firstCollidingObjects[0].collisionCircularObject(firstCollidingObjects[1]);
 			}
 
 			deltaT = deltaT - tC;

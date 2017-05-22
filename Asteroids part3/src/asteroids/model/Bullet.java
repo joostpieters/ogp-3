@@ -12,7 +12,7 @@ public class Bullet extends CircularObject{
 	 * Constant representing the density of a bullet
 	 */
 	
-	private double DENSITY = 7.8*Math.pow(10,12);
+	private double DENSITY = 7.8E12;
 
 	/**
 	 * Constant representing the minimal radius of a bullet
@@ -155,6 +155,7 @@ public class Bullet extends CircularObject{
 	 * @effect If the bullet collides with a boundary for the third time it is terminated			
 	 * 			|if (this.boundaryCollisions >= 3) this.terminate()
 	 */
+	@Override
 	public void collideWithBoundary() {
 		if (this.boundaryCollisions >= 2) {
 			this.terminate();
