@@ -1,30 +1,39 @@
 package asteroids.model.programs;
 
-
 import java.util.*;
-import asteroids.part3.programs.SourceLocation;
-import asteroids.model.programs.*;
 import asteroids.model.Program;
+import asteroids.part3.programs.SourceLocation;
 
-public class LogicalNegation extends Expression<Boolean>{
+
+public class LogicalNegation extends Expression<Boolean> {
 	
+	//Initialize variables
+	private Expression<? extends Boolean> expression;
+
 	
-	private Expression<? extends Boolean> exp;
-	
-	protected LogicalNegation(Expression<? extends Boolean> exp, SourceLocation location) {
+	//Constructor
+	public LogicalNegation(Expression<? extends Boolean> expression, SourceLocation location) {
 		super(location);
-		this.exp = exp;
+		this.expression = expression;
 	}
 
+	//Calculate  logical negation of  expression
 	@Override
-	public Boolean evaluate(){
-		return !exp.evaluate();
+	public Boolean calculate() {
+		return !expression.calculate();
+	}
+
+	//Calculate inside of function
+	@Override
+	public Boolean calculate(Object[] arguments, Set<Variable> locals) throws IllegalArgumentException {
+		return !expression.calculate(arguments, locals);
+	}
+
+	//Set program for expression.
+	@Override
+	public void setProgram(Program program) {
+		super.setProgram(program);
+		expression.setProgram(program);
 	}
 	
-	@Override
-	public void setProgram(Program program){
-		super.setProgram(program);
-		exp.setProgram(program);
-	}
-
 }

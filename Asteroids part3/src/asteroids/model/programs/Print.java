@@ -1,36 +1,42 @@
 package asteroids.model.programs;
 
-
 import java.util.*;
-import asteroids.part3.programs.SourceLocation;
-import asteroids.model.programs.*;
 import asteroids.model.Program;
+import asteroids.part3.programs.SourceLocation;
 
-
-public class Print extends Statement{
-
-	private Expression value;
+public class Print extends Statement {
 	
-	public Print(Expression value, SourceLocation location){
+	//Initialize variables
+	private Expression value;
+
+	
+	//Constructor
+	public Print(Expression value, SourceLocation location) {
 		super(location);
 		this.value = value;
 	}
-
+	
+	//Run the print 
 	@Override
 	public void run() {
-		Object goodvalue = value.evaluate();
-		if(goodvalue == null) System.out.print("null");
-		else System.out.println(goodvalue.toString());
-		getProgram().addResult(goodvalue);
+		Object eval = value.calculate();
+		if (eval == null) System.out.println("null");
+		else System.out.println(eval.toString());
+		getProgram().addResult(eval);
 	}
 	
+	//No print inside of function
 	@Override
-	public void setProgram(Program program){
+	public Optional run(Object[] arguments, Set<Variable> locals) {
+		throw new IllegalArgumentException();
+	}
+
+	//Set program for value
+	@Override
+	public void setProgram(Program program) {
 		super.setProgram(program);
 		value.setProgram(program);
-		
 	}
-	
-	
 
+	
 }

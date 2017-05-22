@@ -1,33 +1,39 @@
 package asteroids.model.programs;
 
+import asteroids.model.CircularObject;
 
+public class Variable<T> {
+	
+	private String variableName;
+	private T value;
 
-public class Variable<S> {
-	
-	//Initialize Variables
-	private String name;
-	private S value;
-	
-	
-	//Constructor
-	public Variable(String name, S value){
-		this.name = name;
-		this.value = value;
+	public Variable(String variableName, T value){
+		this.variableName = variableName;
+		this.setValue(value);
 	}
-
-	//SetValue
-	public void setVariableValue(S value){
+	
+	public void setValue(T value) {
+		if(!canHaveAsValue(value)) throw new IllegalArgumentException();
 		this.value = value;
 	}
 	
-	public S getVariableValue(){
+	private boolean canHaveAsValue(T value) {
+		return getValue()== null || (value instanceof Boolean && getValue() instanceof Boolean)
+			||(value instanceof Double && getValue() instanceof Double)
+			||(value instanceof CircularObject && getValue() instanceof CircularObject);
+	}
+	
+	public T getValue(){
 		return value;
 	}
-	
-	public String getVaribleName(){
-		return name;
+
+	public String getName() {
+		// TODO Auto-generated method stub
+		return variableName;
 	}
 	
-	//CanhaveAsvalue
-	
+	public String toString(){
+		return "[Variable: " + variableName + ", " + value + "]";
+	}
+
 }

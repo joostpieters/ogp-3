@@ -1,31 +1,38 @@
 package asteroids.model.programs;
 
-
 import java.util.*;
-import asteroids.part3.programs.SourceLocation;
-import asteroids.model.programs.*;
 import asteroids.model.Program;
+import asteroids.part3.programs.SourceLocation;
 
+public class SignChange extends Expression<Double> {
+	
+	//Initialize variable
+	private Expression<? extends Double> expression;
 
-public class SignChange extends Expression<Double>{
-	
-	private Expression<? extends Double> exp;
-	
-	public SignChange(Expression<? extends Double> exp, SourceLocation location){
+	//Constructor for SignChange
+	public SignChange(Expression<? extends Double> expression, SourceLocation location) {
 		super(location);
-		this.exp = exp;
+		this.expression = expression;
 	}
 
+	//Calculate negative sign
 	@Override
-	public Double evaluate() throws IllegalArgumentException {
-		return -exp.evaluate();
+	public Double calculate() {
+		return -expression.calculate();
 	}
 
+	//Calculate in function
 	@Override
-	public void setProgram(Program program){
+	public Double calculate(Object[] arguments, Set<Variable> locals) throws IllegalArgumentException {
+		return -expression.calculate(arguments, locals);
+	}
+
+	//Set program for expression
+	@Override
+	public void setProgram(Program program) {
 		super.setProgram(program);
-		exp.setProgram(program);
+		expression.setProgram(program);
 	}
 	
-}
 
+}

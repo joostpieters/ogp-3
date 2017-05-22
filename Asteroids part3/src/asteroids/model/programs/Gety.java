@@ -1,34 +1,39 @@
 package asteroids.model.programs;
 
-
-
 import java.util.*;
 import asteroids.model.CircularObject;
-import asteroids.part3.programs.SourceLocation;
-import asteroids.model.programs.*;
 import asteroids.model.Program;
+import asteroids.part3.programs.SourceLocation;
 
-public class Gety extends Expression<Double>{
+public class Gety extends Expression<Double> {
 	
-	private Expression<? extends CircularObject> exp;
+	//Initialize variables
+	private Expression<? extends CircularObject> expression;
 	
 	
-	public Gety(Expression<? extends CircularObject> exp,SourceLocation location) {
+	//Constructor
+	public Gety(Expression<? extends CircularObject> expression, SourceLocation location) {
 		super(location);
-		this.exp = exp;
+		this.expression = expression;
 	}
 
-
+	//Calculate the yCoordinate
 	@Override
-	public Double evaluate() throws IllegalArgumentException{
-		return exp.evaluate().getPositionArray()[1];
+	public Double calculate() throws IllegalArgumentException {
+		return expression.calculate().getPositionArray()[1];
 	}
 	
+	//Calculate inside of function
 	@Override
-	public void setProgram(Program program){
+	public Double calculate(Object[] arguments, Set<Variable> locals) throws IllegalArgumentException {
+		return expression.calculate(arguments, locals).getPositionArray()[1];
+	}
+
+	//Set Program for expression
+	@Override
+	public void setProgram(Program program) {
 		super.setProgram(program);
-		exp.setProgram(program);
+		expression.setProgram(program);
 	}
-	
 
 }

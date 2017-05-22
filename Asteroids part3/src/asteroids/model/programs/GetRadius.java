@@ -1,34 +1,38 @@
 package asteroids.model.programs;
 
-
-
 import java.util.*;
 import asteroids.model.CircularObject;
-import asteroids.part3.programs.SourceLocation;
-import asteroids.model.programs.*;
 import asteroids.model.Program;
+import asteroids.part3.programs.SourceLocation;
 
-public class GetRadius extends Expression<Double>{
+public class GetRadius extends Expression<Double> {
 	
-	private Expression<? extends CircularObject> exp;
-	
-	
-	public GetRadius(Expression<? extends CircularObject> exp,SourceLocation location) {
+	//Initialise variables
+	private Expression<? extends CircularObject> expression;
+
+	//Constructor
+	public GetRadius(Expression<? extends CircularObject> expression, SourceLocation location) {
 		super(location);
-		this.exp = exp;
+		this.expression = expression;
 	}
 
-
+	//Calculate the radius
 	@Override
-	public Double evaluate() throws IllegalArgumentException{
-		return exp.evaluate().getRadius();
+	public Double calculate() throws IllegalArgumentException {
+		return expression.calculate().getRadius();
 	}
-	
+
+	//Calculate inside of function with given arguments and locals
 	@Override
-	public void setProgram(Program program){
+	public Double calculate(Object[] arguments, Set<Variable> locals) throws IllegalArgumentException {
+		return expression.calculate(arguments, locals).getRadius();
+	}
+
+	//set program for the expression
+	@Override
+	public void setProgram(Program program) {
 		super.setProgram(program);
-		exp.setProgram(program);
+		expression.setProgram(program);
 	}
 	
-
 }

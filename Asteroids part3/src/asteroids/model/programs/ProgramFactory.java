@@ -1,12 +1,13 @@
 package asteroids.model.programs;
 
+import java.util.List;
+import java.util.Optional;
+
 import asteroids.model.*;
 import asteroids.part3.programs.IProgramFactory;
 import asteroids.part3.programs.SourceLocation;
-import java.util.*;
 
-
-public class ProgramFactory implements IProgramFactory<Expression, Statement, Function, Program>{
+public class ProgramFactory implements IProgramFactory<Expression, Statement, Function, Program> {
 
 	@Override
 	public Program createProgram(List<Function> functions, Statement main) {
@@ -15,275 +16,338 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Fu
 	}
 
 	@Override
-	public Function createFunctionDefinition(String functionName, Statement body, SourceLocation sourceLocation) {
+	public Function createFunctionDefinition(String functionName,
+			Statement body, SourceLocation sourceLocation) {
 		// TODO Auto-generated method stub
-		return null;
+		return new Function(functionName, body, sourceLocation);
 	}
 
 	@Override
-	public Statement createAssignmentStatement(String variableName, Expression value, SourceLocation sourceLocation) {
-		//TODO
-		return null;
+	public Statement createAssignmentStatement(String variableName,
+			Expression value, SourceLocation sourceLocation) {
+		// TODO Auto-generated method stub
+		return new Assignment(variableName, value, sourceLocation);
 	}
 
 	@Override
-	public Statement createWhileStatement(Expression condition, Statement body, SourceLocation sourceLocation) {
+	public Statement createWhileStatement(Expression condition, Statement body,
+			SourceLocation sourceLocation) {
+		// TODO Auto-generated method stub
 		return new While(condition, body, sourceLocation);
 	}
 
 	@Override
 	public Statement createBreakStatement(SourceLocation sourceLocation) {
+		// TODO Auto-generated method stub
 		return new Break(sourceLocation);
 	}
 
 	@Override
-	public Statement createReturnStatement(Expression value, SourceLocation sourceLocation) {
+	public Statement createReturnStatement(Expression value,
+			SourceLocation sourceLocation) {
+		// TODO Auto-generated method stub
 		return new Return(value, sourceLocation);
 	}
 
 	@Override
-	public Statement createIfStatement(Expression condition, Statement ifBody, Statement elseBody,
-			SourceLocation sourceLocation) {
+	public Statement createIfStatement(Expression condition, Statement ifBody,
+			Statement elseBody, SourceLocation sourceLocation) {
+		// TODO Auto-generated method stub
 		return new IfElse(condition, ifBody, elseBody, sourceLocation);
 	}
 
 	@Override
-	public Statement createPrintStatement(Expression value, SourceLocation sourceLocation) {
+	
+	public Statement createPrintStatement(Expression value,
+			SourceLocation sourceLocation) {
+		// TODO Auto-generated method stub
 		return new Print(value, sourceLocation);
 	}
 
 	@Override
-	public Statement createSequenceStatement(List<Statement> statements, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Expression createReadVariableExpression(String variableName, SourceLocation sourceLocation) {
-		//TODO
-		return null;
-	}
-
-	@Override
-	public Expression createReadParameterExpression(String parameterName, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Expression createFunctionCallExpression(String functionName, List<Expression> actualArgs,
+	public Statement createSequenceStatement(List<Statement> statements,
 			SourceLocation sourceLocation) {
 		// TODO Auto-generated method stub
-		return null;
+		return new Sequence(statements, sourceLocation);
 	}
 
 	@Override
-	public Expression createChangeSignExpression(Expression expression, SourceLocation sourceLocation) {
+	public Expression createReadVariableExpression(String variableName,
+			SourceLocation sourceLocation) {
+		// TODO Auto-generated method stub
+		return new ReadVariable(variableName, sourceLocation);
+	}
+
+	@Override
+	public Expression createReadParameterExpression(String parameterName,
+			SourceLocation sourceLocation) {
+		// TODO Auto-generated method stub
+		return new Param(parameterName, sourceLocation);
+	}
+
+	@Override
+	public Expression createFunctionCallExpression(String functionName,
+			List<Expression> actualArgs, SourceLocation sourceLocation) {
+		// TODO Auto-generated method stub
+		return new FunctionCall(functionName, actualArgs, sourceLocation);
+	}
+
+	@Override
+	public Expression<Double> createChangeSignExpression(Expression expression,
+			SourceLocation sourceLocation) {
+		// TODO Auto-generated method stub
 		return new SignChange(expression, sourceLocation);
 	}
 
 	@Override
-	public Expression createNotExpression(Expression expression, SourceLocation sourceLocation) {
+	public Expression<Boolean> createNotExpression(Expression expression,
+			SourceLocation sourceLocation) {
+		// TODO Auto-generated method stub
 		return new LogicalNegation(expression, sourceLocation);
 	}
 
 	@Override
-	public Expression createDoubleLiteralExpression(double value, SourceLocation location) {
+	public Expression<Double> createDoubleLiteralExpression(double value,
+			SourceLocation location) {
 		// TODO Auto-generated method stub
-		return null;
+		return new DoubleLiteral(value, location);
 	}
 
 	@Override
-	public Expression createNullExpression(SourceLocation location) {
+	public Expression<CircularObject> createNullExpression(SourceLocation location) {
 		// TODO Auto-generated method stub
-		return null;
+		return new CircObj(location){
+
+			@Override
+			public CircularObject calculate() {
+				return null;
+			}
+			
+		};
 	}
 
 	@Override
-	public Expression createSelfExpression(SourceLocation location) {
+	public Expression<CircularObject> createSelfExpression(SourceLocation location) {
 		// TODO Auto-generated method stub
-		return null;
+		return new CircObj(location){
+
+			@Override
+			public Ship calculate() {
+				return getProgram().getShip();
+			}
+		};
 	}
 
 	@Override
-	public Expression createShipExpression(SourceLocation location) {
-		// TODO Auto-generated method stub
-		return null;
+	public Expression<CircularObject> createShipExpression(SourceLocation location) {
+		return new CircObj(location){
+
+			@Override
+			public Ship calculate() {
+				Ship self = getProgram().getShip();
+				Optional<Ship> closestShip = self.getWorld().getAllShipsInWorld().stream().filter(ship -> !ship.equals(self)).
+					reduce((ship1, ship2) -> (self.getDistanceBetween(ship1) < self.getDistanceBetween(ship2) ? ship1 : ship2));
+				if (closestShip.isPresent()) return closestShip.get();
+				return null;
+			}
+			
+		};
 	}
 
 	@Override
-	public Expression createAsteroidExpression(SourceLocation location) {
-		// TODO Auto-generated method stub
-		return null;
+	public Expression<CircularObject> createAsteroidExpression(SourceLocation location) {
+		return new CircObj(location){
+
+			@Override
+			public Asteroid calculate() {
+				Ship self = getProgram().getShip();
+				Optional<Asteroid> closestAsteroid = self.getWorld().getAllAsteroidsInWorld().stream().
+					reduce((asteroid1, asteroid2) -> (self.getDistanceBetween(asteroid1) < self.getDistanceBetween(asteroid2) ? asteroid1 : asteroid2));
+				if (closestAsteroid.isPresent()) return closestAsteroid.get();
+				return null;
+			}
+			
+			@Override
+			public String toString() {
+				return "[AsteroidExpression]";
+			}
+			
+		};
 	}
 
 	@Override
-	public Expression createPlanetoidExpression(SourceLocation location) {
+	public Expression<CircularObject> createPlanetoidExpression(SourceLocation location) {
 		// TODO Auto-generated method stub
-		return null;
+		return new CircObj(location){
+
+			public Planetoid calculate() {
+				// TODO Auto-generated method stub
+				Ship self = getProgram().getShip();
+				Optional<Planetoid> closestPlanetoid = self.getWorld().getAllPlanetoidsInWorld().stream().
+						reduce((planetoid1, planetoid2) -> (self.getDistanceBetween(planetoid1) < self.getDistanceBetween(planetoid2) ? planetoid1 : planetoid2));
+					if (closestPlanetoid.isPresent()) return closestPlanetoid.get();
+					return null;
+			}
+			
+		};
 	}
 
 	@Override
-	public Expression createBulletExpression(SourceLocation location) {
-		// TODO Auto-generated method stub
-		return null;
+	public Expression<CircularObject> createBulletExpression(SourceLocation location) {
+		return new CircObj(location){
+
+			@Override
+			public Bullet calculate() {
+				Ship self = getProgram().getShip();
+				Optional<Bullet> closestBullet = self.getWorld().getAllBulletsInWorld().stream().filter(bullet -> bullet.getSourceShip() == self).
+						reduce((bullet1, bullet2) -> (self.getDistanceBetween(bullet1) < self.getDistanceBetween(bullet2) ? bullet1 : bullet2));
+					if (closestBullet.isPresent()) return closestBullet.get();
+					return null;
+			}
+			
+			
+		};
 	}
 
 	@Override
-	public Expression createPlanetExpression(SourceLocation location) {
-		// TODO Auto-generated method stub
-		return null;
+	public Expression<CircularObject> createPlanetExpression(SourceLocation location) {
+		return new CircObj(location){
+
+			@Override
+			public MinorPlanet calculate() {
+				Ship self = getProgram().getShip();
+				Optional<CircularObject> closestPlanet = self.getWorld().getAllCircularObjectsInWorld().stream().filter(entity -> entity instanceof MinorPlanet).
+						reduce((planet1, planet2) -> (self.getDistanceBetween(planet1) < self.getDistanceBetween(planet2) ? planet1 : planet2));
+					if (closestPlanet.isPresent()) return (MinorPlanet)closestPlanet.get();
+					return null;
+			}
+			
+		};
 	}
 
 	@Override
-	public Expression createAnyExpression(SourceLocation location) {
-		// TODO Auto-generated method stub
-		return null;
+	public Expression<CircularObject> createAnyExpression(SourceLocation location) {
+		return new CircObj(location){
+
+			@Override
+			public CircularObject calculate() {
+				Ship self = getProgram().getShip();
+				Optional<CircularObject> anyEntity = self.getWorld().getAllCircularObjectsInWorld().stream().findAny();
+					if (anyEntity.isPresent()) return anyEntity.get();
+					return null;
+			}
+			
+		
+		};
 	}
 
 	@Override
-	public Expression createGetXExpression(Expression e, SourceLocation location) {
+	public Expression<Double> createGetXExpression(Expression e, SourceLocation location) {
+		// TODO Auto-generated method stub
 		return new Getx(e, location);
 	}
 
 	@Override
-	public Expression createGetYExpression(Expression e, SourceLocation location) {
+	public Expression<Double> createGetYExpression(Expression e, SourceLocation location) {
+		// TODO Auto-generated method stub
 		return new Gety(e, location);
 	}
 
 	@Override
-	public Expression createGetVXExpression(Expression e, SourceLocation location) {
+	public Expression<Double> createGetVXExpression(Expression e,
+			SourceLocation location) {
+		// TODO Auto-generated method stub
 		return new GetVx(e, location);
 	}
 
 	@Override
-	public Expression createGetVYExpression(Expression e, SourceLocation location) {
+	public Expression<Double> createGetVYExpression(Expression e,
+			SourceLocation location) {
+		// TODO Auto-generated method stub
 		return new GetVy(e, location);
 	}
 
 	@Override
-	public Expression createGetRadiusExpression(Expression e, SourceLocation location) {
+	public Expression<Double> createGetRadiusExpression(Expression e,
+			SourceLocation location) {
+		// TODO Auto-generated method stub
 		return new GetRadius(e, location);
 	}
 
 	@Override
-	public Expression createLessThanExpression(Expression e1, Expression e2, SourceLocation location) {
+	public Expression<Boolean> createLessThanExpression(Expression e1, Expression e2,
+			SourceLocation location) {
+		// TODO Auto-generated method stub
 		return new Comparison(e1, e2, location);
 	}
 
 	@Override
-	public Expression createEqualityExpression(Expression e1, Expression e2, SourceLocation location) {
+	public Expression<Boolean> createEqualityExpression(Expression e1, Expression e2,
+			SourceLocation location) {
+		// TODO Auto-generated method stub
 		return new Equals(e1, e2, location);
 	}
 
 	@Override
-	public Expression createAdditionExpression(Expression e1, Expression e2, SourceLocation location) {
+	public Expression<Double> createAdditionExpression(Expression e1, Expression e2,
+			SourceLocation location) {
+		// TODO Auto-generated method stub
+		//return new AdditionExpression(e1, e2, location);
 		return new Addition(e1, e2, location);
 	}
 
 	@Override
-	public Expression createMultiplicationExpression(Expression e1, Expression e2, SourceLocation location) {
+	public Expression<Double> createMultiplicationExpression(Expression e1,
+			Expression e2, SourceLocation location) {
+		// TODO Auto-generated method stub
 		return new Multiply(e1, e2, location);
 	}
 
 	@Override
-	public Expression createSqrtExpression(Expression e, SourceLocation location) {
+	public Expression<Double> createSqrtExpression(Expression e, SourceLocation location) {
+		// TODO Auto-generated method stub
+		
 		return new SquareRoot(e, location);
 	}
 
 	@Override
-	public Expression createGetDirectionExpression(SourceLocation location) {
+	public Expression<Double> createGetDirectionExpression(SourceLocation location) {
+		// TODO Auto-generated method stub
 		return new GetDir(location);
 	}
 
 	@Override
 	public Statement createThrustOnStatement(SourceLocation location) {
-		return new Action(location){
+		// TODO Auto-generated method stub
+		return new ThrustOn(location);
+
 			
-			@Override
-			public void run(){
-				setNoTimeConsumed(false);
-				getProgram().setLocation(getLocation());
-				if (getProgram().getTime() < 0.2){
-					setNoTimeConsumed(true);
-					return;
-				}
-				getProgram().getShip().thrustOn();
-				getProgram().moveTime();
-			}
-		};
 	}
 
 	@Override
 	public Statement createThrustOffStatement(SourceLocation location) {
-return new Action(location){
-			
-			@Override
-			public void run(){
-				setNoTimeConsumed(false);
-				getProgram().setLocation(getLocation());
-				if (getProgram().getTime() < 0.2){
-					setNoTimeConsumed(true);
-					return;
-				}
-				getProgram().getShip().thrustOff();
-				getProgram().moveTime();
-			}
-		};
+		// TODO Auto-generated method stub
+		return new ThrustOff(location);
 	}
 
 	@Override
 	public Statement createFireStatement(SourceLocation location) {
-		return new Action(location){
-			
-			@Override
-			public void run(){
-				setNoTimeConsumed(false);
-				getProgram().setLocation(getLocation());
-				if (getProgram().getTime() < 0.2){
-					setNoTimeConsumed(true);
-					return;
-				}
-				getProgram().getShip().fire();
-				getProgram().moveTime();
-			}
-		};
+		// TODO Auto-generated method stub
+		return new Fire(location);
 	}
 
 	@Override
-	public Statement createTurnStatement(Expression angle, SourceLocation location) {
-		return new Action(location){
-			
-			@Override
-			public void run(){
-				setNoTimeConsumed(false);
-				getProgram().setLocation(getLocation());
-				if (getProgram().getTime() < 0.2){
-					setNoTimeConsumed(true);
-					return;
-				}
-				getProgram().getShip().turn((Double)angle.evaluate());
-				getProgram().moveTime();
-			}
-		};
+	public Statement createTurnStatement(Expression angle,
+			SourceLocation location) {
+		return new Turn(angle, location);
+
 	}
 
 	@Override
 	public Statement createSkipStatement(SourceLocation location) {
-return new Action(location){
-			
-			@Override
-			public void run(){
-				setNoTimeConsumed(false);
-				getProgram().setLocation(getLocation());
-				if (getProgram().getTime() < 0.2){
-					setNoTimeConsumed(true);
-					return;
-				}
-				
-				getProgram().moveTime();
-			}
-		};
+		// TODO Auto-generated method stub
+		return new Skip(location);
 	}
+
 
 }

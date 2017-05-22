@@ -1,38 +1,47 @@
 package asteroids.model.programs;
 
-
-
 import java.util.*;
-import asteroids.model.CircularObject;
-import asteroids.part3.programs.SourceLocation;
-import asteroids.model.programs.*;
 import asteroids.model.Program;
+import asteroids.part3.programs.SourceLocation;
 
-public class Equals extends Expression<Boolean>{
+public class Equals extends Expression<Boolean> {
 	
-	private Expression exp1;
-	private Expression exp2;	
-	
-	public Equals(Expression exp1, Expression exp2, SourceLocation location) {
+	//Initial variables
+	private Expression expression1;
+	private Expression expression2;
+
+	//Equals constructor
+	public Equals(Expression expression1, Expression expression2,
+			SourceLocation location) {
 		super(location);
-		this.exp1 = exp1;
-		this.exp2 = exp2;
+		this.expression1 = expression1;
+		this.expression2 = expression2;
 	}
 
-
+	//Calculate and see if both expressions are the same
 	@Override
-	public Boolean evaluate() throws IllegalArgumentException{
-		Object exp1good = exp1.evaluate();
-		Object exp2good = exp2.evaluate();
-		return exp1good.equals(exp2good);
+	public Boolean calculate() {
+		Object calculated1 = expression1.calculate();
+		Object calculated2 = expression2.calculate();
+		return calculated1.equals(calculated2);
 	}
-	
+
+	//Calculate inside of a function
 	@Override
-	public void setProgram(Program program){
+	public Boolean calculate(Object[] arguments, Set<Variable> locals) throws IllegalArgumentException {
+		Object calculated1 = expression1.calculate(arguments, locals);
+		Object calculated2 = expression2.calculate(arguments, locals);
+		return calculated1.equals(calculated2);
+	}
+
+	//Set the program
+	@Override
+	public void setProgram(Program program) {
 		super.setProgram(program);
-		exp1.setProgram(program);
-		exp2.setProgram(program);
+		expression1.setProgram(program);
+		expression2.setProgram(program);
 	}
-	
+
+
 
 }

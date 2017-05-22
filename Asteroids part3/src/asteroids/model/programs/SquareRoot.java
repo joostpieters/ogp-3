@@ -1,31 +1,39 @@
 package asteroids.model.programs;
 
-
 import java.util.*;
-import asteroids.part3.programs.SourceLocation;
-import asteroids.model.programs.*;
 import asteroids.model.Program;
+import asteroids.part3.programs.SourceLocation;
 
+public class SquareRoot extends Expression<Double> {
+	
+	//Initialize variable
+	Expression<Double> expression;
 
-public class SquareRoot extends Expression<Double>{
-	
-	Expression<Double> exp;
-	
-	protected SquareRoot(Expression<Double> exp, SourceLocation location) {
+	//Constructor
+	public SquareRoot(Expression<Double> expression, SourceLocation location) {
 		super(location);
-		this.exp = exp;
+		this.expression = expression;
 	}
 
+	//Calculate the square root of expression
 	@Override
-	public Double evaluate(){
-		return Math.sqrt(exp.evaluate());
+	public Double calculate() {
+		return Math.sqrt(expression.calculate());
 	}
-	
+
+	//Calculate inside of function
 	@Override
-	public void setProgram(Program program){
+	public Double calculate(Object[] arguments, Set<Variable> locals) throws IllegalArgumentException {
+		return Math.sqrt(expression.calculate(arguments, locals));
+	}
+
+	//Set program for expression.
+	@Override
+	public void setProgram(Program program) {
 		super.setProgram(program);
-		exp.setProgram(program);
+		expression.setProgram(program);
 	}
 	
+
 
 }

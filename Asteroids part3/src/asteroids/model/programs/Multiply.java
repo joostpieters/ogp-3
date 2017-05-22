@@ -1,34 +1,41 @@
 package asteroids.model.programs;
 
-
 import java.util.*;
-import asteroids.part3.programs.SourceLocation;
-import asteroids.model.programs.*;
 import asteroids.model.Program;
+import asteroids.part3.programs.SourceLocation;
 
 public class Multiply extends Expression<Double> {
 	
-	private Expression<? extends Double> exp1;
-	private Expression<? extends Double> exp2;
+	//Initialize variables
+	private Expression<? extends Double> expression1;
+	private Expression<? extends Double> expression2;
+
 	
-	public Multiply(Expression<? extends Double> exp1, Expression<? extends Double> exp2, SourceLocation location){
+	//Constructor for multiply
+	public Multiply(Expression<? extends Double> expression1, Expression<? extends Double> expression2,	SourceLocation location) {
 		super(location);
-		this.exp1 = exp1;
-		this.exp2 = exp2;
+		this.expression1 = expression1;
+		this.expression2 = expression2;
 	}
 
+	//Calculate the mulitplication of both expressions
 	@Override
-	public Double evaluate() throws IllegalArgumentException {
-		return exp1.evaluate() * exp2.evaluate();
-		
+	public Double calculate() {
+		return expression1.calculate() * expression2.calculate();
 	}
-	
-	
-	@Override 
-	public void setProgram(Program program){
+
+	//Calculate inside of function
+	@Override
+	public Double calculate(Object[] arguments, Set<Variable> locals) throws IllegalArgumentException {
+		return expression1.calculate(arguments, locals) * expression2.calculate(arguments, locals);
+	}
+
+	//Set program for all expressions
+	@Override
+	public void setProgram(Program program) {
 		super.setProgram(program);
-		exp1.setProgram(program);
-		exp2.setProgram(program);
+		expression1.setProgram(program);
+		expression2.setProgram(program);
 	}
 
 }
