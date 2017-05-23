@@ -493,5 +493,10 @@ public class Ship extends CircularObject{
 			this.setVelocity(this.getVelocityArray()[0], -currentYVel);
 		}
 	}
+
+	@Override
+	public double getDensity() {
+		return DENSITY;
+	}
 	
 }

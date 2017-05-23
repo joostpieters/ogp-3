@@ -194,4 +194,9 @@ public class Bullet extends CircularObject{
 			bullet.terminate();
 		}
 	}
+
+	@Override
+	public double getDensity() {
+		return DENSITY;
+	}
 }

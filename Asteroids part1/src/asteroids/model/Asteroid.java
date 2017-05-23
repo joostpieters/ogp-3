@@ -23,4 +23,9 @@ public class Asteroid extends MinorPlanet {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	
+	public double getDensity() {
+		return DENSITY;
+	}
 }

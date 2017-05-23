@@ -28,4 +28,8 @@ public class Planetoid extends MinorPlanet {
 	}
 	
 	
+	public double getDensity() {
+		return DENSITY;
+	}
+	
 }
