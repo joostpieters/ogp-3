@@ -57,7 +57,6 @@ public abstract class CircularObject {
 	 */
 	private boolean isTerminated = false;
 	
-	public abstract double getDensity();
 	
 	/**
 	 * Initialization of a circular object (ship or a bullet) with a given position, velocity and radius

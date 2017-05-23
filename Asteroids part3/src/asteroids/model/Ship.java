@@ -499,13 +499,4 @@ public class Ship extends CircularObject{
 		return shipProgram.run(dt);
 	}
 
-	@Override
-	public double getDensity() {
-		return DENSITY;
-	}
-	
-	
-	
-	
-	
 }

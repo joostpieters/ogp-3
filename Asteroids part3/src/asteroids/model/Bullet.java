@@ -192,12 +192,4 @@ public class Bullet extends CircularObject{
 		}
 	}
 
-<<<<<<< HEAD:Asteroids part1/src/asteroids/model/Bullet.java
-	@Override
-	public double getDensity() {
-		return DENSITY;
-	}
-=======
-	
->>>>>>> origin/master:Asteroids part3/src/asteroids/model/Bullet.java
 }

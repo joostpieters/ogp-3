@@ -420,7 +420,12 @@ public class Facade implements IFacade {
 
 	@Override
 	public void removeBulletFromShip(Ship ship, Bullet bullet) throws ModelException {
-		ship.removeBullet(bullet);
+		try {
+			ship.removeBullet(bullet);
+		} catch (IllegalArgumentException excp) {
+			throw new ModelException(excp);
+		}
+		
 		
 	}
 
