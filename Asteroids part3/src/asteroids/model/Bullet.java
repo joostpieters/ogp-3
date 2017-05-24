@@ -183,14 +183,14 @@ public class Bullet extends CircularObject{
 			Ship ship = (Ship)object2;
 			if (this.getSourceShip() == ship) ship.loadBullet(this);
 			else {
+				System.out.println("bullet met ship");
 				ship.terminate();
 				this.terminate();
 			}
 		}
 		else {
-			Bullet bullet = (Bullet)object2;
 			this.terminate();
-			bullet.terminate();
+			object2.terminate();
 		}
 	}
 

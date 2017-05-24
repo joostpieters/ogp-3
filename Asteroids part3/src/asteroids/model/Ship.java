@@ -471,9 +471,8 @@ public class Ship extends CircularObject{
 			this.setVelocity(newXVelocityThisObject, newYVelocityThisObject);
 			object2.setVelocity(newXVelocityObject2, newYVelocityObject2);
 		}
-		
 		else{
-			System.out.println("");
+			System.out.println("Ship met iets anders");
 			object2.collisionCircularObject(this);
 		}
 	}	

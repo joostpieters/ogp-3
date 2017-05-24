@@ -413,7 +413,12 @@ public class Facade implements IFacade {
 
 	@Override
 	public void loadBulletsOnShip(Ship ship, Collection<Bullet> bullets) throws ModelException {
-		ship.loadMultipleBullets(bullets);
+		try {
+			ship.loadMultipleBullets(bullets);
+		} catch (IllegalArgumentException exc) {
+			throw new ModelException(exc);
+		}
+		
 		
 	}
 

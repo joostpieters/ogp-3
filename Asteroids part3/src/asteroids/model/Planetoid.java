@@ -110,6 +110,7 @@ public class Planetoid extends MinorPlanet {
 	@Override
 	public void collisionCircularObject(CircularObject object2) {
 		if(object2 instanceof Ship) {
+			System.out.println("Planetoid met ship");
 			Ship ship = (Ship) object2;
 			double radius = ship.getRadius();
 			double worldX = ship.getWorld().getWorldDimensionArray()[0];
@@ -122,12 +123,17 @@ public class Planetoid extends MinorPlanet {
 			if (newY - radius > 0) newY = radius;
 			if (newY + radius >= worldY) newY = worldY - radius;
 			
+			Ship newShip = new Ship(newX, newY, ship.getVelocityArray()[0], ship.getVelocityArray()[1], radius, ship.getDirection(), ship.getMass());
+			this.getWorld().addShipToWorld(newShip);
+			this.getWorld().removeShip(ship);
+			
 			for (CircularObject otherObject : this.getWorld().getAllCircularObjectsInWorld()) {
 				if (ship != otherObject && otherObject.overlap(ship)) {
 					ship.terminate();
 				}
 			}
 		} else {
+			System.out.println("Planteoid met iets anders");
 			super.collisionCircularObject(object2);
 		}
 		

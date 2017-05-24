@@ -88,9 +88,11 @@ public abstract class MinorPlanet extends CircularObject{
 			double newYVelocityObject2 = object2.getVelocityArray()[1] - jY/object2.getMass();		
 			this.setVelocity(newXVelocityThisObject, newYVelocityThisObject);
 			object2.setVelocity(newXVelocityObject2, newYVelocityObject2);
+			System.out.println("Minor planet met minor planet");
 		}
-		if (object2 instanceof Bullet) {
-			object2.collisionCircularObject(this);
+		else if (object2 instanceof Bullet){
+			this.terminate();
+			object2.terminate();
 		}
 	}
 	

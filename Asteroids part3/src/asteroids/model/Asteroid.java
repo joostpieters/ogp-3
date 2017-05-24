@@ -40,7 +40,9 @@ public class Asteroid extends MinorPlanet {
 		if (object instanceof Ship) {
 			Ship ship = (Ship) object;
 			ship.terminate();
+			System.out.println("Asteroid met ship");
 		} else {
+			System.out.println("Asteroid met iets anders");
 			super.collisionCircularObject(object);
 		}
 		
