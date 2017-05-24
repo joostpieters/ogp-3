@@ -75,9 +75,14 @@ public class Bullet extends CircularObject{
 	 * @return the mass of the bullet
 	 * 			|result == mass;
 	 */
+	@Override
 	public double getMass(){
 		double bulletradius = getRadius();
-		return (3/4 * Math.PI * Math.pow(bulletradius, 3) * DENSITY);
+		double mass = 4.0 * Math.PI * Math.pow(bulletradius, 3) * getDensity() / 3.0;
+		System.out.println(bulletradius);
+		System.out.println(4/3);
+		System.out.println(mass);
+		return mass;
 	}
 	
 	/**
@@ -131,14 +136,11 @@ public class Bullet extends CircularObject{
 	@Override
 	public void terminate() {
 		this.getSourceShip().removeBullet(this);
-		this.setSourceShip(null);
 		
 		super.terminate();
 		if (this.getWorld()!= null) {
 			this.getWorld().removeBullet(this);
-
 		}
-		
 	}
 	
 	/**

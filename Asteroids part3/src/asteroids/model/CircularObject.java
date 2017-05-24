@@ -112,7 +112,11 @@ public abstract class CircularObject {
 	}
 	
 	public void setVelocity(double x, double y) {
-		//TODO: isValidVelocity and throw exception
+		double newSpeed = Math.sqrt((x*x) + (y*y));
+		if (newSpeed > SPEEDOFLIGHT) {
+			x = this.getVelocityArray()[0] * SPEEDOFLIGHT / newSpeed;
+			y = this.getVelocityArray()[1] * SPEEDOFLIGHT / newSpeed;
+		}
 		this.velocity.setVelocity(x, y);
 	}
 	
@@ -158,7 +162,7 @@ public abstract class CircularObject {
 	 * @return The validity of the radius
 	 */
 	public boolean isValidRadius(double radius){
-		return radius > getMinimalRadius();
+		return radius >= this.getMinimalRadius();
 	}
 	
 	/**
@@ -168,7 +172,7 @@ public abstract class CircularObject {
 	 * 			|this.radius = radius
 	 * @throws IllegalArgumentException if the the radius is not valid
 	 */
-	public void setRadius(double radius){
+	public void setRadius(double radius) throws IllegalArgumentException {
 		if (isValidRadius(radius) == false) throw new IllegalArgumentException("Invalid radius detected.");
 		this.radius = radius;
 	}

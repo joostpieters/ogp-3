@@ -132,6 +132,7 @@ public class Part3TestFull {
     double velocity = Math.sqrt(facade.getShipVelocity(ship)[0] * facade.getShipVelocity(ship)[0]
         + facade.getShipVelocity(ship)[1] * facade.getShipVelocity(ship)[1]);
     assertTrue(0 - EPSILON <= velocity);
+    System.out.println(velocity);
     assertTrue(velocity <= 300000 + EPSILON);
     score += 3;
   }
@@ -211,6 +212,7 @@ public class Part3TestFull {
     Ship ship = facade.createShip(100, 120, 10, 5, 50, 0, 1.0E20);
     facade.setThrusterActive(ship, true);
     double expectedAcceleration = 1.1E18 / 1.0E20;
+    System.out.printf("Ship mass %f", facade.getShipMass(ship));
     assertTrue(facade.isShipThrusterActive(ship));
     assertEquals(expectedAcceleration, facade.getShipAcceleration(ship), EPSILON);
     score += 2;
@@ -236,6 +238,7 @@ public class Part3TestFull {
     assertEquals(10, facade.getBulletVelocity(bullet)[0], EPSILON);
     assertEquals(5, facade.getBulletVelocity(bullet)[1], EPSILON);
     assertEquals(50, facade.getBulletRadius(bullet), EPSILON);
+    System.out.println("look here");
     assertEquals(4.0 * 7.8E12 * Math.PI * Math.pow(50.0, 3) / 3.0, facade.getBulletMass(bullet), BIG_EPSILON);
     assertNull(facade.getBulletWorld(bullet));
     assertNull(facade.getBulletShip(bullet));
@@ -772,7 +775,10 @@ public class Part3TestFull {
       usedBullet = bullet1;
     assertEquals(1, facade.getWorldBullets(world).size());
     assertEquals(1, facade.getNbBulletsOnShip(ship));
+
+    System.out.printf("x positie bullet %f%n", facade.getBulletPosition(usedBullet)[0]);
     assertEquals(650 + facade.getBulletRadius(usedBullet), facade.getBulletPosition(usedBullet)[0], 10.0);
+
     assertEquals(200, facade.getBulletPosition(usedBullet)[1], 10.0);
     assertEquals(250, facade.getBulletVelocity(usedBullet)[0], EPSILON);
     assertEquals(0, facade.getBulletVelocity(usedBullet)[1], EPSILON);
@@ -1318,6 +1324,7 @@ public class Part3TestFull {
   @Test
   public void testTerminateWorld() throws ModelException {
     max_score += 7;
+    System.out.println(facade.getWorldShips(filledWorld));
     facade.terminateWorld(filledWorld);
     assertTrue(facade.isTerminatedWorld(filledWorld));
     assertEquals(0, facade.getEntities(filledWorld).size());

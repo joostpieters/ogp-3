@@ -6,7 +6,8 @@ public abstract class MinorPlanet extends CircularObject{
 	/**
 	 * Constant representing the minimal radius of a minor planet
 	 */
-	private final double MINIMUMMINORPLANETRADIUS = 5; 
+	private final double MINIMUMMINORPLANETRADIUS = 5;
+
 	
 	
 	
@@ -45,7 +46,7 @@ public abstract class MinorPlanet extends CircularObject{
 	 */
 	@Override
 	public double getMass() {
-		return 4/3.*Math.PI*Math.pow(getRadius(), 3)*getDensity();
+		return 4.0 * Math.PI * Math.pow(getRadius(), 3) * this.getDensity() / 3.0;
 	}
 	
 	@Override

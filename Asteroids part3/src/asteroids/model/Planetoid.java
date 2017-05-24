@@ -4,6 +4,7 @@ public class Planetoid extends MinorPlanet {
 
 	private double distanceTraveled;
 	private final double DENSITY = 0.917E12;
+	private final double MINRADIUS = 5;
 	
 	/**
 	 * Constructor to create a new planetoid
@@ -25,6 +26,9 @@ public class Planetoid extends MinorPlanet {
 	public Planetoid(double x, double y, double xVelocity, double yVelocity, double radius, double distanceTraveled) throws IllegalArgumentException{
 		super(x, y, xVelocity, yVelocity, radius);
 		setDistanceTraveled(distanceTraveled);
+		if (this.getRadius() < MINRADIUS) {
+			this.terminate();
+		}
 	}
 	
 	/**
@@ -53,10 +57,15 @@ public class Planetoid extends MinorPlanet {
 		return super.getRadius() - (0.000001 * distanceTraveled);
 	}
 	
+	@Override
+	public double getMinimalRadius() {
+		return MINRADIUS;
+	}
 	/**
 	 * Get the density
 	 * @return |result == DENSITY
 	 */
+	@Override
 	public double getDensity(){
 		return DENSITY;
 	}

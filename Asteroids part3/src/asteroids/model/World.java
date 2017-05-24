@@ -2,6 +2,7 @@ package asteroids.model;
 
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import asteroids.part2.CollisionListener;
@@ -115,6 +116,8 @@ public class World {
 	 * 			|result == shipsInWorld
 	 */
 	public Set<Ship> getAllShipsInWorld(){
+		Set<Ship> ships = new HashSet<Ship>();
+		ships.addAll(shipsInWorld);
 		return shipsInWorld;
 	}
 	
@@ -124,6 +127,8 @@ public class World {
 	 * 			|result == shipsInWorld
 	 */
 	public Set<Bullet> getAllBulletsInWorld(){
+		Set<Bullet> bullets = new HashSet<Bullet>();
+		bullets.addAll(bulletsInWorld);
 		return bulletsInWorld;
 	}
 	
@@ -167,7 +172,7 @@ public class World {
 		circularObjectsInWorld.addAll(shipsInWorld);
 		circularObjectsInWorld.addAll(planetoidsInWorld);
 		circularObjectsInWorld.addAll(asteroidsInWorld);
-		circularObjectsInWorld.addAll(minorPlanetsInWorld);
+
 		return circularObjectsInWorld;
 	}
 	
@@ -181,11 +186,9 @@ public class World {
 	 * @see implementation
 	 */
 	private boolean validCircularObject(CircularObject object) {
-		if (object.getWorld() != this && object.getWorld() != null) return false;
-		if (object instanceof Bullet) {
-			Bullet bullet = (Bullet) object;
-			if (bullet.getSourceShip() != null) return false;
-		}
+		if (object == null) return false;
+		if (object.getWorld() != null && object.getWorld() != this) return false;
+
 		if(object.isTerminated() || this.isTerminated) return false;
 		for (CircularObject object2 : this.getAllCircularObjectsInWorld()) {
 			if (object.overlap(object2)) return false;
@@ -239,7 +242,7 @@ public class World {
 	 * @post The ship is added to the world
 	 */
 	public void addBulletToWorld(Bullet bullet) throws IllegalArgumentException {
-		if (!validCircularObject(bullet) || circularObjectOutOfBound(bullet)) throw new IllegalArgumentException("This bullet cannot be added to the world.");
+		if (circularObjectOutOfBound(bullet)) throw new IllegalArgumentException("This bullet is out of the world's bound.");
 		bullet.setWorld(this);
 		bulletsInWorld.add(bullet);
 	}
@@ -272,6 +275,7 @@ public class World {
 	 * 			|ship.getWorld() != this
 	 */
 	public void removeShip(Ship ship) throws IllegalArgumentException{
+		if (ship == null) throw new IllegalArgumentException("removeShip called with non-existent ship.");
 		if(ship.getWorld() != this) throw new IllegalArgumentException("The ship does not belong to this world");
 		shipsInWorld.remove(ship);
 		this.circularObjectsInWorld.remove(ship);
@@ -301,19 +305,26 @@ public class World {
 	 * 			|this.removeBullet(bullet)
 	 */
 	public void terminateWorld() {
-		for (Ship ship : shipsInWorld) {
-			this.removeShip(ship);
+		for (Ship ship : getAllShipsInWorld()) {
+			ship.setWorld(null);
 		}
-		for (Bullet bullet : bulletsInWorld) {
-			this.removeBullet(bullet);
+		for (Bullet bullet : getAllBulletsInWorld()) {
+			bullet.setWorld(null);
 		}
-		for (Planetoid planetoid : planetoidsInWorld) {
-			this.removePlanetoid(planetoid);
+		for (Planetoid planetoid : getAllPlanetoidsInWorld()) {
+			planetoid.setWorld(null);
 		}
 		
-		for (Asteroid asteroid : asteroidsInWorld) {
-			this.removeAsteroid(asteroid);
+		for (Asteroid asteroid : getAllAsteroidsInWorld()) {
+			asteroid.setWorld(null);
 		}
+		
+		shipsInWorld.clear();
+		bulletsInWorld.clear();
+		planetoidsInWorld.clear();
+		asteroidsInWorld.clear();
+		circularObjectsInWorld.clear();
+		minorPlanetsInWorld.clear();
 		this.isTerminated = true;
 	}
 	

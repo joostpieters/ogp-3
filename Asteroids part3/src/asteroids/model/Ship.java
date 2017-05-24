@@ -61,7 +61,7 @@ public class Ship extends CircularObject{
 	 * Constant representing the thruster force
 	 */
 	
-	private final double THRUSTERFORCE = 1.1 * Math.pow(10, 21);
+	private final double THRUSTERFORCE = 1.1E18;
 	
 	/**
 	 * The state of the thruster
@@ -177,7 +177,7 @@ public class Ship extends CircularObject{
 	 * 		the mass which will be assigned to the ship
 	 */
 	public void setMass(double mass){
-		double masswithformula = (4/3)*Math.PI*Math.pow(this.getRadius(),3)*DENSITY;
+		double masswithformula = 4.0 *Math.PI*Math.pow(this.getRadius(),3)*DENSITY / 3.0;
 		if (mass >= masswithformula){
 			this.mass = mass;
 		}
@@ -192,12 +192,12 @@ public class Ship extends CircularObject{
 	 * @return The total mass
 	 * 			|result = shipMass + massOfBullets;
 	 */
+	@Override
 	public double getMass(){
 		double shipMass = this.mass;
 		double massOfBullets = 0;
 		for (Bullet bullet : this.getBulletsOfShip())
 			massOfBullets += bullet.getMass();
-		
 		return (shipMass + massOfBullets);
 	}
 	
@@ -266,7 +266,7 @@ public class Ship extends CircularObject{
 		bullet.setPosition(this.getPositionArray()[0], this.getPositionArray()[1]);
 		if (bullet.getWorld() != null) this.getWorld().removeBullet(bullet);
 		bullet.setSourceShip(this);
-		this.bulletsCollection.add(bullet);
+		bulletsCollection.add(bullet);
 	}
 	
 	/**
@@ -344,9 +344,7 @@ public class Ship extends CircularObject{
 		if (checkThrusterStatus() == false){
 			acceleration = 0;
 		}
-		else{
-		
-			
+		else {
 			acceleration = THRUSTERFORCE/getMass();
 		}
 		return acceleration;
@@ -379,12 +377,7 @@ public class Ship extends CircularObject{
 		
 		double newXVelocity = (this.getVelocityArray()[0] + (amount*Math.cos(this.direction)));
 		double newYVelocity = (this.getVelocityArray()[1] + (amount*Math.sin(this.direction)));
-		double newSpeed = Math.sqrt((newXVelocity * newXVelocity) + (newYVelocity * newYVelocity));
 		
-		if (newSpeed > SPEEDOFLIGHT) {
-			newXVelocity = Math.cos(this.getDirection()) * SPEEDOFLIGHT;
-			newYVelocity = Math.sin(this.getDirection()) * SPEEDOFLIGHT;
-		}
 		this.setVelocity(newXVelocity, newYVelocity);	
 	}
 	
@@ -414,8 +407,8 @@ public class Ship extends CircularObject{
 		
 		double bulletXVelocity = 250*Math.cos(bulletdirection);
 		double bulletYVelocity = 250*Math.sin(bulletdirection);
-		double bulletXPosition = shipPosition[0] + (this.getRadius() + 2*bulletradius)*Math.cos(bulletdirection);
-		double bulletYPosition = shipPosition[1] + (this.getRadius() + 2*bulletradius)*Math.sin(bulletdirection);
+		double bulletXPosition = shipPosition[0] + (this.getRadius() + bulletradius)*Math.cos(bulletdirection);
+		double bulletYPosition = shipPosition[1] + (this.getRadius() + bulletradius)*Math.sin(bulletdirection);
 		this.bulletsCollection.remove(firedbullet);
 		firedbullet.setVelocity(bulletXVelocity, bulletYVelocity);
 		firedbullet.setPosition(bulletXPosition, bulletYPosition);
@@ -426,7 +419,7 @@ public class Ship extends CircularObject{
 		}
 		catch (IllegalArgumentException exception){ 
 			for (CircularObject obj: this.getWorld().getAllCircularObjectsInWorld()){
-				if (obj.overlap(firedbullet)) {
+				if (obj.overlap(firedbullet) && obj != firedbullet) {
 					firedbullet.collisionCircularObject(obj);
 				}
 			}

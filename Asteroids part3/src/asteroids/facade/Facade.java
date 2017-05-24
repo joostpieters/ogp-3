@@ -599,7 +599,12 @@ public class Facade implements IFacade {
 	@Override
 	public Planetoid createPlanetoid(double x, double y, double xVelocity, double yVelocity, double radius,
 			double totalTraveledDistance) throws ModelException {
-		return new Planetoid(x, y, xVelocity, yVelocity, radius, totalTraveledDistance);
+		try {
+			return new Planetoid(x, y, xVelocity, yVelocity, radius, totalTraveledDistance);
+		} catch (IllegalArgumentException exc) {
+			throw new IllegalArgumentException(exc);
+		}
+		
 	}
 
 
