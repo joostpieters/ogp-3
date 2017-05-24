@@ -7,32 +7,43 @@ import asteroids.part3.programs.SourceLocation;
 
 public class GetVx extends Expression<Double> {
 	
-	//Initial variable
-	private Expression<? extends CircularObject> expression;
+	//Initialize variables
+	private Expression<CircularObject> circObj;
+
 	
 	//Constructor for GetVx
-	public GetVx(Expression<? extends CircularObject> expression, SourceLocation location) {
+	public GetVx(Expression<CircularObject> expression, SourceLocation location) {
 		super(location);
-		this.expression = expression;
+		setCircObj(expression);
 	}
 
+	//set circObj
+	public void setCircObj(Expression<CircularObject> obj){
+		this.circObj = obj;
+	}
+	
+	//get circObj
+	public Expression<CircularObject> getCircObj(){
+		return this.circObj;
+	}
+	
 	//calculate the xvelocity
 	@Override
 	public Double calculate() throws IllegalArgumentException {
-		return expression.calculate().getVelocityArray()[0];
+		return getCircObj().calculate().getVelocityArray()[0];
 	}
 
 	//calculate inside of function
 	@Override
 	public Double calculate(Object[] arguments, Set<Variable> locals) throws IllegalArgumentException {
-		return expression.calculate(arguments, locals).getVelocityArray()[0];
+		return  getCircObj().calculate(arguments, locals).getVelocityArray()[0];
 	}
 
 	//Set program for the expression
 	@Override
 	public void setProgram(Program program) {
 		super.setProgram(program);
-		expression.setProgram(program);
+		 getCircObj().setProgram(program);
 	}
 	
 }

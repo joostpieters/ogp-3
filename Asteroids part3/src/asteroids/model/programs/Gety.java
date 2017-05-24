@@ -8,32 +8,42 @@ import asteroids.part3.programs.SourceLocation;
 public class Gety extends Expression<Double> {
 	
 	//Initialize variables
-	private Expression<? extends CircularObject> expression;
+	private Expression<CircularObject> circObj;
+
 	
-	
-	//Constructor
-	public Gety(Expression<? extends CircularObject> expression, SourceLocation location) {
+	//Constructor for GetVx
+	public Gety(Expression<CircularObject> expression, SourceLocation location) {
 		super(location);
-		this.expression = expression;
+		setCircObj(expression);
 	}
 
-	//Calculate the yCoordinate
+	//set circObj
+	public void setCircObj(Expression<CircularObject> obj){
+		this.circObj = obj;
+	}
+	
+	//get circObj
+	public Expression<CircularObject> getCircObj(){
+		return this.circObj;
+	}
+	
+	//calculate the ycoordinate
 	@Override
 	public Double calculate() throws IllegalArgumentException {
-		return expression.calculate().getPositionArray()[1];
-	}
-	
-	//Calculate inside of function
-	@Override
-	public Double calculate(Object[] arguments, Set<Variable> locals) throws IllegalArgumentException {
-		return expression.calculate(arguments, locals).getPositionArray()[1];
+		return getCircObj().calculate().getPositionArray()[1];
 	}
 
-	//Set Program for expression
+	//calculate inside of function
+	@Override
+	public Double calculate(Object[] arguments, Set<Variable> locals) throws IllegalArgumentException {
+		return  getCircObj().calculate(arguments, locals).getPositionArray()[1];
+	}
+
+	//Set program for the expression
 	@Override
 	public void setProgram(Program program) {
 		super.setProgram(program);
-		expression.setProgram(program);
+		 getCircObj().setProgram(program);
 	}
-
+	
 }

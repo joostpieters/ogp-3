@@ -2,38 +2,49 @@ package asteroids.model.programs;
 
 import asteroids.model.CircularObject;
 
-public class Variable<T> {
+public class Variable<S> {
 	
-	private String variableName;
-	private T value;
+	//Initialize variables
+	private String name;
+	private S value;
 
-	public Variable(String variableName, T value){
-		this.variableName = variableName;
+	//Constructor of a variable using name and value
+	public Variable(String name, S value){
+		this.name = name;
 		this.setValue(value);
 	}
 	
-	public void setValue(T value) {
-		if(!canHaveAsValue(value)) throw new IllegalArgumentException();
-		this.value = value;
-	}
-	
-	private boolean canHaveAsValue(T value) {
-		return getValue()== null || (value instanceof Boolean && getValue() instanceof Boolean)
-			||(value instanceof Double && getValue() instanceof Double)
-			||(value instanceof CircularObject && getValue() instanceof CircularObject);
-	}
-	
-	public T getValue(){
+	//Get the value of the variable
+	public S getValue(){
 		return value;
 	}
 
-	public String getName() {
-		// TODO Auto-generated method stub
-		return variableName;
+	
+	//setValue of the variable
+	public void setValue(S value) {
+		if (!validValueType(value)) throw new IllegalArgumentException("Null is not a valid value");
+		this.value = value;
 	}
 	
-	public String toString(){
-		return "[Variable: " + variableName + ", " + value + "]";
+	//Is the value of a variable of a valid type
+	private boolean validValueType(S value) {
+		return (noValue(value) || value instanceof Double && getValue() instanceof Double) || (value instanceof Boolean && getValue() instanceof Boolean)
+			||(value instanceof CircularObject && getValue() instanceof CircularObject);
 	}
+	
+	//noValue
+	private boolean noValue(S value){
+		return getValue() == null;
+	}
+	
+	//Get the name of the variable
+	public String getName() {
+		return name;
+	}
+	
+	
 
+
+
+	
 }

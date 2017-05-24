@@ -6,36 +6,57 @@ import asteroids.part3.programs.SourceLocation;
 
 public class Multiply extends Expression<Double> {
 	
-	//Initialize variables
-	private Expression<? extends Double> expression1;
-	private Expression<? extends Double> expression2;
-
 	
-	//Constructor for multiply
-	public Multiply(Expression<? extends Double> expression1, Expression<? extends Double> expression2,	SourceLocation location) {
+	private Expression<Double> rightExpression;
+	private Expression<Double> leftExpression;
+
+	//Constructor
+	public Multiply(Expression<Double> expression1, Expression<Double> expression2, SourceLocation location){
 		super(location);
-		this.expression1 = expression1;
-		this.expression2 = expression2;
+		setRightOperand(expression1);
+		setLeftOperand(expression2);
 	}
 
-	//Calculate the mulitplication of both expressions
-	@Override
-	public Double calculate() {
-		return expression1.calculate() * expression2.calculate();
+	//SetLeftOperand
+	public void setLeftOperand(Expression<Double> left){
+		this.leftExpression = left;
 	}
-
-	//Calculate inside of function
-	@Override
-	public Double calculate(Object[] arguments, Set<Variable> locals) throws IllegalArgumentException {
-		return expression1.calculate(arguments, locals) * expression2.calculate(arguments, locals);
+	
+	//SetRightOperand
+	public void setRightOperand(Expression<Double> right){
+		this.rightExpression = right;
 	}
-
-	//Set program for all expressions
+	
+	//GetRightOperand
+	public Expression<Double> getRightOperand(){
+		return this.rightExpression;
+	}
+	
+	//GetLeftOperand
+	public Expression<Double> getLeftOperand(){
+		return this.leftExpression;
+	}
+		
+	//Set the program for every part of the addition expression
 	@Override
 	public void setProgram(Program program) {
 		super.setProgram(program);
-		expression1.setProgram(program);
-		expression2.setProgram(program);
+		getRightOperand().setProgram(program);
+		getLeftOperand().setProgram(program);
 	}
+	
+	//Calculate the addition expression
+	@Override 
+	public Double calculate(){
+		return getLeftOperand().calculate() * getRightOperand().calculate();
+	}
+	
+	//Calculate the addition expression inside of a function
+	@Override 
+	public Double calculate(Object[] arguments, Set<Variable> locals) throws IllegalArgumentException{
+		return getLeftOperand().calculate() * getRightOperand().calculate();
+	}
+	
+		
 
 }

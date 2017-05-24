@@ -7,37 +7,57 @@ import asteroids.part3.programs.SourceLocation;
 public class Addition extends Expression<Double> {
 	
 	
-	private Expression<? extends Double> expression1;
-	private Expression<? extends Double> expression2;
+	private Expression<Double> rightExpression;
+	private Expression<Double> leftExpression;
 
-	//Constructor for addition
-	public Addition(Expression<? extends Double> expression1, Expression<? extends Double> expression2,
-			SourceLocation location) {
+	//Constructor
+	public Addition(Expression<Double> expression1, Expression<Double> expression2, SourceLocation location){
 		super(location);
-		this.expression1 = expression1;
-		this.expression2 = expression2;
+		setRightOperand(expression1);
+		setLeftOperand(expression2);
 	}
 
+	//SetLeftOperand
+	public void setLeftOperand(Expression<Double> left){
+		this.leftExpression = left;
+	}
+	
+	//SetRightOperand
+	public void setRightOperand(Expression<Double> right){
+		this.rightExpression = right;
+	}
+	
+	//GetRightOperand
+	public Expression<Double> getRightOperand(){
+		return this.rightExpression;
+	}
+	
+	//GetLeftOperand
+	public Expression<Double> getLeftOperand(){
+		return this.leftExpression;
+	}
+		
 	//Set the program for every part of the addition expression
 	@Override
 	public void setProgram(Program program) {
 		super.setProgram(program);
-		expression1.setProgram(program);
-		expression2.setProgram(program);
+		getRightOperand().setProgram(program);
+		getLeftOperand().setProgram(program);
 	}
 	
-	//Calculate the whole addition expression
-	@Override
-	public Double calculate() {
-		return expression1.calculate() + expression2.calculate();
+	//Calculate the addition expression
+	@Override 
+	public Double calculate(){
+		if (!(getLeftOperand().calculate() instanceof Double))	throw new IllegalArgumentException();
+		if (!(getRightOperand().calculate() instanceof Double)) throw new IllegalArgumentException();
+		return getLeftOperand().calculate() + getRightOperand().calculate();
 	}
-
-	//Calculate the whole addition expression in a function with given arguments and local variables.s
-	@Override
-	public Double calculate(Object[] arguments, Set<Variable> locals) throws IllegalArgumentException {
-		return expression1.calculate(arguments, locals) + expression2.calculate(arguments, locals);
+	
+	//Calculate the addition expression inside of a function
+	@Override 
+	public Double calculate(Object[] arguments, Set<Variable> locals) throws IllegalArgumentException{
+		return getLeftOperand().calculate() + getRightOperand().calculate();
 	}
-
 	
 		
 

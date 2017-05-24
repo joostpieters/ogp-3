@@ -4,21 +4,21 @@ import java.util.*;
 import asteroids.model.Program;
 import asteroids.part3.programs.SourceLocation;
 
-public abstract class Statement {
+public abstract class Statement implements ProgramLocation {
 
-	private SourceLocation currentlocation;
+	//Initialize variables
+	private SourceLocation location;
 	private Program currentprogram;
-	public abstract void run();
-	public abstract Optional run(Object[] actualArgs, Set<Variable> localVariables) ;
-
+	
+	
 	//Constructor using given location in the program.
 	public Statement(SourceLocation location) {
-		this.currentlocation = location;
+		this.location = location;
 	}
 
 	//Get the location of the statement
 	public SourceLocation getLocation() {
-		return currentlocation;
+		return location;
 	}
 	
 	//Set the program the statement belongs to
@@ -40,4 +40,8 @@ public abstract class Statement {
 	public boolean NoTimeConsumed(){
 		return false;
 	}
+	
+	//Run the program
+		public abstract void run();
+		public abstract Optional run(Object[] arguments, Set<Variable> locals);
 }

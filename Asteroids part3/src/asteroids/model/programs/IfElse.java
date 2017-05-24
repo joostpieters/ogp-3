@@ -13,22 +13,42 @@ public class IfElse extends Statement {
 	private Statement bodyelse;
 	private boolean existif;
 	private boolean existelse;
-	private boolean noTimeConsumed;
+	private boolean TimeConsumed;
 	private boolean breakDiscovered;
 
 	
 	//Constructor
 	public IfElse(Expression<? extends Boolean> condition, Statement bodyif, Statement bodyelse, SourceLocation location) {
 		super(location);
-		this.bodyif = bodyif;
-		this.bodyelse = bodyelse;
+		setIfBody(bodyif);
+		setElseBody(bodyelse);
 		this.condition = condition;
 	}
 	
 	
-	//get NotimeConsumed
-	public boolean NoTimeConsumed(){
-		return noTimeConsumed;
+	//Get if body
+	public Statement getIfBody(){
+		return this.bodyif;
+	}
+	
+	//set if body
+	public void setIfBody(Statement body){
+		this.bodyif = body;
+	}
+	
+	//Get else body
+	public Statement getElseBody(){
+		return this.bodyelse;
+	}
+	
+	//Set else body
+	public void setElseBody(Statement body){
+		this.bodyelse = body;
+	}
+	
+	//get TimeConsumed
+	public boolean TimeConsumed(){
+		return TimeConsumed;
 	}
 	
 	//Get breakDiscovered
@@ -41,17 +61,16 @@ public class IfElse extends Statement {
 		this.breakDiscovered = discovered;
 	}
 
-	//setNoTimeConsumed
-	public void setNoTimeConsumed(boolean yesno){
-		noTimeConsumed = yesno;
+	//setTimeConsumed
+	public void setTimeConsumed(boolean yesno){
+		TimeConsumed = yesno;
 	}
 	
-	
-
 	//Run the if/else statement
 	@Override
 	public void run() {
-		noTimeConsumed = false;
+		//Check for if and else statements
+		TimeConsumed = false;
 		breakDiscovered = false;
 		if(!existif && !existelse){
 			if (condition.calculate()) existif = true;
@@ -60,10 +79,11 @@ public class IfElse extends Statement {
 				existelse = true;
 			}
 		}
+		//evaluate bodyif
 		if(existif){
 			bodyif.run();
 			if(bodyif.NoTimeConsumed()){
-				setNoTimeConsumed(true);
+				setTimeConsumed(true);
 				return;
 			}
 			else{
@@ -73,10 +93,11 @@ public class IfElse extends Statement {
 				}
 			
 		}
+		//evaluate bodyelse
 		if(existelse){
 			bodyelse.run();
 			if (bodyelse.NoTimeConsumed()){
-				setNoTimeConsumed(true);
+				setTimeConsumed(true);
 				return;
 			}
 			else{
@@ -93,7 +114,7 @@ public class IfElse extends Statement {
 	@Override
 	public Optional run(Object[] arguments, Set<Variable> locals) {
 		setbreakDiscovered(false);
-		noTimeConsumed = false;
+		TimeConsumed = false;
 		if (condition.calculate(arguments, locals)) existif = true;
 		else {
 			if (bodyelse == null) return Optional.empty();

@@ -6,35 +6,56 @@ import asteroids.part3.programs.SourceLocation;
 
 public class Comparison extends Expression<Boolean> {
 	
-	private Expression<? extends Double> expression1;
-	private Expression<? extends Double> expression2;
+	//Initialize variables
+	private Expression<Double> rightExpression;
+	private Expression<Double> leftExpression;
 
 	//Constructor for Comparison
-	public Comparison(Expression<? extends Double> expression1, Expression<? extends Double> expression2,
+	public Comparison(Expression<Double> expression1, Expression<Double> expression2,
 			SourceLocation location) {
 		super(location);
-		this.expression1 = expression1;
-		this.expression2 = expression2;
+		setRightOperand(expression1);
+		setLeftOperand(expression2);
 	}
 
+	//SetLeftOperand
+	public void setLeftOperand(Expression<Double> left){
+		this.leftExpression = left;
+	}
+		
+	//SetRightOperand
+	public void setRightOperand(Expression<Double> right){
+		this.rightExpression = right;
+	}
+	
+	//GetRightOperand
+	public Expression<Double> getRightOperand(){
+		return this.rightExpression;
+	}
+	
+	//GetLeftOperand
+	public Expression<Double> getLeftOperand(){
+		return this.leftExpression;
+	}
+	
 	//Calculate the comparison
 	@Override
 	public Boolean calculate() {
-		return expression1.calculate() < expression2.calculate();
+		return getRightOperand().calculate() < getLeftOperand().calculate();
 	}
 
 	//Calculate the comparison inside of a function
 	@Override
 	public Boolean calculate(Object[] arguments, Set<Variable> locals) {
-		return expression1.calculate(arguments, locals) < expression2.calculate(arguments, locals);
+		return getRightOperand().calculate(arguments, locals) < getLeftOperand().calculate(arguments, locals);
 	}
 
 	//Set program for every part of the comparison expression.
 	@Override
 	public void setProgram(Program program) {
 		super.setProgram(program);
-		expression1.setProgram(program);
-		expression2.setProgram(program);
+		getRightOperand().setProgram(program);
+		getLeftOperand().setProgram(program);
 	}
 
 

@@ -7,41 +7,63 @@ import asteroids.part3.programs.SourceLocation;
 public class Equals extends Expression<Boolean> {
 	
 	//Initial variables
-	private Expression expression1;
-	private Expression expression2;
+	private Expression<Double> rightExpression;
+	private Expression<Double> leftExpression;
 
 	//Equals constructor
 	public Equals(Expression expression1, Expression expression2,
 			SourceLocation location) {
 		super(location);
-		this.expression1 = expression1;
-		this.expression2 = expression2;
+		setRightOperand(expression1);
+		setLeftOperand(expression2);
 	}
 
+	//SetLeftOperand
+	public void setLeftOperand(Expression<Double> left){
+		this.leftExpression = left;
+	}
+	
+	//SetRightOperand
+	public void setRightOperand(Expression<Double> right){
+		this.rightExpression = right;
+	}
+	
+	//GetRightOperand
+	public Expression<Double> getRightOperand(){
+		return this.rightExpression;
+	}
+	
+	//GetLeftOperand
+	public Expression<Double> getLeftOperand(){
+		return this.leftExpression;
+	}
+	
+	//Set the program
+	@Override
+	public void setProgram(Program program) {
+		super.setProgram(program);
+		getRightOperand().setProgram(program);
+		getLeftOperand().setProgram(program);
+	}
+
+	
 	//Calculate and see if both expressions are the same
 	@Override
 	public Boolean calculate() {
-		Object calculated1 = expression1.calculate();
-		Object calculated2 = expression2.calculate();
+		Object calculated1 = getRightOperand().calculate();
+		Object calculated2 = getLeftOperand().calculate();
 		return calculated1.equals(calculated2);
 	}
 
 	//Calculate inside of a function
 	@Override
 	public Boolean calculate(Object[] arguments, Set<Variable> locals) throws IllegalArgumentException {
-		Object calculated1 = expression1.calculate(arguments, locals);
-		Object calculated2 = expression2.calculate(arguments, locals);
+		Object calculated1 = getRightOperand().calculate(arguments, locals);
+		Object calculated2 = getLeftOperand().calculate(arguments, locals);
 		return calculated1.equals(calculated2);
 	}
 
-	//Set the program
-	@Override
-	public void setProgram(Program program) {
-		super.setProgram(program);
-		expression1.setProgram(program);
-		expression2.setProgram(program);
-	}
-
+	
 
 
 }

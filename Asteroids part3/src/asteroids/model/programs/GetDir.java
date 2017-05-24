@@ -11,14 +11,13 @@ public class GetDir extends Expression<Double> {
 		super(location);
 	}
 
-	//calculate the direction
+	//calculate the direction of the ship the program runs on
 	@Override
 	public Double calculate() {
-		//TODO
 		return getProgram().getShip().getDirection();
 	}
 
-	//calculate inside of function body
+	//calculate this inside of function body
 	@Override
 	public Double calculate(Object[] arguments, Set<Variable> locals) throws IllegalArgumentException {
 		return getProgram().getShip().getDirection();

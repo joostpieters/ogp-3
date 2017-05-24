@@ -24,7 +24,9 @@ public class Assignment<S> extends Statement {
 		try{
 			getProgram().getFunction(name);
 			throw new IllegalArgumentException();
+			
 		} catch (NoSuchElementException excep){}
+		
 		//Find variable and assign
 		Optional<Variable> variableToAssignTo = getProgram().getVariables().stream().filter(variable -> variable.getName().equals(name)).findFirst();
 		if(variableToAssignTo.isPresent()) variableToAssignTo.get().setValue(value.calculate());

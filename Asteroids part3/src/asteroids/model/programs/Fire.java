@@ -6,7 +6,7 @@ import asteroids.part3.programs.SourceLocation;
 
 public class Fire extends Statement {
 
-	private boolean NoTimeConsumed;
+	private boolean TimeConsumed;
 
 	//Constructor 
 	public Fire(SourceLocation location) {
@@ -14,24 +14,24 @@ public class Fire extends Statement {
 	}
 
 	//Set Time 
-	protected void setNoTimeConsumed(boolean time) {
-		this.NoTimeConsumed =  time;
+	protected void setTimeConsumed(boolean time) {
+		this.TimeConsumed =  time;
 		
 	}
 	
 	//get Time
-	public boolean noTimeConsumed(){
-		return NoTimeConsumed;
+	public boolean TimeConsumed(){
+		return TimeConsumed;
 	}
 	
 	
-	//Run
+	//Run and fire a bullet from the ship the program runs on
 	@Override
 	public void run() {
-		setNoTimeConsumed(false);
+		setTimeConsumed(false);
 		getProgram().setLocation(getLocation());
 		if (getProgram().getTime() < 0.2) {
-			setNoTimeConsumed(true);
+			setTimeConsumed(true);
 			return;
 		}
 		getProgram().getShip().fire();

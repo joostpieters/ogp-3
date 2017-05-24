@@ -10,8 +10,7 @@ public class FunctionCall extends Expression<Object> {
 
 	
 	//Constructor
-	public FunctionCall(String name,
-			List<Expression> arguments, SourceLocation location) {
+	public FunctionCall(String name, List<Expression> arguments, SourceLocation location) {
 		super(location);
 		this.name = name;
 		this.arguments = arguments;
