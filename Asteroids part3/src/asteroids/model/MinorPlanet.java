@@ -40,10 +40,7 @@ public abstract class MinorPlanet extends CircularObject{
 	}
 	
 
-	/**
-	 * Get the mass of the minor planet.
-	 * @see implementation
-	 */
+
 	@Override
 	public double getMass() {
 		return 4.0 * Math.PI * Math.pow(getRadius(), 3) * this.getDensity() / 3.0;
