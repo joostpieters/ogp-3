@@ -12,7 +12,6 @@ public abstract class CircObj extends Expression<CircularObject> {
 	public CircObj(SourceLocation location){
 		super(location);
 	}
-	
 
 	//Set the program for the expression
 	@Override
@@ -21,6 +20,7 @@ public abstract class CircObj extends Expression<CircularObject> {
 	}
 	
 	//Calculate the Object
+	@Override
 	public CircularObject calculate(Object[] arguments, Set<Variable> locals){
 		return calculate();
 	}

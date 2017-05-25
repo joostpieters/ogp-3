@@ -11,8 +11,8 @@ public class Assignment<S> extends Statement {
 
 	public Assignment(String name, Expression<S> value, SourceLocation location) {
 		super(location);
-		this.setName(name);
 		this.setValue(value);
+		this.setName(name);
 	}
 
 	//Get name of the variable
@@ -39,28 +39,39 @@ public class Assignment<S> extends Statement {
 	@Override
 	public void run() {
 		setBreakDiscovered(false);
-		//Look up for functions, if name of the variable already exists as a function, nothing will happen.
+		//Situation 1: Look up for functions, if name of the variable already exists as a function, nothing will happen.
 		try{
-			getProgram().getFunction(name);
+			getProgram().getFunction(this.name);
 			throw new IllegalArgumentException("Already declared as function");
-			
-		} catch (NoSuchElementException excep){}
+		} catch (NoSuchElementException excep){
+			//If not like that, go further
+		}
 		
-		//Find variable and assign
-		Optional<Variable> variableToAssignTo = getProgram().getVariables().stream().filter(variable -> variable.getName().equals(name)).findFirst();
-		if(variableToAssignTo.isPresent()) variableToAssignTo.get().setValue(value.calculate());
-		//If variable doesn't exist yet, make a new one.
+		//Situation 2: Find the first variable with that name and assign
+		Set<Variable> programVariables = getProgram().getVariables();
+		Optional<Variable> assign = programVariables.stream().filter(variable -> variable.getName().equals(name)).findFirst();
+		if(assign.isPresent()){
+			assign.get().setValue(value.calculate());
+		}
+		//Situation 3: If variable doesn't exist yet, make a new one with the provided name and value
 		else getProgram().addVariable(new Variable<S>(name, value.calculate()));
+		//Set break if needed
 		if (value instanceof FunctionCall && ((FunctionCall)value).breakDiscovered()) setBreakDiscovered(true);
 	}
 	
 	//Assign in a function
 	@Override
 	public Optional run(Object[] arguments, Set<Variable> locals){
-		Optional<Variable> variableToAssignTo = locals.stream().filter(variable -> variable.getName().equals(name)).findFirst();
-		if(variableToAssignTo.isPresent()) variableToAssignTo.get().setValue(value.calculate(arguments, locals));
+		//No need to check for situation 1. Look to the local variables to see if it already exist.
+		Optional<Variable> assign = locals.stream().filter(variable -> variable.getName().equals(name)).findFirst();
+		if(assign.isPresent()){
+			assign.get().setValue(value.calculate(arguments, locals));
+		}
+		//If not introduce a new local variable with the name and provided value
 		else locals.add(new Variable<S>(name, value.calculate(arguments, locals)));
+		//Set break if needed
 		if (value instanceof FunctionCall && ((FunctionCall)value).breakDiscovered()) setBreakDiscovered(true);
+		//Nothing to return
 		return Optional.empty();
 	}
 	
@@ -73,7 +84,7 @@ public class Assignment<S> extends Statement {
 	public boolean breakDiscovered(){
 		return breakDiscovered;
 	}
-
+	
 	//Set program for every part of the assignement statement
 	public void setProgram(Program program) {
 		super.setProgram(program);

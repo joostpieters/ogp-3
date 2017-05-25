@@ -6,15 +6,17 @@ import asteroids.part3.programs.SourceLocation;
 
 public class BulletExpression extends CircObj{
 	
+	//Initialize variables
 	public Ship closestShip;
 	private Set<Bullet> BulletsInWorld = new HashSet<Bullet>();
 
 
+	//Constructor for bullet expression
 	public BulletExpression(SourceLocation location) {
 		super(location);
 	}
 
-	
+	//Calculate the closest bullet to the ship.
 	@Override
 	public Bullet calculate() {
 		Ship currentship = getProgram().getShip();

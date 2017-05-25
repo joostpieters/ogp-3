@@ -15,6 +15,7 @@ public class Program {
 	private List<Object> results = new ArrayList<Object>();
 	private double remainingTime;
 	private List<Function> allFunctions;
+	private SourceLocation currentlocation;
 	
 	//Constructor for program with main and if any, a number of functions.
 	public Program(List<Function> functions, Statement main){
@@ -22,19 +23,21 @@ public class Program {
 		this.setAllFunctions(functions);
 		main.setProgram(this);
 		for(Function function: functions) function.setProgram(this);
-		remainingTime = 0;
+		this.setRemainingTime(0);
+		currentlocation = main.getLocation();
+		this.setLocation(currentlocation);
 	}
 	
 	//Run the program for a given amount of time.
 	public List<Object> run(double dt) throws IllegalArgumentException{
-		remainingTime = remainingTime + dt;
+		this.setRemainingTime(this.getTime() + dt);
 		main.run();
 		if(!main.NoTimeConsumed()){
 			if(main.breakDiscovered()) throw new IllegalArgumentException();
 			location = new SourceLocation(0,0);
-			List<Object> resultthrow = results;
+			List<Object> returnresult = results;
 			results = null;
-			return resultthrow;
+			return returnresult;
 		}
 		return null;
 	}
@@ -72,6 +75,11 @@ public class Program {
 	//Get the remainingTime a program can run.
 	public double getTime(){
 		return remainingTime;
+	}
+	
+	//Set remaining Time
+	public void setRemainingTime(double time){
+		this.remainingTime = time;
 	}
 	
 	//Subtract from the time if a given part of the program needs time to run.
