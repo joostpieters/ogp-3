@@ -48,7 +48,7 @@ public class Addition extends Expression<Double> {
 	//Calculate the addition expression
 	@Override 
 	public Double calculate(){
-		
+
 		return getLeftOperand().calculate() + getRightOperand().calculate();
 	}
 	

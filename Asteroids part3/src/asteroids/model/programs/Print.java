@@ -20,8 +20,6 @@ public class Print extends Statement {
 	@Override
 	public void run() {
 		Object eval = value.calculate();
-		if (eval == null) System.out.println("null");
-		else System.out.println(eval.toString());
 		getProgram().addResult(eval);
 	}
 	
