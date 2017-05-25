@@ -70,7 +70,7 @@ public class World {
 	 * 		The with of the world
 	 * @param height
 	 * 		The height of the world
-	 * @post The given width and height are set to the ones of the world
+	 * @effect The given width and height are set to the ones of the world
 	 * 		| this.width = width
 	 * 		| this.height = height
 	 */
@@ -162,12 +162,11 @@ public class World {
 
 	
 	/**
-	 * Return a set of all Ships in the given world
-	 * @Return The collection of all ships
-	 * 			|result == shipsInWorld
+	 * Return a set of all circular objects in the given world
+	 * @Return The collection of all circular objects
+	 * 			|result == circularObjectsInWorld
 	 */
 	public Set<CircularObject> getAllCircularObjectsInWorld() {
-		//TODO: start from empty set, then add all new objects to update set after collisions and termination of bullets and ships
 		circularObjectsInWorld.addAll(bulletsInWorld);
 		circularObjectsInWorld.addAll(shipsInWorld);
 		circularObjectsInWorld.addAll(planetoidsInWorld);
@@ -211,24 +210,38 @@ public class World {
 	 * Add a ship to the given world
 	 * @param ship
 	 * 		The ship that will be added to the world
-	 * @Pre A Ship is located at most in one World. In other words, the ship should not be part of another world or added twice
-	 * @post The ship is added to the world
+	 * @see implementation
+	 * @throws IllegalArgumentException
+	 * 		|if (!validCircularObject(ship) || circularObjectOutOfBound(ship))
+	 * 		
 	 */
-	public void addShipToWorld(Ship ship){
-		if (!validCircularObject(ship) || circularObjectOutOfBound(ship) || ship == null) throw new IllegalArgumentException("This ship can not be added to the world.");
+	public void addShipToWorld(Ship ship) throws IllegalArgumentException{
+		if (!validCircularObject(ship) || circularObjectOutOfBound(ship)) throw new IllegalArgumentException("This ship can not be added to the world.");
 		ship.setWorld(this);
 		shipsInWorld.add(ship);
 	}
-	
-	public void addPlanetoidToWorld(Planetoid planetoid) {
+	/**
+	 * Method to add a planetoid to the world
+	 * @param planetoid
+	 * @see implementation
+	 * @throws IllegalArgumentException
+	 * 		|if (!validCircularObject(planetoid) || circularObjectOutOfBound(planetoid))
+	 */
+	public void addPlanetoidToWorld(Planetoid planetoid) throws IllegalArgumentException{
 		if (!validCircularObject(planetoid) || circularObjectOutOfBound(planetoid)) throw new IllegalArgumentException("This planetoid cannot be added to the world.");
 		
 		planetoid.setWorld(this);
 		planetoidsInWorld.add(planetoid);
 	}
 	
-	
-	public void addAsteroidToWorld(Asteroid asteroid) {
+	/**
+	 * Method to add an asteroid to a world
+	 * @param asteroid
+	 * @see implementation
+	 * @throws IllegalArgumentException
+	 * 		|if (!validCircularObject(asteroid) || circularObjectOutOfBound(asteroid))
+	 */
+	public void addAsteroidToWorld(Asteroid asteroid) throws IllegalArgumentException{
 		if (!validCircularObject(asteroid) || circularObjectOutOfBound(asteroid)) throw new IllegalArgumentException("This asteroid cannot be added to the world.");
 		asteroid.setWorld(this);
 		asteroidsInWorld.add(asteroid);
@@ -236,19 +249,15 @@ public class World {
 
 	
 	/**
-	 * Add a ship to the given world
+	 * Add a bullet to the given world
 	 * @param ship
 	 * 		The ship that will be added to the world
-	 * @Pre A Ship is located at most in one World. In other words, the ship should not be part of another world or added twice
-	 * @post The ship is added to the world
+	 * @see implementation
+	 * @throws IllegalArgumentException
+	 * 		|if (circularObjectOutOfBound(bullet) || !validCircularObject(bullet))
 	 */
 	public void addBulletToWorld(Bullet bullet) throws IllegalArgumentException {
-		if (circularObjectOutOfBound(bullet)) throw new IllegalArgumentException("This bullet is out of the world's bound.");
-		for (CircularObject obj: this.getAllCircularObjectsInWorld()){
-			if (obj.overlap(bullet) && obj != bullet) {	
-				throw new IllegalArgumentException("This bullet overlaps with a circular object.");
-			}
-		}
+		if (circularObjectOutOfBound(bullet) || !validCircularObject(bullet)) throw new IllegalArgumentException("This bullet is out of the world's bound.");
 		bullet.setWorld(this);
 		bulletsInWorld.add(bullet);
 	}
@@ -273,7 +282,7 @@ public class World {
 	/**
 	 * Method to remove a ship from this world
 	 * @param ship
-	 * @post The ship is removed from the world
+	 * @effect The ship is removed from the world
 	 * 		|shipsInWorld.remove(ship);
 	 *		|this.circularObjectsInWorld.remove(ship);
 	 * @throws IllegalArgumentException
@@ -288,8 +297,17 @@ public class World {
 		ship.setWorld(null);
 	}
 	
-	//TODO
-	public void removePlanetoid(Planetoid planetoid) {
+	/**
+	 * Method to remove a planetoid from a world
+	 * @param planetoid
+	 * @effect The planetoid is removed from the world
+	 * 		|planetoidsInWorld.remove(planetoid)
+	 * 		|minorPlanetsInWorld.remove(planetoid)
+	 * 		|circularObjectsInWorld.remove(planetoid)
+	 * @throws IllegalArgumentException
+	 * 		|planetoid.getWorld() != this
+	 */
+	public void removePlanetoid(Planetoid planetoid) throws IllegalArgumentException{
 		if(planetoid.getWorld() != this) throw new IllegalArgumentException("The planetoid does not belong to this world");
 		planetoidsInWorld.remove(planetoid);
 		circularObjectsInWorld.remove(planetoid);
@@ -297,7 +315,16 @@ public class World {
 		planetoid.setWorld(null);
 		
 	}
-	//TODO
+	/**
+	 * Method to remove a asteroid from a world
+	 * @param asteroid
+	 * @effect The asteroid is removed from the world
+	 * 		|asteroidsInWorld.remove(asteroid)
+	 * 		|minorPlanetsInWorld.remove(asteroid)
+	 * 		|circularObjectsInWorld.remove(asteroid)
+	 * @throws IllegalArgumentException
+	 * 		|asteroid.getWorld() != this
+	 */
 	public void removeAsteroid(Asteroid asteroid) {
 		if(asteroid.getWorld() != this) throw new IllegalArgumentException("The asteroid does not belong to a world");
 		asteroidsInWorld.remove(asteroid);
@@ -308,9 +335,7 @@ public class World {
 		
 	/**
 	 * Method that removes all ships and bullets from the world
-	 * @post	Ships and bullets are removed.
-	 * 			|this.removeShip(ship)
-	 * 			|this.removeBullet(bullet)
+	 * @see implementation	
 	 */
 	public void terminateWorld() {
 		Set<Ship> ships = getAllShipsInWorld();
@@ -377,12 +402,17 @@ public class World {
 	}
 	/**
 	 * Method that returns the position of the next collision
-	 * @return	the position of the next collision
-	 * 			|collidingObjects[0].getCollisionPosition(collidingObjects[1])
+	 * @return	Return null if there will be no collisions
+	 * 			|if (collidingObjects[0] == null) return null;
+	 * @return Return an array with a circular object at index 0 and null at index 1 if
+	 * 			the next collision is with a boundary
+	 * 			|if (collidingObjects[1] == null) return collidingObjects[0].getPositionCollisionBoundary()
+	 * @return Return an array with 2 circular objects if the next collision is between 2 circular objects
+	 * 			|return collidingObjects[0].getCollisionPosition(collidingObjects[1])
 	 */
 	public double[] getPositionNextCollision() {
 		CircularObject[] collidingObjects = this.getNextCollidingObjects();
-		if (collidingObjects[0] == null && collidingObjects[1] == null) System.out.println("geen collision");
+		if (collidingObjects[0] == null) return null;
 		if (collidingObjects[1] == null) return collidingObjects[0].getPositionCollisionBoundary();
 		else return collidingObjects[0].getCollisionPosition(collidingObjects[1]);
 	}
@@ -432,7 +462,16 @@ public class World {
 				CircularObject[] firstCollidingObjects = this.getNextCollidingObjects();
 				double[] positionFirstCollision = this.getPositionNextCollision();
 				while (tC <= deltaT) {
-					for (CircularObject object1 : this.getAllCircularObjectsInWorld()) object1.move(tC);
+					for (CircularObject object1 : this.getAllCircularObjectsInWorld()) {
+						if (object1 instanceof Ship) {
+							Ship ship = (Ship) object1;
+							if (ship.getProgram() != null) {
+								ship.runProgram(tC);
+							}
+						}
+						object1.move(tC);
+						
+					}
 					if (firstCollidingObjects[1] == null) {
 						if (collisionListener != null) {
 							collisionListener.boundaryCollision(firstCollidingObjects[0], positionFirstCollision[0], positionFirstCollision[1]);
@@ -455,7 +494,16 @@ public class World {
 					}
 				}
 			}
-			for (CircularObject object : this.getAllCircularObjectsInWorld()) object.move(deltaT);
+			for (CircularObject object1 : this.getAllCircularObjectsInWorld()) {
+				if (object1 instanceof Ship) {
+					Ship ship = (Ship) object1;
+					if (ship.getProgram() != null) {
+						ship.runProgram(tC);
+					}
+				}
+				object1.move(deltaT);
+			}
+				
 			
 		}
 		
