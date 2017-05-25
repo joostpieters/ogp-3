@@ -413,17 +413,18 @@ public class Ship extends CircularObject{
 		firedbullet.setVelocity(bulletXVelocity, bulletYVelocity);
 		firedbullet.setPosition(bulletXPosition, bulletYPosition);
 
-		try{
+		//try{
 			this.getWorld().addBulletToWorld(firedbullet);
 			firedbullet.setSourceShip(this);
-		}
-		catch (IllegalArgumentException exception){ 
+		//}
+		//catch (IllegalArgumentException exception){ 
 			for (CircularObject obj: this.getWorld().getAllCircularObjectsInWorld()){
 				if (obj.overlap(firedbullet) && obj != firedbullet) {
+					
 					firedbullet.collisionCircularObject(obj);
 				}
 			}
-		}
+		//}
 	}
 	
 	/**

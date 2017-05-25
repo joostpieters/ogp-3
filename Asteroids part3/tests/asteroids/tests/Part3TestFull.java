@@ -843,6 +843,7 @@ public class Part3TestFull {
     Bullet bullet1 = facade.createBullet(520, 170, 10, 5, 10);
     facade.loadBulletOnShip(ship1, bullet1);
     facade.fireBullet(ship1);
+    System.out.println("hier kijken");
     assertTrue(facade.getWorldBullets(world).isEmpty());
     assertTrue(facade.getWorldShips(world).contains(ship1));
     assertFalse(facade.getWorldShips(world).contains(ship2));

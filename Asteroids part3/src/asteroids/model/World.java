@@ -419,30 +419,33 @@ public class World {
 		if (dt < 0 || Double.isNaN(dt)) throw new IllegalArgumentException("Given time is not valid.");
 		
 		double deltaT = dt;
-		double tC = getTimeNextCollision();
-		CircularObject[] firstCollidingObjects = this.getNextCollidingObjects();
-		double[] positionFirstCollision = this.getPositionNextCollision();
-		while (tC <= deltaT) {
-			for (CircularObject object1 : this.getAllCircularObjectsInWorld()) object1.move(tC);
-			if (firstCollidingObjects[1] == null) {
-				if (collisionListener != null) {
-					collisionListener.boundaryCollision(firstCollidingObjects[0], positionFirstCollision[0], positionFirstCollision[1]);
+		if (!this.getAllCircularObjectsInWorld().isEmpty()) {
+			double tC = getTimeNextCollision();
+			CircularObject[] firstCollidingObjects = this.getNextCollidingObjects();
+			double[] positionFirstCollision = this.getPositionNextCollision();
+			while (tC <= deltaT) {
+				for (CircularObject object1 : this.getAllCircularObjectsInWorld()) object1.move(tC);
+				if (firstCollidingObjects[1] == null) {
+					if (collisionListener != null) {
+						collisionListener.boundaryCollision(firstCollidingObjects[0], positionFirstCollision[0], positionFirstCollision[1]);
+					}
+					firstCollidingObjects[0].collideWithBoundary();
 				}
-				firstCollidingObjects[0].collideWithBoundary();
-			}
-			else {
-				if (collisionListener != null) {
-					collisionListener.objectCollision(firstCollidingObjects[0], firstCollidingObjects[1], positionFirstCollision[0], positionFirstCollision[1]);
+				else {
+					if (collisionListener != null) {
+						collisionListener.objectCollision(firstCollidingObjects[0], firstCollidingObjects[1], positionFirstCollision[0], positionFirstCollision[1]);
+					}
+					firstCollidingObjects[0].collisionCircularObject(firstCollidingObjects[1]);
 				}
-				firstCollidingObjects[0].collisionCircularObject(firstCollidingObjects[1]);
+
+				deltaT = deltaT - tC;
+				tC = this.getTimeNextCollision();
+
+				positionFirstCollision = this.getPositionNextCollision();
+				firstCollidingObjects = this.getNextCollidingObjects();
 			}
-
-			deltaT = deltaT - tC;
-			tC = this.getTimeNextCollision();
-
-			positionFirstCollision = this.getPositionNextCollision();
-			firstCollidingObjects = this.getNextCollidingObjects();
+			for (CircularObject object : this.getAllCircularObjectsInWorld()) object.move(deltaT);
 		}
-		for (CircularObject object : this.getAllCircularObjectsInWorld()) object.move(deltaT);
+		
 	}
 }
