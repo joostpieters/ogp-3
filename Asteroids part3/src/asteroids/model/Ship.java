@@ -118,7 +118,10 @@ public class Ship extends CircularObject{
 	}
 	
 	
-	
+	/**
+	 * Returns density of a ship
+	 * 		|result == DENSITY
+	 */
 	@Override
 	public double getDensity() {
 		return DENSITY;
@@ -480,16 +483,27 @@ public class Ship extends CircularObject{
 		}
 	}	
 	
-	
+	/**
+	 * Method to get the program of a ship
+	 * @return
+	 * 		|result == this.shipProgram
+	 */
 	public Program getProgram(){
 		return this.shipProgram;
 	}
-	
+	/**
+	 * Method to load a program onto a ship
+	 * @effect
+	 * 		|this.shipProgram = program
+	 */
 	public void loadProgram(Program program){
 		this.shipProgram = program;
 		if (program != null) program.setShip(this);
 	}
-	
+	/**
+	 * Method to run the program of the ship
+	 * @param dt
+	 */
 	public List<Object> runProgram(double dt){
 		//If program is not able to run at a valid time, it will not execute.
 		if (dt < 0.2) return null; 

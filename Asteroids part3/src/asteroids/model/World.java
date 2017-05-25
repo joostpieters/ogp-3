@@ -91,10 +91,16 @@ public class World {
 		this.width = width;
 		this.height = height;
 	}
-	
+	/**
+	 * Returns whether or not the size of the world is valid
+	 * @param size
+	 * @return
+	 * 		|if (size > 0 && Double.isFinite(size)) return true
+	 * @return
+	 * 		|false
+	 */
 	public boolean validSize(double size) {
-		if (size > 0 && Double.isFinite(size)) return true;
-		else return false;
+		return (size > 0 && Double.isFinite(size));
 	}
 	
 	/**
@@ -211,15 +217,18 @@ public class World {
 	 * Add a ship to the given world
 	 * @param ship
 	 * 		The ship that will be added to the world
-	 * @Pre A Ship is located at most in one World. In other words, the ship should not be part of another world or added twice
-	 * @post The ship is added to the world
+	 * @see implementation
 	 */
 	public void addShipToWorld(Ship ship){
 		if (!validCircularObject(ship) || circularObjectOutOfBound(ship) || ship == null) throw new IllegalArgumentException("This ship can not be added to the world.");
 		ship.setWorld(this);
 		shipsInWorld.add(ship);
 	}
-	
+	/**
+	 * Method to add a planetoid to the world
+	 * @param planetoid
+	 * @see implementation
+	 */
 	public void addPlanetoidToWorld(Planetoid planetoid) {
 		if (!validCircularObject(planetoid) || circularObjectOutOfBound(planetoid)) throw new IllegalArgumentException("This planetoid cannot be added to the world.");
 		
@@ -227,7 +236,11 @@ public class World {
 		planetoidsInWorld.add(planetoid);
 	}
 	
-	
+	/**
+	 * Method to add an asteroid to the world
+	 * @param asteroid
+	 * @see implementation
+	 */
 	public void addAsteroidToWorld(Asteroid asteroid) {
 		if (!validCircularObject(asteroid) || circularObjectOutOfBound(asteroid)) throw new IllegalArgumentException("This asteroid cannot be added to the world.");
 		asteroid.setWorld(this);
@@ -236,11 +249,10 @@ public class World {
 
 	
 	/**
-	 * Add a ship to the given world
-	 * @param ship
-	 * 		The ship that will be added to the world
-	 * @Pre A Ship is located at most in one World. In other words, the ship should not be part of another world or added twice
-	 * @post The ship is added to the world
+	 * Add a bullet to the given world
+	 * @param bullet
+	 * 		The bullet that will be added to the world
+	 * @see implementation
 	 */
 	public void addBulletToWorld(Bullet bullet) throws IllegalArgumentException {
 		if (circularObjectOutOfBound(bullet)) throw new IllegalArgumentException("This bullet is out of the world's bound.");
@@ -256,15 +268,17 @@ public class World {
 	/**
 	 * Method to remove a bullet from this world
 	 * @param bullet
-	 * @post The bullet is removed from the world
+	 * @effect The bullet is removed from the world
 	 * 		|this.circularObjectsInWorld.remove(bullet);
 	 *		|bullet.setWorld(null);
 	 * @throws IllegalArgumentException
-	 * 			The bullet doesn't belong to this world
+	 * 			The bullet doesn't belong to this world or is null
 	 * 			|bullet.getWorld() != this
+	 * 			|bullet == null
 	 */
 	public void removeBullet(Bullet bullet) throws IllegalArgumentException {
 		if (bullet.getWorld() != this) throw new IllegalArgumentException("This bullet does not belong to this world. ");
+		if (bullet == null) throw new IllegalArgumentException("The bullet is null.");
 		this.bulletsInWorld.remove(bullet);
 		this.circularObjectsInWorld.remove(bullet);
 		bullet.setWorld(null);
@@ -273,12 +287,13 @@ public class World {
 	/**
 	 * Method to remove a ship from this world
 	 * @param ship
-	 * @post The ship is removed from the world
+	 * @effect The ship is removed from the world
 	 * 		|shipsInWorld.remove(ship);
 	 *		|this.circularObjectsInWorld.remove(ship);
 	 * @throws IllegalArgumentException
-	 * 			The ship does not belong to this world
+	 * 			The ship does not belong to this world or is null
 	 * 			|ship.getWorld() != this
+	 * 			|ship == null
 	 */
 	public void removeShip(Ship ship) throws IllegalArgumentException{
 		if (ship == null) throw new IllegalArgumentException("removeShip called with non-existent ship.");
@@ -288,8 +303,19 @@ public class World {
 		ship.setWorld(null);
 	}
 	
-	//TODO
-	public void removePlanetoid(Planetoid planetoid) {
+	/**
+	 * Method to remove a planetoid from this world
+	 * @param planetoid
+	 * @effect The planetoid is removed from the world
+	 * 		|this.circularObjectsInWorld.remove(planetoid);
+	 *		|planetoid.setWorld(null);
+	 * @throws IllegalArgumentException
+	 * 			The planetoid doesn't belong to this world or is null
+	 * 			|planetoid.getWorld() != this
+	 * 			|planetoid == null
+	 */
+	public void removePlanetoid(Planetoid planetoid) throws IllegalArgumentException{
+		if (planetoid == null) throw new IllegalArgumentException("Cannot add planetoid to world as its null");
 		if(planetoid.getWorld() != this) throw new IllegalArgumentException("The planetoid does not belong to this world");
 		planetoidsInWorld.remove(planetoid);
 		circularObjectsInWorld.remove(planetoid);
@@ -297,9 +323,21 @@ public class World {
 		planetoid.setWorld(null);
 		
 	}
-	//TODO
-	public void removeAsteroid(Asteroid asteroid) {
+	/**
+	 * Method to remove a asteroid from this world
+	 * @param asteroid
+	 * @effect The asteroid is removed from the world
+	 * 		|asteroidsInWorld.remove(asteroid);
+	 *		|this.circularObjectsInWorld.remove(asteroid);
+	 * @throws IllegalArgumentException
+	 * 			The asteroid does not belong to this world or is null
+	 * 			|asteroid.getWorld() != this
+	 * 			|asteroid == null
+	 */
+	public void removeAsteroid(Asteroid asteroid) throws IllegalArgumentException{
+		if (asteroid == null) throw new IllegalArgumentException("Cannot add asteroid to world as its null");
 		if(asteroid.getWorld() != this) throw new IllegalArgumentException("The asteroid does not belong to a world");
+
 		asteroidsInWorld.remove(asteroid);
 		circularObjectsInWorld.remove(asteroid);
 		minorPlanetsInWorld.remove(asteroid);
@@ -307,10 +345,8 @@ public class World {
 	}
 		
 	/**
-	 * Method that removes all ships and bullets from the world
-	 * @post	Ships and bullets are removed.
-	 * 			|this.removeShip(ship)
-	 * 			|this.removeBullet(bullet)
+	 * Method that removes all circular objects from the world
+	 * @see implementation
 	 */
 	public void terminateWorld() {
 		Set<Ship> ships = getAllShipsInWorld();

@@ -48,7 +48,13 @@ public abstract class MinorPlanet extends CircularObject{
 	public double getMass() {
 		return 4.0 * Math.PI * Math.pow(getRadius(), 3) * this.getDensity() / 3.0;
 	}
-	
+	/**
+	 * Method to terminate a minor planet
+	 * @effect If the minor planet is of type Asteroid, remove asteroid from world
+	 * 		|world.removeAsteroid(asteroid)
+	 * @effect If the minor planet is of type Planetoid, remove planetoid from world
+	 * 		|world.removePlanetoid(planetoid)
+	 */
 	@Override
 	public void terminate() {
 		super.terminate();
@@ -63,7 +69,15 @@ public abstract class MinorPlanet extends CircularObject{
 			}
 		}
 	}
-	
+	/**
+	 * Method to resolve collisions between ships and minor planets and bullets and minor planets
+	 * @effect If the minor planet collides with another ship, update their velocity to reflect this
+	 * 		|this.setVelocity(newXVelocityThisObject, newYVelocityThisObject);
+	 * 		|object2.setVelocity(newXVelocityObject2, newYVelocityObject2);
+	 * @effect If the minor planet collides with a bullet, both bullet and minor planet die
+	 * 		|this.terminate()
+	 * 		|object2.terminate()
+	 */
 	@Override
 	public void collisionCircularObject(CircularObject object2) {
 		if (object2 instanceof MinorPlanet) {

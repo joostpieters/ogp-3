@@ -51,19 +51,24 @@ public class Planetoid extends MinorPlanet {
 
 	/**
 	 * Get the radius of the planetoid. The planetoid shrinks with 0.00001 times the distance it already traveled
-	 * @return |result == this.getRadius() - (0.000001*distanceTraveled)
+	 * @return 
+	 * 		|result == this.getRadius() - (0.000001*distanceTraveled)
 	 */
 	public double getRadius(){
 		return super.getRadius() - (0.000001 * distanceTraveled);
 	}
-	
+	/**
+	 * Method that returns the minimum radius
+	 * @see implementation
+	 */
 	@Override
 	public double getMinimalRadius() {
 		return MINRADIUS;
 	}
 	/**
 	 * Get the density
-	 * @return |result == DENSITY
+	 * @return 
+	 * 		|result == DENSITY
 	 */
 	@Override
 	public double getDensity(){
@@ -78,7 +83,11 @@ public class Planetoid extends MinorPlanet {
 		super.move(duration);
 		setDistanceTraveled(getDistanceTraveled() + getSpeed()*duration);
 	}
-	
+	/**
+	 * Method to terminate a planetoid, if the planetoid has a radius of 30 or more, then 2 asteroids are spawned
+	 * @effect
+	 * 		|if (radius >= 30) world.addAsteroidToWorld(child1) && world.addAsteroidToWorld(child2)
+	 */
 	@Override
 	public void terminate() {
 		World world = this.getWorld();
@@ -106,6 +115,11 @@ public class Planetoid extends MinorPlanet {
 		}	
 	}
 	
+	/**
+	 * Method to resolve collisions between planetoids and other objects
+	 * @effect If a planetoid hits a ship, then the ship gets teleported to a random location in the world
+	 * 		|ship.setPosition(newX, newY);
+	 */
 	@Override
 	public void collisionCircularObject(CircularObject object2) {
 		if(object2 instanceof Ship) {
@@ -122,19 +136,12 @@ public class Planetoid extends MinorPlanet {
 			if (newY - radius > 0) newY = radius;
 			if (newY + radius >= worldY) newY = worldY - radius;
 			
-			Ship newShip = new Ship(newX, newY, ship.getVelocityArray()[0], ship.getVelocityArray()[1], radius, ship.getDirection(), ship.getMass());
-			
-			try {
-				this.getWorld().addShipToWorld(newShip);
-			} catch (IllegalArgumentException excp) {
-				for (CircularObject otherObject : this.getWorld().getAllCircularObjectsInWorld()) {
-					if (newShip != otherObject && otherObject.overlap(newShip)) {
-						newShip.terminate();
-					}
+			ship.setPosition(newX, newY);
+			for (CircularObject object : ship.getWorld().getAllCircularObjectsInWorld()) {
+				if (object != ship && ship.overlap(object)) {
+					ship.terminate();
 				}
 			}
-			this.getWorld().removeShip(ship);
-			ship.terminate();
 		} else {
 			System.out.println("Planteoid met iets anders");
 			super.collisionCircularObject(object2);

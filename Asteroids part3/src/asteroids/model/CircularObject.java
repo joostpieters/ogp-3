@@ -160,6 +160,7 @@ public abstract class CircularObject {
 	 * Check if the given radius is valid. For a ship it should be larger than 10, for a bullet larger than 1
 	 * @param radius
 	 * @return The validity of the radius
+	 * 		|radius >= this.getMinimalRadius()
 	 */
 	public boolean isValidRadius(double radius){
 		return radius >= this.getMinimalRadius();
@@ -247,7 +248,7 @@ public abstract class CircularObject {
 	 * @param object2
 	 * @return If the distance between the centers of the circular objects is bigger than 99% of the sum of the radiuses and
 	 * smaller than 101% of the radiuses of the sum of the radiuses then true is returned, otherwise false is returned
-	 * 			|if (0.99 * sumOfRadius < distanceBetweenCenters && distanceBetweenCenters < 1.01 * sumOfRadius) return true;
+	 * 			|if (0.99 * sumOfRadius <= distanceBetweenCenters && distanceBetweenCenters <= 1.01 * sumOfRadius) return true;
 	 * @throws IllegalArgumentException
 	 * 			|object2 == null
 	 */
@@ -271,7 +272,7 @@ public abstract class CircularObject {
 	 * 			|if (this == object2) return true
 	 * @return If this object is a different circular object than object2, then true is returned if the distance between them is negative,
 	 * false if the distance between them is positive.
-	 * 			|this.getDistanceBetween(object2) + this.getRadius() + object2.getRadius()) <= (0.99 * (this.getRadius() + object2.getRadius())
+	 * 			|this.getDistanceBetween(object2) + this.getRadius() + object2.getRadius()) < (0.99 * (this.getRadius() + object2.getRadius())
 	 * @throws IllegalArgumentException
 	 *			object2 is not created
 	 *			|object2 == null

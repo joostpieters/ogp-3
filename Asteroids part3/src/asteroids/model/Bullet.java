@@ -99,7 +99,11 @@ public class Bullet extends CircularObject{
 	public double getBoundaryCollisions() {
 		return this.boundaryCollisions;
 	}
-	
+	/**
+	 * Method that returns the bullet of the bullet
+	 * @return
+	 * 		|DENSITY
+	 */
 	@Override
 	public double getDensity() {
 		return DENSITY;
@@ -126,9 +130,11 @@ public class Bullet extends CircularObject{
 	}
 	/**
 	 * Method to terminate a bullet
-	 * @post
-	 * 			|new.getWorld != null
-	 * 			|isTerminated == true
+	 * @effect If the bullet is part of a world, then remove the bullet from the world
+	 * 		|if (this.getWorld() != null) this.getWorld().removeBullet(this)
+	 * @effect If the bullet is not part of a world, therefore loaded onto a ship, remove bullet from the ship
+	 * 		|this.getSourceShip().removeBullet(this)
+	 * 		|this.setSourceShip(null)
 	 */
 	@Override
 	public void terminate() {
@@ -170,8 +176,8 @@ public class Bullet extends CircularObject{
 	 * @param object2
 	 * @post If the bullet collides with its source ship, then the bullet is loaded onto the ship
 	 * 			|ship.loadBullet(this)
-	 * @post If it collides with a different ship then both are terminated
-	 * 			|ship.terminateShip() && this.terminateBullet() 		
+	 * @post If it collides with a different circular object then both are terminated
+	 * 			|object2.terminate() && this.terminate() 		
 	 */
 	@Override
 	public void collisionCircularObject(CircularObject object2) {
