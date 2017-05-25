@@ -243,6 +243,11 @@ public class World {
 	 */
 	public void addBulletToWorld(Bullet bullet) throws IllegalArgumentException {
 		if (circularObjectOutOfBound(bullet)) throw new IllegalArgumentException("This bullet is out of the world's bound.");
+		for (CircularObject obj: this.getAllCircularObjectsInWorld()){
+			if (obj.overlap(bullet) && obj != bullet) {	
+				throw new IllegalArgumentException("This bullet overlaps with a circular object.");
+			}
+		}
 		bullet.setWorld(this);
 		bulletsInWorld.add(bullet);
 	}
