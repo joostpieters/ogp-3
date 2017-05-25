@@ -11,7 +11,7 @@ public class While extends Statement {
 	//Initialize Variables
 	private Expression<Boolean> cond;
 	private Statement body;
-	private boolean bodyexist;
+	private boolean loadbody;
 	private boolean TimeConsumed;
 
 	//Constructor
@@ -46,15 +46,18 @@ public class While extends Statement {
 	@Override
 	public void run() {
 		TimeConsumed = false;
-		if(!bodyexist){
-			if(cond.calculate()) bodyexist = true;
+		//Look if condition is true to start running the body, if not, do nothing
+		if(!loadbody){
+			if(cond.calculate()) loadbody = true;
 			else return;
 		}
+		//Load body
 		body.run();
 		if (body.NoTimeConsumed()){
 			TimeConsumed = true;
 			return;
 		}
+		//Check if we can run again
 		while(cond.calculate() && !body.breakDiscovered()){
 			getProgram().setLocation(this.getLocation());
 			body.run();
@@ -63,11 +66,11 @@ public class While extends Statement {
 				return;
 			}
 		}
-		bodyexist = false;
+		loadbody = false;
 	}
 	
 	//NoTimeConsumed
-	public boolean noTimeConsumed(){
+	public boolean TimeConsumed(){
 		return TimeConsumed;
 	}
 	
@@ -75,23 +78,26 @@ public class While extends Statement {
 	//Run in function
 	@Override
 	public Optional run(Object[] arguments, Set<Variable> locals) {
-		// TODO Auto-generated method stub
 		TimeConsumed = false;
+		//Check if we can run the body, i.e. the while condition is true
 		if(cond.calculate(arguments, locals)){ 
-			bodyexist = true;
+			loadbody = true;
 			}
+		//If not, do nothing
 		else return Optional.empty();
-		Optional result = body.run(arguments, locals);
-		if (result.isPresent()) return result;
+		//Run the body if the condition is true
+		Optional toreturn = body.run(arguments, locals);
+		if (toreturn.isPresent()) return toreturn;
+		//While the condition is true load the body again and again
 		while (cond.calculate(arguments, locals) && !body.breakDiscovered()){
-			result = body.run(arguments, locals);
-			if(result.isPresent()) return result;
+			toreturn = body.run(arguments, locals);
+			if(toreturn.isPresent()) return toreturn;
 		}
-		bodyexist = false;
+		loadbody = false;
 		return Optional.empty();
 	}
 
-	//Set program
+	//Set program for whole while loop and its elements
 	@Override
 	public void setProgram(Program program) {
 		super.setProgram(program);

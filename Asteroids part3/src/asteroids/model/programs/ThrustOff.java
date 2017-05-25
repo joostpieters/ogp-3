@@ -6,7 +6,7 @@ import asteroids.part3.programs.SourceLocation;
 
 public class ThrustOff extends Statement {
 
-	private boolean NoTimeConsumed;
+	private boolean TimeConsumed;
 
 	//Constructor 
 	public ThrustOff(SourceLocation location) {
@@ -14,28 +14,27 @@ public class ThrustOff extends Statement {
 	}
 
 	//Set Time 
-	protected void setNoTimeConsumed(boolean time) {
-		this.NoTimeConsumed =  time;
-		
+	protected void setTimeConsumed(boolean time) {
+		this.TimeConsumed =  time;
 	}
 	
 	//get Time
-	public boolean noTimeConsumed(){
-		return NoTimeConsumed;
+	public boolean TimeConsumed(){
+		return TimeConsumed;
 	}
-	
 	
 	//Run
 	@Override
 	public void run() {
-		setNoTimeConsumed(false);
-		getProgram().setLocation(getLocation());
-		if (getProgram().getTime() < 0.2) {
-			setNoTimeConsumed(true);
+		this.setTimeConsumed(false);
+		this.getProgram().setLocation(getLocation());
+		if (this.getProgram().getTime() <= 0.2) {
+			this.setTimeConsumed(true);
 			return;
+			
 		}
-		getProgram().getShip().thrustOff();
-		getProgram().moveTime();
+		this.getProgram().getShip().thrustOff();
+		this.getProgram().moveTime();
 	}
 	
 	//Run is not allowed in function

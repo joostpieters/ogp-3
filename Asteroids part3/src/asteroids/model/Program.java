@@ -16,6 +16,7 @@ public class Program {
 	private double remainingTime;
 	private List<Function> allFunctions;
 	private SourceLocation currentlocation;
+	private boolean hasSkip;
 	
 	//Constructor for program with main and if any, a number of functions.
 	public Program(List<Function> functions, Statement main){
@@ -30,16 +31,24 @@ public class Program {
 	
 	//Run the program for a given amount of time.
 	public List<Object> run(double dt) throws IllegalArgumentException{
-		this.setRemainingTime(this.getTime() + dt);
-		main.run();
-		if(!main.NoTimeConsumed()){
-			if(main.breakDiscovered()) throw new IllegalArgumentException();
-			location = new SourceLocation(0,0);
-			List<Object> returnresult = results;
-			results = null;
-			return returnresult;
+		while (getTime() <= 0.2){
+			this.setRemainingTime(this.getTime() + dt);
+			main.run();
+			if(hasSkip) return null;
+			if(!main.NoTimeConsumed()){
+				if(main.breakDiscovered()) throw new IllegalArgumentException();
+				location = new SourceLocation(0,0);
+				List<Object> returnresult = results;
+				results = null;
+				return returnresult;
+			}
 		}
 		return null;
+	}
+	
+	//setSkip
+	public void setSkip(boolean b){
+		this.hasSkip = b;
 	}
 	
 	//Set the ship the program is needs to run on.
@@ -138,5 +147,4 @@ public class Program {
 	}
 	
 	
-
 }

@@ -30,7 +30,7 @@ public class Fire extends Statement {
 	public void run() {
 		setTimeConsumed(false);
 		getProgram().setLocation(getLocation());
-		if (getProgram().getTime() < 0.2) {
+		if (getProgram().getTime() <= 0.2) {
 			setTimeConsumed(true);
 			return;
 		}

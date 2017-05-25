@@ -44,4 +44,6 @@ public abstract class Statement implements ProgramLocation {
 	//Run the program
 		public abstract void run();
 		public abstract Optional run(Object[] arguments, Set<Variable> locals);
+
+
 }

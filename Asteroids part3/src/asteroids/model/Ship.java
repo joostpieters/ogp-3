@@ -491,6 +491,9 @@ public class Ship extends CircularObject{
 	}
 	
 	public List<Object> runProgram(double dt){
+		//If program is not able to run at a valid time, it will not execute.
+		if (dt < 0.2) return null; 
+		System.out.println("Tijd niet valid");
 		return shipProgram.run(dt);
 	}
 

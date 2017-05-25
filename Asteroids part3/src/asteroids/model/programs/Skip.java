@@ -28,12 +28,13 @@ public class Skip extends Statement {
 	@Override
 	public void run() {
 		setTimeConsumed(false);
-		getProgram().setLocation(getLocation());
-		if (getProgram().getTime() < 0.2) {
+		this.getProgram().setLocation(getLocation());
+		if (this.getProgram().getTime() <= 0.2) {
 			setTimeConsumed(true);
+			this.getProgram().setSkip(true);
 			return;
 		}
-		getProgram().moveTime();
+		this.getProgram().moveTime();
 	}
 	
 	//Run is not allowed in function
