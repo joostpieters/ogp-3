@@ -28,7 +28,7 @@ public class ThrustOff extends Statement {
 	public void run() {
 		this.setTimeConsumed(false);
 		this.getProgram().setLocation(getLocation());
-		if (this.getProgram().getTime() <= 0.2) {
+		if (this.getProgram().getTime() < 0.2) {
 			this.setTimeConsumed(true);
 			return;
 			

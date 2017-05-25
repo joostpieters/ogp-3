@@ -31,17 +31,21 @@ public class Program {
 	
 	//Run the program for a given amount of time.
 	public List<Object> run(double dt) throws IllegalArgumentException{
-		while (getTime() <= 0.2){
+		//while (getTime() <= 0.2){
 			this.setRemainingTime(this.getTime() + dt);
 			main.run();
-			if(hasSkip) return null;
+			if(hasSkip){
+				return null;
+			}
 			if(!main.NoTimeConsumed()){
 				if(main.breakDiscovered()) throw new IllegalArgumentException();
 				location = new SourceLocation(0,0);
 				List<Object> returnresult = results;
 				results = null;
+
+				
 				return returnresult;
-			}
+			
 		}
 		return null;
 	}

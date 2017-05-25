@@ -34,14 +34,15 @@ public class Skip extends Statement {
 			this.getProgram().setSkip(true);
 			return;
 		}
+		//this.getProgram().setSkip(false);
 		this.getProgram().moveTime();
 	}
 	
 	//Run is not allowed in function
-		@Override
-		public Optional run(Object[] arguments, Set<Variable> locals){
-			throw new IllegalArgumentException();
-		}
+	@Override
+	public Optional run(Object[] arguments, Set<Variable> locals){
+		throw new IllegalArgumentException();
+	}
 	
 	
 }

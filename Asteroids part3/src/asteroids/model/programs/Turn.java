@@ -13,6 +13,7 @@ public class Turn extends Statement {
 	//Constructor 
 	public Turn(Expression angle, SourceLocation location) {
 		super(location);
+		this.angle = angle;
 	}
 
 	//Set Time 
