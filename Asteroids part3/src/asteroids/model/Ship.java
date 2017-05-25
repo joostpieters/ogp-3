@@ -266,6 +266,7 @@ public class Ship extends CircularObject{
 		bullet.setPosition(this.getPositionArray()[0], this.getPositionArray()[1]);
 		if (bullet.getWorld() != null) this.getWorld().removeBullet(bullet);
 		bullet.setSourceShip(this);
+		bullet.setWorld(null);
 		bulletsCollection.add(bullet);
 	}
 	
@@ -288,7 +289,6 @@ public class Ship extends CircularObject{
 	 */
 	public void removeBullet(Bullet bullet) throws IllegalArgumentException {
 		if (bullet.getSourceShip() != this) throw new IllegalArgumentException("This bullet is not part of the ship");
-		bullet.setSourceShip(null);
 		this.bulletsCollection.remove(bullet);
 	}
 	/**
@@ -412,20 +412,21 @@ public class Ship extends CircularObject{
 		this.bulletsCollection.remove(firedbullet);
 		firedbullet.setVelocity(bulletXVelocity, bulletYVelocity);
 		firedbullet.setPosition(bulletXPosition, bulletYPosition);
-		firedbullet.setSourceShip(this);
+		//firedbullet.setSourceShip(this);
 		try {
 			this.getWorld().addBulletToWorld(firedbullet);
 		}
 		catch (IllegalArgumentException exc) {
+			firedbullet.setWorld(this.getWorld());
 			for (CircularObject obj: this.getWorld().getAllCircularObjectsInWorld()){
 				if (obj.overlap(firedbullet) && obj != firedbullet) {	
 					firedbullet.collisionCircularObject(obj);
 				}
+			}
+			if (this.getWorld().circularObjectOutOfBound(firedbullet)) {
 				firedbullet.terminate();
 			}
 		}
-		
-		
 	}
 	
 	/**

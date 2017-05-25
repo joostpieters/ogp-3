@@ -520,7 +520,12 @@ public class Facade implements IFacade {
 
 	@Override
 	public void addAsteroidToWorld(World world, Asteroid asteroid) throws ModelException {
-		world.addAsteroidToWorld(asteroid);
+		try {
+			world.addAsteroidToWorld(asteroid);
+		} catch (IllegalArgumentException exc) {
+			throw new ModelException(exc);
+		}
+		
 	}
 
 
@@ -539,7 +544,11 @@ public class Facade implements IFacade {
 
 	@Override
 	public void addPlanetoidToWorld(World world, Planetoid planetoid) throws ModelException {
-		world.addPlanetoidToWorld(planetoid);
+		try {
+			world.addPlanetoidToWorld(planetoid);
+		} catch (IllegalArgumentException exc) {
+			throw new ModelException(exc);
+		}
 		
 	}
 

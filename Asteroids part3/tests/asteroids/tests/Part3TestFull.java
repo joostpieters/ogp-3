@@ -849,6 +849,8 @@ public class Part3TestFull {
     assertFalse(facade.getWorldShips(world).contains(ship2));
     assertTrue(facade.isTerminatedShip(ship2));
     assertTrue(facade.isTerminatedBullet(bullet1));
+    System.out.println("testFireBullet");
+    System.out.println(facade.getBulletSource(bullet1));
     assertEquals(ship1, facade.getBulletSource(bullet1));
     score += 8;
   }
@@ -1182,6 +1184,9 @@ public class Part3TestFull {
       // collision after 10 seconds
       assertEquals(1, facade.getWorldPlanetoids(world).size());
       assertTrue(facade.getWorldShips(world).size() <= 1);
+      
+      System.out.println(facade.isTerminatedShip(ship1));
+      System.out.println((facade.getShipWorld(ship1) == world));
       assertTrue(facade.isTerminatedShip(ship1) || (facade.getShipWorld(ship1) == world));
       assertEquals(690, facade.getPlanetoidPosition(planetoid)[0], EPSILON);
       assertEquals(120, facade.getPlanetoidPosition(planetoid)[1], EPSILON);
@@ -1250,9 +1255,13 @@ public class Part3TestFull {
     facade.addShipToWorld(world, ship);
     Bullet bullet = facade.createBullet(1080, 130, -10, 0, 20);
     facade.loadBulletOnShip(ship, bullet);
+    System.out.println("testevolveshipownbulletcollision");
     facade.fireBullet(ship);
+    System.out.println(world.getTimeNextCollision());
+    System.out.println(world.getAllCircularObjectsInWorld());
     // collision with own ship after 8 seconds
     facade.evolve(world, 9, null);
+    System.out.println(world.getTimeNextCollision());
     assertEquals(0, facade.getWorldBullets(world).size());
     assertEquals(1, facade.getNbBulletsOnShip(ship));
     assertTrue(facade.getBulletsOnShip(ship).contains(bullet));
