@@ -28,13 +28,17 @@ public class Asteroid extends MinorPlanet {
 	}
 	/**
 	 * Get the density of the asteroid
-	 * @return |result  == DENSITY
+	 * @return 
+	 * 		|result  == DENSITY
 	 */
 	@Override
 	public double getDensity() {
 		return DENSITY;
 	}
-
+	/**
+	 * Method to resolves collisions with asteroids
+	 * @see implementation
+	 */
 	@Override
 	public void collisionCircularObject(CircularObject object) {
 		if (object instanceof Ship) {

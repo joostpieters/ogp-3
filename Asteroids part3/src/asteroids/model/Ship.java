@@ -418,9 +418,15 @@ public class Ship extends CircularObject{
 		}
 		catch (IllegalArgumentException exc) {
 			firedbullet.setWorld(this.getWorld());
-			for (CircularObject obj: this.getWorld().getAllCircularObjectsInWorld()){
-				if (obj.overlap(firedbullet) && obj != firedbullet) {	
-					firedbullet.collisionCircularObject(obj);
+			Boolean done = false;
+			while (!done) {
+				done = true;
+				for (CircularObject obj : this.getWorld().getAllCircularObjectsInWorld()){
+					if (obj.overlap(firedbullet) && obj != firedbullet) {	
+						done = false;
+						firedbullet.collisionCircularObject(obj);
+						break;
+					}
 				}
 			}
 			if (this.getWorld().circularObjectOutOfBound(firedbullet)) {
@@ -480,16 +486,29 @@ public class Ship extends CircularObject{
 		}
 	}	
 	
-	
+	/**
+	 * Method that returns the program of the ship
+	 * @return
+	 * 		|result = this.shipProgram
+	 */
 	public Program getProgram(){
 		return this.shipProgram;
 	}
-	
+	/**
+	 * Method to load a program onto a ship
+	 * @param program The program to be loaded
+	 * @effect
+	 * 		|if (program != null) program.setShip(this)
+	 */
 	public void loadProgram(Program program){
 		this.shipProgram = program;
 		if (program != null) program.setShip(this);
 	}
 	
+	/**
+	 * Method to run the program of the ship
+	 * @param dt
+	 */
 	public List<Object> runProgram(double dt){
 		//If program is not able to run at a valid time, it will not execute.
 		if (dt < 0.2) return null; 

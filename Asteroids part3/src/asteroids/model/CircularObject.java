@@ -100,7 +100,7 @@ public abstract class CircularObject {
 		return this.velocity.getVelocityArray();
 	}
 	/**
-	 * Method to set both x and y position of the bullet
+	 * Method to set both x and y position of the circular object
 	 * @param x
 	 * @param y
 	 * @post
@@ -109,7 +109,15 @@ public abstract class CircularObject {
 	public void setPosition(double x, double y) {
 		this.position.setPosition(x, y);
 	}
-	
+	/**
+	 * Method to set both x and y velocity of the circular object
+	 * @param x
+	 * @param y
+	 * @effect Update the velocity of the circular object
+	 * 		|if (newSpeed > SPEEDOFLIGHT) x = this.getVelocityArray()[0] * SPEEDOFLIGHT / newSpeed && y = this.getVelocityArray()[1] * SPEEDOFLIGHT / newSpeed;
+	 * 		|this.velocity.setVelocity(x, y);
+	 * 
+	 */
 	public void setVelocity(double x, double y) {
 		double newSpeed = Math.sqrt((x*x) + (y*y));
 		if (newSpeed > SPEEDOFLIGHT) {
@@ -148,7 +156,7 @@ public abstract class CircularObject {
 	///
 	/**
 	 * Get the radius of the circular object
-	 * @return the radius is returned
+	 * @return The radius is returned
 	 * 			|result == this.radius
 	 */
 	public double getRadius(){
@@ -159,6 +167,7 @@ public abstract class CircularObject {
 	 * Check if the given radius is valid. For a ship it should be larger than 10, for a bullet larger than 1
 	 * @param radius
 	 * @return The validity of the radius
+	 * 		|radius >= this.getMinimalRadius()
 	 */
 	public boolean isValidRadius(double radius){
 		return radius >= this.getMinimalRadius();
@@ -169,7 +178,7 @@ public abstract class CircularObject {
 	 * @param radius
 	 * @post The given radius is set to the radius of the object
 	 * 			|this.radius = radius
-	 * @throws IllegalArgumentException if the the radius is not valid
+	 * @throws IllegalArgumentException if the radius is not valid
 	 */
 	public void setRadius(double radius) throws IllegalArgumentException {
 		if (isValidRadius(radius) == false) throw new IllegalArgumentException("Invalid radius detected.");
@@ -202,7 +211,8 @@ public abstract class CircularObject {
 	
 	/**
 	* Get the complete speed of the object.
-	* @post |new.getSpeed == speed
+	* @post 
+	* 		|new.getSpeed == speed
 	*/
 	public double getSpeed() {
 		double speed = Math.sqrt((this.velocity.getXVelocity()* this.velocity.getXVelocity())+(this.velocity.getYVelocity()*this.velocity.getYVelocity()));
@@ -240,13 +250,14 @@ public abstract class CircularObject {
 		double distanceBetweenCenters = Math.sqrt(squaredDifferenceInX + squaredDifferenceInY);
 		return distanceBetweenCenters - (radiusObject1 + radiusObject2);
 	}
+	
 	/**
 	 * Boolean method that returns whether or not 2 circular objects apparently collide
 	 * @param object1
 	 * @param object2
 	 * @return If the distance between the centers of the circular objects is bigger than 99% of the sum of the radiuses and
 	 * smaller than 101% of the radiuses of the sum of the radiuses then true is returned, otherwise false is returned
-	 * 			|if (0.99 * sumOfRadius < distanceBetweenCenters && distanceBetweenCenters < 1.01 * sumOfRadius) return true;
+	 * 			|if (0.99 * sumOfRadius <= distanceBetweenCenters && distanceBetweenCenters <= 1.01 * sumOfRadius) return true;
 	 * @throws IllegalArgumentException
 	 * 			|object2 == null
 	 */
@@ -270,7 +281,7 @@ public abstract class CircularObject {
 	 * 			|if (this == object2) return true
 	 * @return If this object is a different circular object than object2, then true is returned if the distance between them is negative,
 	 * false if the distance between them is positive.
-	 * 			|this.getDistanceBetween(object2) + this.getRadius() + object2.getRadius()) <= (0.99 * (this.getRadius() + object2.getRadius())
+	 * 			|this.getDistanceBetween(object2) + this.getRadius() + object2.getRadius()) < (0.99 * (this.getRadius() + object2.getRadius())
 	 * @throws IllegalArgumentException
 	 *			object2 is not created
 	 *			|object2 == null
@@ -280,19 +291,40 @@ public abstract class CircularObject {
 		if (this == object2) return true;
 		else return (this.getDistanceBetween(object2) + this.getRadius() + object2.getRadius()) < (0.99 * (this.getRadius() + object2.getRadius()));
 	}
-	//TODO
+	
+	/**
+	 * Boolean method that returns true when this object lies within the world
+	 * @return
+	 * 		|apparantlyWithinBoundaryX() && apparantlyWithinBoundaryY()
+	 */
 	public boolean apparantlyWithinBoundary() {
 		return (apparantlyWithinBoundaryX() && apparantlyWithinBoundaryY());
 	}
 	
-	//TODO
+	/**
+	 * Method that returns true when this object's x position lies within the horizontal boundaries of the world
+	 * @return
+	 * 		|if (this.getPositionArray()[0] <= 1.01 * this.getRadius()) return false
+	 * @return
+	 * 		|if (this.getWorld().getWorldDimensionArray()[0] - this.getPositionArray()[0] <= 1.01 * this.getRadius()) return false
+	 * @return
+	 * 		|true
+	 */
 	public boolean apparantlyWithinBoundaryX() {
 		if (this.getPositionArray()[0] <= 1.01 * this.getRadius()) return false;
 		if (this.getWorld().getWorldDimensionArray()[0] - this.getPositionArray()[0] <= 1.01 * this.getRadius()) return false;
 		return true;
 	}
 	
-	//TODO
+	/**
+	 *  Method that returns true when this object's y position lies within the vertical boundaries of the world
+	 * @return
+	 * 		|if (this.getPositionArray()[1] <= 1.01 * this.getRadius()) return false
+	 * @return
+	 * 		|if (this.getWorld().getWorldDimensionArray()[1] - this.getPositionArray()[1] <= 1.01 * this.getRadius()) return false
+	 * @return
+	 * 		|true
+	 */
 	public boolean apparantlyWithinBoundaryY() {
 		if (this.getPositionArray()[1] <= 1.01 * this.getRadius()) return false;
 		if (this.getWorld().getWorldDimensionArray()[1] - this.getPositionArray()[1] <= 1.01 * this.getRadius()) return false;
@@ -446,7 +478,9 @@ public abstract class CircularObject {
 		}
 		return new double[] {xPosB, yPosB};
 	}
-
+	/**
+	 * Method that returns whether or not the circular object is terminated
+	 */
 	public boolean isTerminated() {
 		return isTerminated;
 	}

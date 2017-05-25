@@ -190,7 +190,7 @@ public class World {
 
 		if(object.isTerminated() || this.isTerminated) return false;
 		for (CircularObject object2 : this.getAllCircularObjectsInWorld()) {
-			if (object.overlap(object2)) return false;
+			if (object.overlap(object2) && object != object2) return false;
 		}
 		return true;
 	}

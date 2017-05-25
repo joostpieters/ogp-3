@@ -78,35 +78,46 @@ public class Planetoid extends MinorPlanet {
 		super.move(duration);
 		setDistanceTraveled(getDistanceTraveled() + getSpeed()*duration);
 	}
-	
+	/**
+	 * Method to terminate a planetoid
+	 * @effect If the radius of the planetoid exceeds 5, then 2 asteroids get put in the world
+	 * 		|world.addAsteroidToWorld(child1);
+	 * 		|world.addAsteroidToWorld(child2);
+	 */
 	@Override
 	public void terminate() {
-		super.terminate();
+		System.out.println("terminate planetoid");
 		World world = this.getWorld();
-		if (world != null) world.removePlanetoid(this);
 		double radius = this.getRadius();
+		super.terminate();
 		if (radius >= 30) {
+			System.out.println("radius voldaan, hier moeten asteroids gespawned worden");
 			double childRadius = radius/2;
-			double directionChild1 = Math.random() * 2 * Math.PI; 
-			double directionChild2 = - directionChild1;
-			double newXChild1 = this.getPositionArray()[0] + Math.cos(directionChild1) * childRadius;
-			double newYChild1 = this.getPositionArray()[1] + Math.sin(directionChild1) * childRadius;
-			double newXChild2 = this.getPositionArray()[0] + Math.cos(directionChild2) * childRadius;
-			double newYChild2 = this.getPositionArray()[1] + Math.sin(directionChild2) * childRadius;
+			System.out.println(childRadius);
+			double directionChild = Math.random() * 2 * Math.PI;
+			
+			double newXChild1 = this.getPositionArray()[0] + Math.cos(directionChild) * childRadius;
+			double newYChild1 = this.getPositionArray()[1] + Math.sin(directionChild) * childRadius;
+			double newXChild2 = this.getPositionArray()[0] - Math.cos(directionChild) * childRadius;
+			double newYChild2 = this.getPositionArray()[1] - Math.sin(directionChild) * childRadius;
 			
 			double speed = 1.5 * this.getSpeed();
-			double newXSpeedChild1 = speed * Math.cos(directionChild1);
-			double newYSpeedChild1 = speed * Math.sin(directionChild1);
-			double newXSpeedChild2 = speed * Math.cos(directionChild2);
-			double newYSpeedChild2 = speed * Math.sin(directionChild2);
+			double newXSpeedChild1 = speed * Math.cos(directionChild);
+			double newYSpeedChild1 = speed * Math.sin(directionChild);
+			double newXSpeedChild2 = -speed * Math.cos(directionChild);
+			double newYSpeedChild2 = -speed * Math.sin(directionChild);
 			
 			Asteroid child1 = new Asteroid(newXChild1, newYChild1, newXSpeedChild1, newYSpeedChild1, childRadius);
 			Asteroid child2 = new Asteroid(newXChild2, newYChild2, newXSpeedChild2, newYSpeedChild2, childRadius);
 			world.addAsteroidToWorld(child1);
 			world.addAsteroidToWorld(child2);
-		}	
+		}
 	}
-	
+	/**
+	 * Method to resolve collisions between a circular object and a planetoid
+	 * @effect If the planetoid collides with a ship, then the ship gets teleported to a random position
+	 * 		|ship.setPosition(newX, newY)
+	 */
 	@Override
 	public void collisionCircularObject(CircularObject object2) {
 		if(object2 instanceof Ship) {
@@ -130,12 +141,10 @@ public class Planetoid extends MinorPlanet {
 				}
 			}
 			
-			
 		} else {
 			System.out.println("Planteoid met iets anders");
 			super.collisionCircularObject(object2);
 		}
-		
 	}
 	
 
