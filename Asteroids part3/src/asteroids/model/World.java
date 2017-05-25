@@ -201,7 +201,7 @@ public class World {
 	 * @param object
 	 * @see implementation
 	 */
-	private boolean circularObjectOutOfBound(CircularObject object) {
+	public boolean circularObjectOutOfBound(CircularObject object) {
 		if (object.getPositionArray()[0] - object.getRadius() <= 0 || object.getPositionArray()[0] + object.getRadius() >= this.getWorldDimensionArray()[0]) return true;
 		if (object.getPositionArray()[1] - object.getRadius() <= 0 || object.getPositionArray()[1] + object.getRadius() >= this.getWorldDimensionArray()[1]) return true;
 		return false;
