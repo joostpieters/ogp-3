@@ -81,24 +81,23 @@ public class Planetoid extends MinorPlanet {
 	
 	@Override
 	public void terminate() {
-		super.terminate();
 		World world = this.getWorld();
-		if (world != null) world.removePlanetoid(this);
 		double radius = this.getRadius();
+		super.terminate();
 		if (radius >= 30) {
 			double childRadius = radius/2;
-			double directionChild1 = Math.random() * 2 * Math.PI; 
-			double directionChild2 = - directionChild1;
-			double newXChild1 = this.getPositionArray()[0] + Math.cos(directionChild1) * childRadius;
-			double newYChild1 = this.getPositionArray()[1] + Math.sin(directionChild1) * childRadius;
-			double newXChild2 = this.getPositionArray()[0] + Math.cos(directionChild2) * childRadius;
-			double newYChild2 = this.getPositionArray()[1] + Math.sin(directionChild2) * childRadius;
+			double directionChild = Math.random() * 2 * Math.PI; 
+			
+			double newXChild1 = this.getPositionArray()[0] + Math.cos(directionChild) * childRadius;
+			double newYChild1 = this.getPositionArray()[1] + Math.sin(directionChild) * childRadius;
+			double newXChild2 = this.getPositionArray()[0] - Math.cos(directionChild) * childRadius;
+			double newYChild2 = this.getPositionArray()[1] - Math.sin(directionChild) * childRadius;
 			
 			double speed = 1.5 * this.getSpeed();
-			double newXSpeedChild1 = speed * Math.cos(directionChild1);
-			double newYSpeedChild1 = speed * Math.sin(directionChild1);
-			double newXSpeedChild2 = speed * Math.cos(directionChild2);
-			double newYSpeedChild2 = speed * Math.sin(directionChild2);
+			double newXSpeedChild1 = speed * Math.cos(directionChild);
+			double newYSpeedChild1 = speed * Math.sin(directionChild);
+			double newXSpeedChild2 = -speed * Math.cos(directionChild);
+			double newYSpeedChild2 = -speed * Math.sin(directionChild);
 			
 			Asteroid child1 = new Asteroid(newXChild1, newYChild1, newXSpeedChild1, newYSpeedChild1, childRadius);
 			Asteroid child2 = new Asteroid(newXChild2, newYChild2, newXSpeedChild2, newYSpeedChild2, childRadius);
