@@ -287,6 +287,7 @@ public class World {
 		if(planetoid.getWorld() != this) throw new IllegalArgumentException("The planetoid does not belong to this world");
 		planetoidsInWorld.remove(planetoid);
 		circularObjectsInWorld.remove(planetoid);
+		minorPlanetsInWorld.remove(planetoid);
 		planetoid.setWorld(null);
 		
 	}
@@ -295,6 +296,7 @@ public class World {
 		if(asteroid.getWorld() != this) throw new IllegalArgumentException("The asteroid does not belong to a world");
 		asteroidsInWorld.remove(asteroid);
 		circularObjectsInWorld.remove(asteroid);
+		minorPlanetsInWorld.remove(asteroid);
 		asteroid.setWorld(null);
 	}
 		
@@ -305,24 +307,23 @@ public class World {
 	 * 			|this.removeBullet(bullet)
 	 */
 	public void terminateWorld() {
-		for (Ship ship : getAllShipsInWorld()) {
-			ship.setWorld(null);
+		Set<Ship> ships = getAllShipsInWorld();
+		while (! ships.isEmpty()) {
+			this.removeShip(ships.iterator().next());
 		}
-		for (Bullet bullet : getAllBulletsInWorld()) {
-			bullet.setWorld(null);
+		Set<Bullet> bullets = getAllBulletsInWorld();
+		while (!bullets.isEmpty()) {
+			this.removeBullet(bullets.iterator().next());
 		}
-		for (Planetoid planetoid : getAllPlanetoidsInWorld()) {
-			planetoid.setWorld(null);
+		Set<Planetoid> planetoids = getAllPlanetoidsInWorld();
+		while (!planetoids.isEmpty()) {
+			this.removePlanetoid(planetoids.iterator().next());
 		}
-		
-		for (Asteroid asteroid : getAllAsteroidsInWorld()) {
-			asteroid.setWorld(null);
+		Set<Asteroid> asteroids = getAllAsteroidsInWorld();
+		while (!asteroids.isEmpty()) {
+			this.removeAsteroid(asteroids.iterator().next());
 		}
-		
-		shipsInWorld.clear();
-		bulletsInWorld.clear();
-		planetoidsInWorld.clear();
-		asteroidsInWorld.clear();
+
 		circularObjectsInWorld.clear();
 		minorPlanetsInWorld.clear();
 		this.isTerminated = true;
@@ -424,7 +425,6 @@ public class World {
 		while (tC <= deltaT) {
 			for (CircularObject object1 : this.getAllCircularObjectsInWorld()) object1.move(tC);
 			if (firstCollidingObjects[1] == null) {
-
 				if (collisionListener != null) {
 					collisionListener.boundaryCollision(firstCollidingObjects[0], positionFirstCollision[0], positionFirstCollision[1]);
 				}
