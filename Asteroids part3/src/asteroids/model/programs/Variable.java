@@ -10,7 +10,7 @@ public class Variable<S> {
 
 	//Constructor of a variable using name and value
 	public Variable(String name, S value){
-		this.name = name;
+		this.setName(name);
 		this.setValue(value);
 	}
 	
@@ -42,6 +42,10 @@ public class Variable<S> {
 		return name;
 	}
 	
+	//Setname
+	public void setName(String name){
+		this.name = name;
+	}
 	
 
 

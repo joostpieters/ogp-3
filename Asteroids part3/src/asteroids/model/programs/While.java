@@ -12,11 +12,10 @@ public class While extends Statement {
 	private Expression<Boolean> cond;
 	private Statement body;
 	private boolean bodyexist;
-	private boolean noTimeConsumed;
+	private boolean TimeConsumed;
 
 	//Constructor
-	public While(Expression<Boolean> cond, Statement body,
-			SourceLocation location) {
+	public While(Expression<Boolean> cond, Statement body, SourceLocation location) {
 		super(location);
 		this.cond = cond;
 		this.body = body;
@@ -46,21 +45,21 @@ public class While extends Statement {
 	//Run while
 	@Override
 	public void run() {
-		noTimeConsumed = false;
+		TimeConsumed = false;
 		if(!bodyexist){
 			if(cond.calculate()) bodyexist = true;
 			else return;
 		}
 		body.run();
 		if (body.NoTimeConsumed()){
-			noTimeConsumed = true;
+			TimeConsumed = true;
 			return;
 		}
 		while(cond.calculate() && !body.breakDiscovered()){
 			getProgram().setLocation(this.getLocation());
 			body.run();
 			if (body.NoTimeConsumed()){
-				noTimeConsumed = true;
+				TimeConsumed = true;
 				return;
 			}
 		}
@@ -69,7 +68,7 @@ public class While extends Statement {
 	
 	//NoTimeConsumed
 	public boolean noTimeConsumed(){
-		return noTimeConsumed;
+		return TimeConsumed;
 	}
 	
 	
@@ -77,7 +76,7 @@ public class While extends Statement {
 	@Override
 	public Optional run(Object[] arguments, Set<Variable> locals) {
 		// TODO Auto-generated method stub
-		noTimeConsumed = false;
+		TimeConsumed = false;
 		if(cond.calculate(arguments, locals)){ 
 			bodyexist = true;
 			}

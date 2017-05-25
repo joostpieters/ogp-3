@@ -2,6 +2,7 @@ package asteroids.model.programs;
 
 import java.util.*;
 
+import asteroids.model.Program;
 import asteroids.part3.programs.SourceLocation;
 
 public class Turn extends Statement {
@@ -45,5 +46,11 @@ public class Turn extends Statement {
 			throw new IllegalArgumentException();
 		}
 	
+		
+		@Override
+		public void setProgram(Program program){
+			super.setProgram(program);
+			angle.setProgram(program);
+		}
 	
 }

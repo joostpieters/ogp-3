@@ -5,7 +5,7 @@ import asteroids.part3.programs.SourceLocation;
 
 public class Skip extends Statement {
 
-	private boolean NoTimeConsumed;
+	private boolean TimeConsumed;
 
 	//Constructor 
 	public Skip(SourceLocation location) {
@@ -13,24 +13,24 @@ public class Skip extends Statement {
 	}
 
 	//Set Time 
-	protected void setNoTimeConsumed(boolean time) {
-		this.NoTimeConsumed =  time;
+	protected void setTimeConsumed(boolean time) {
+		this.TimeConsumed =  time;
 		
 	}
 	
 	//get Time
-	public boolean noTimeConsumed(){
-		return NoTimeConsumed;
+	public boolean TimeConsumed(){
+		return TimeConsumed;
 	}
 	
 	
 	//Run
 	@Override
 	public void run() {
-		setNoTimeConsumed(false);
+		setTimeConsumed(false);
 		getProgram().setLocation(getLocation());
 		if (getProgram().getTime() < 0.2) {
-			setNoTimeConsumed(true);
+			setTimeConsumed(true);
 			return;
 		}
 		getProgram().moveTime();

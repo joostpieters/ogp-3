@@ -48,8 +48,7 @@ public class Addition extends Expression<Double> {
 	//Calculate the addition expression
 	@Override 
 	public Double calculate(){
-		if (!(getLeftOperand().calculate() instanceof Double))	throw new IllegalArgumentException();
-		if (!(getRightOperand().calculate() instanceof Double)) throw new IllegalArgumentException();
+		
 		return getLeftOperand().calculate() + getRightOperand().calculate();
 	}
 	
@@ -58,6 +57,10 @@ public class Addition extends Expression<Double> {
 	public Double calculate(Object[] arguments, Set<Variable> locals) throws IllegalArgumentException{
 		return getLeftOperand().calculate() + getRightOperand().calculate();
 	}
+
+	
+
+	
 	
 		
 

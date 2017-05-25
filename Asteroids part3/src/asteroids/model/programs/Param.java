@@ -16,17 +16,27 @@ public class Param extends Expression<Object> {
 		this.param = param;
 	}
 	
-	//Not allowed inside things that are not functions
+	//Not allowed outside functions
 	@Override
 	public Object calculate() {
 		throw new IllegalArgumentException();
 	}
 
+	//setParam
+	public void setParam(String param){
+		this.param = param;
+	}
+	
+	//getParam
+	public String getParam(){
+		return this.param;
+	}
+	
 	//Calculate in function
 	@Override
 	public Object calculate(Object[] arguments, Set<Variable> locals) throws IndexOutOfBoundsException {
-		int argIndex = Integer.parseInt(param.substring(1, param.length()));
-		return arguments[argIndex-1];
+		int index = Integer.parseInt(param.substring(1, param.length()));
+		return arguments[index-1];
 	}
 
 	//Set program

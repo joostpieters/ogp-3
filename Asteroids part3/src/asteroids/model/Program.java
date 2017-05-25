@@ -22,6 +22,7 @@ public class Program {
 		this.main = main;
 		this.allFunctions = functions;
 		main.setProgram(this);
+		for(Function function: functions) function.setProgram(this);
 		remainingTime = 0;
 	}
 	
@@ -59,6 +60,16 @@ public class Program {
 		this.location = location; 
 	}
 	
+	//Set main
+	public void setMain(Statement main){
+		this.main = main; 
+	}
+	
+	//Set main
+	public Statement getMain(){
+		return this.main; 
+	}
+		
 	//Get the remainingTime a program can run.
 	public double getTime(){
 		return remainingTime;
@@ -91,7 +102,7 @@ public class Program {
 	
 	//Get all the functions in a program
 	public Function getFunction(String name) throws NoSuchElementException {
-		return this.allFunctions.stream().filter(func -> func.getName().equals(name)).reduce((first, second) -> second).get();
+		return this.allFunctions.stream().filter(func -> func.getFunctionName().equals(name)).reduce((first, second) -> second).get();
 	}
 	
 	//Get variable

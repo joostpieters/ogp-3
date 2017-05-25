@@ -7,31 +7,41 @@ import asteroids.part3.programs.SourceLocation;
 public class SignChange extends Expression<Double> {
 	
 	//Initialize variable
-	private Expression<? extends Double> expression;
+	private Expression<Double> operand;
 
 	//Constructor for SignChange
-	public SignChange(Expression<? extends Double> expression, SourceLocation location) {
+	public SignChange(Expression<Double> expression, SourceLocation location) {
 		super(location);
-		this.expression = expression;
+		this.setOperand(expression);
 	}
 
+	//setOperand
+	public void setOperand(Expression<Double> op){
+		this.operand = op;
+	}
+	
+	//getOperand
+	public Expression<Double> getOperand(){
+		return this.operand;
+	}
+	
 	//Calculate negative sign
 	@Override
 	public Double calculate() {
-		return -expression.calculate();
+		return -this.getOperand().calculate();
 	}
 
 	//Calculate in function
 	@Override
 	public Double calculate(Object[] arguments, Set<Variable> locals) throws IllegalArgumentException {
-		return -expression.calculate(arguments, locals);
+		return -this.getOperand().calculate(arguments, locals);
 	}
 
 	//Set program for expression
 	@Override
 	public void setProgram(Program program) {
 		super.setProgram(program);
-		expression.setProgram(program);
+		this.getOperand().setProgram(program);
 	}
 	
 

@@ -31,7 +31,7 @@ public class Break extends Statement {
 		return;
 	}
 	
-	//Running inside of function whill return nothing too.
+	//Running inside of function will return nothing too.
 	@Override
 	public Optional run(Object[] arguments, Set<Variable> locals) {
 		return Optional.empty();

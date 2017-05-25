@@ -6,7 +6,7 @@ import asteroids.part3.programs.SourceLocation;
 
 public class NullExpression extends CircObj{
 
-	//Constructorfor NullExpression
+	//Constructor for NullExpression
 	public NullExpression(SourceLocation location) {
 		super(location);
 	}

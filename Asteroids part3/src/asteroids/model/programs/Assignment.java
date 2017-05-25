@@ -1,6 +1,5 @@
 package asteroids.model.programs;
 
-import java.util.NoSuchElementException;
 import java.util.*;
 import asteroids.model.Program;
 import asteroids.part3.programs.SourceLocation;
@@ -12,10 +11,30 @@ public class Assignment<S> extends Statement {
 
 	public Assignment(String name, Expression<S> value, SourceLocation location) {
 		super(location);
-		this.name = name;
-		this.value = value;
+		this.setName(name);
+		this.setValue(value);
 	}
 
+	//Get name of the variable
+	public String getName(){
+		return this.name;
+	}
+	
+	//SetName of the variable
+	public void setName(String name){
+		this.name = name;
+	}
+	
+	//getValue
+	public Expression<S> getValue(){
+		return this.value;
+	}
+	
+	//SetValue
+	public void setValue(Expression<S> val){
+		this.value = val;
+	}
+	
 	//Start assignment
 	@Override
 	public void run() {
@@ -23,7 +42,7 @@ public class Assignment<S> extends Statement {
 		//Look up for functions, if name of the variable already exists as a function, nothing will happen.
 		try{
 			getProgram().getFunction(name);
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Already declared as function");
 			
 		} catch (NoSuchElementException excep){}
 		
