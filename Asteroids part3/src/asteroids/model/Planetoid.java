@@ -123,14 +123,19 @@ public class Planetoid extends MinorPlanet {
 			if (newY - radius > 0) newY = radius;
 			if (newY + radius >= worldY) newY = worldY - radius;
 			
-			ship.setPosition(newX, newY);
-			for (CircularObject object : this.getWorld().getAllCircularObjectsInWorld()) {
-				if (object != ship && object.overlap(ship)) {
-					ship.terminate();
+			Ship newShip = new Ship(newX, newY, ship.getVelocityArray()[0], ship.getVelocityArray()[1], radius, ship.getDirection(), ship.getMass());
+			
+			try {
+				this.getWorld().addShipToWorld(newShip);
+			} catch (IllegalArgumentException excp) {
+				for (CircularObject otherObject : this.getWorld().getAllCircularObjectsInWorld()) {
+					if (newShip != otherObject && otherObject.overlap(newShip)) {
+						newShip.terminate();
+					}
 				}
 			}
-			
-			
+			this.getWorld().removeShip(ship);
+			ship.terminate();
 		} else {
 			System.out.println("Planteoid met iets anders");
 			super.collisionCircularObject(object2);

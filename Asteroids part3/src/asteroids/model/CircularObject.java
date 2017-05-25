@@ -107,6 +107,7 @@ public abstract class CircularObject {
 	 * 			|new.getPosition = new Position(x,y)
 	 */
 	public void setPosition(double x, double y) {
+		//TODO: isValidPosition and throw exception
 		this.position.setPosition(x, y);
 	}
 	
@@ -450,21 +451,17 @@ public abstract class CircularObject {
 	public boolean isTerminated() {
 		return isTerminated;
 	}
-	/**
-	 * Method to terminate a circular object
-	 * @effect The object is now terminated
-	 * 		|this.isTerminated = true
-	 */
+
 	public void terminate() {
 		this.isTerminated = true;
 	}
 	
 	/**
 	 * Method that resolves collisions of a ship with a boundary
-	 * @effect
+	 * @post
 	 * 			|if (!(this.apparantlyWithinBoundaryX()))
 	 * 			|new.velocity.getXVelocity == -currentXVel
-	 * @effect
+	 * @post
 	 * 			if (!(this.apparantlyWithinBoundaryY()))
 	 * 			|new.velocity.getYVelocity == -currentYVel
 	 */
@@ -478,9 +475,6 @@ public abstract class CircularObject {
 			this.setVelocity(this.getVelocityArray()[0], -currentYVel);
 		}
 	}
-	/**
-	 * Method to resolve the collision of circular objects
-	 * @param object The object that this object is colliding with.
-	 */
+
 	public abstract void collisionCircularObject(CircularObject object);
 }

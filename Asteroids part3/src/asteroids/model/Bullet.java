@@ -70,6 +70,11 @@ public class Bullet extends CircularObject{
 		return this.ship;
 	}
 	
+	/**
+	 * Get the mass of the bullet
+	 * @return the mass of the bullet
+	 * 			|result == mass;
+	 */
 	@Override
 	public double getMass(){
 		double bulletradius = getRadius();
@@ -119,7 +124,12 @@ public class Bullet extends CircularObject{
 	public void incrementBoundaryCollision() {
 		this.boundaryCollisions ++;
 	}
-
+	/**
+	 * Method to terminate a bullet
+	 * @post
+	 * 			|new.getWorld != null
+	 * 			|isTerminated == true
+	 */
 	@Override
 	public void terminate() {
 		super.terminate();
@@ -140,7 +150,11 @@ public class Bullet extends CircularObject{
 		return isTerminated;
 	}
 	
-
+	/**
+	 * Method to resolve collision between a bullet and the boundary of a world
+	 * @effect If the bullet collides with a boundary for the third time it is terminated			
+	 * 			|if (this.boundaryCollisions >= 3) this.terminate()
+	 */
 	@Override
 	public void collideWithBoundary() {
 		super.collideWithBoundary();
@@ -154,10 +168,10 @@ public class Bullet extends CircularObject{
 	/**
 	 * Method to resolve collision between a bullet and a circular object
 	 * @param object2
-	 * @effect If the bullet collides with its source ship, then the bullet is loaded onto the ship
+	 * @post If the bullet collides with its source ship, then the bullet is loaded onto the ship
 	 * 			|ship.loadBullet(this)
-	 * @effect If it collides with a different circular object then both are terminated
-	 * 			|object2.terminateShip() && this.terminateBullet() 		
+	 * @post If it collides with a different ship then both are terminated
+	 * 			|ship.terminateShip() && this.terminateBullet() 		
 	 */
 	@Override
 	public void collisionCircularObject(CircularObject object2) {

@@ -40,7 +40,10 @@ public abstract class MinorPlanet extends CircularObject{
 	}
 	
 
-
+	/**
+	 * Get the mass of the minor planet.
+	 * @see implementation
+	 */
 	@Override
 	public double getMass() {
 		return 4.0 * Math.PI * Math.pow(getRadius(), 3) * this.getDensity() / 3.0;
@@ -87,9 +90,9 @@ public abstract class MinorPlanet extends CircularObject{
 			object2.setVelocity(newXVelocityObject2, newYVelocityObject2);
 			System.out.println("Minor planet met minor planet");
 		}
-		else if (object2 instanceof Bullet) {
-			object2.terminate();
+		else if (object2 instanceof Bullet){
 			this.terminate();
+			object2.terminate();
 		}
 	}
 	
