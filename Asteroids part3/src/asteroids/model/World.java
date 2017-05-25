@@ -451,7 +451,4 @@ public class World {
 		}
 		for (CircularObject object : this.getAllCircularObjectsInWorld()) object.move(deltaT);
 	}
-
-
-
 }
