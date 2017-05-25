@@ -432,7 +432,16 @@ public class World {
 				CircularObject[] firstCollidingObjects = this.getNextCollidingObjects();
 				double[] positionFirstCollision = this.getPositionNextCollision();
 				while (tC <= deltaT) {
-					for (CircularObject object1 : this.getAllCircularObjectsInWorld()) object1.move(tC);
+					for (CircularObject object1 : this.getAllCircularObjectsInWorld()) {
+						if (object1 instanceof Ship) {
+							Ship ship = (Ship) object1;
+							if (ship.getProgram() != null) {
+								ship.runProgram(tC);
+							}
+						}
+						object1.move(tC);
+						
+					}
 					if (firstCollidingObjects[1] == null) {
 						if (collisionListener != null) {
 							collisionListener.boundaryCollision(firstCollidingObjects[0], positionFirstCollision[0], positionFirstCollision[1]);
@@ -455,7 +464,16 @@ public class World {
 					}
 				}
 			}
-			for (CircularObject object : this.getAllCircularObjectsInWorld()) object.move(deltaT);
+			for (CircularObject object1 : this.getAllCircularObjectsInWorld()) {
+				if (object1 instanceof Ship) {
+					Ship ship = (Ship) object1;
+					if (ship.getProgram() != null) {
+						ship.runProgram(tC);
+					}
+				}
+				object1.move(deltaT);
+			}
+				
 			
 		}
 		
