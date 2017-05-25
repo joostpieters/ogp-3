@@ -43,7 +43,6 @@ public class Asteroid extends MinorPlanet {
 		} else {
 			super.collisionCircularObject(object);
 		}
-		
 	}
 	
 	
