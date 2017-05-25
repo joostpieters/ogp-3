@@ -2,7 +2,6 @@ package asteroids.model;
 
 import java.util.*;
 import asteroids.part3.programs.SourceLocation;
-import be.kuleuven.cs.som.annotate.Raw;
 import asteroids.model.programs.*;
 
 public class Program {
@@ -19,8 +18,8 @@ public class Program {
 	
 	//Constructor for program with main and if any, a number of functions.
 	public Program(List<Function> functions, Statement main){
-		this.main = main;
-		this.allFunctions = functions;
+		this.setMain(main);
+		this.setAllFunctions(functions);
 		main.setProgram(this);
 		for(Function function: functions) function.setProgram(this);
 		remainingTime = 0;
@@ -31,7 +30,7 @@ public class Program {
 		remainingTime = remainingTime + dt;
 		main.run();
 		if(!main.NoTimeConsumed()){
-			if(main.breakDiscovered()) throw new IllegalArgumentException("Break not supported");
+			if(main.breakDiscovered()) throw new IllegalArgumentException();
 			location = new SourceLocation(0,0);
 			List<Object> resultthrow = results;
 			results = null;
@@ -60,12 +59,12 @@ public class Program {
 		this.location = location; 
 	}
 	
-	//Set main
+	//Set main statement
 	public void setMain(Statement main){
 		this.main = main; 
 	}
 	
-	//Set main
+	//get main statement
 	public Statement getMain(){
 		return this.main; 
 	}
@@ -80,9 +79,19 @@ public class Program {
 		remainingTime = remainingTime - 0.2;
 	}
 	
-	//Get the results of the program.
-	public List<Object> getResults() {
-		return results;
+	//Get a list of all the functions
+	public List<Function> getAllFunctions(){
+		return this.allFunctions;
+	}
+	
+	//Set the list of all functions
+	public void setAllFunctions(List<Function> func){
+		this.allFunctions = func;
+	}
+	
+	//Get a specific function from the list of functions, providing the name.
+	public Function getFunction(String name) throws NoSuchElementException {
+		return this.allFunctions.stream().filter(func -> func.getFunctionName().equals(name)).reduce((first, second) -> second).get();
 	}
 	
 	//Add result
@@ -90,9 +99,24 @@ public class Program {
 		results.add(result);
 	}
 	
+	//Get the results of the program.
+	public List<Object> getResults() {
+		return results;
+	}
+	
 	//Add Variable to the program
 	public void addVariable(Variable variable){
 		allVariables.add(variable);
+	}
+	
+	//Remove a variable from the list of variables
+	public void removeVariable(Variable variable){
+		this.getVariables().remove(variable);
+	}
+	
+	//Get a specific variable from the list of variables, providing the name.
+	public Variable getVariable(String name) throws NoSuchElementException {
+		return getVariables().stream().filter(var -> var.getName().equals(name)).findFirst().get();
 	}
 	
 	//Get a set of variables of the program.
@@ -100,13 +124,11 @@ public class Program {
 		return new HashSet<Variable>(allVariables);
 	}
 	
-	//Get all the functions in a program
-	public Function getFunction(String name) throws NoSuchElementException {
-		return this.allFunctions.stream().filter(func -> func.getFunctionName().equals(name)).reduce((first, second) -> second).get();
+	//Set a set of all variables of the program
+	public void setVariables(Set <Variable> vars){
+		this.allVariables = vars;
 	}
 	
-	//Get variable
-	public Variable getVariable(String variableName) throws NoSuchElementException {
-		return getVariables().stream().filter(variable -> variable.getName().equals(variableName)).findFirst().get();
-	}
+	
+
 }
